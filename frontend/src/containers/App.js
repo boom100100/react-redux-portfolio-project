@@ -4,13 +4,15 @@ import HomeNav from './navigation/HomeNav';
 //import '../App.css';
 
 class App extends Component {
-  state = {
-    projects: {
-      1: { id: 1, title: 'A River Runs Through It' },
-      2: { id: 2, title: 'Se7en' },
-      3: { id: 3, title: 'Inception' }
-    }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+      user: {}
+     };
   }
+  
   render(){
     return (
       <div className="App">
