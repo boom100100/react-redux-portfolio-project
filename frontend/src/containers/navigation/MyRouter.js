@@ -7,7 +7,8 @@ const MyRouter = () => {
 
     <Router>
       <Route exact path="/" render={() => <div>Home</div>} />
-      <Route path="/login" render={() => <div>Login</div>} />
+      <Route exact path='/login' render={() => <div>Login</div>}/>
+      <Route exact path='/signup' render={() => <div>Sign Up</div>}/>
       <Route path="/projects" render={() => <div>Projects</div>} />
       <Route path="/projects/new" render={() => <div>New Project</div>} />
       <Route path="/projects/:project_id" render={() => <div>Fake ID</div>} />
@@ -37,4 +38,4 @@ const MyRouter = () => {
   )
 }
 
-export default HomeNav;
+export default MyRouter;
