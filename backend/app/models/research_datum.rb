@@ -1,0 +1,2 @@
+class ResearchDatum < Datum
+end
