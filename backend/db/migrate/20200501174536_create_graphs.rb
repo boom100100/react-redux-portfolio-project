@@ -7,6 +7,8 @@ class CreateGraphs < ActiveRecord::Migration[6.0]
 
       t.belongs_to :project
       t.belongs_to :section_title, optional: true
+
+      t.timestamps
     end
   end
 end

@@ -4,6 +4,8 @@ class CreateSectionTitles < ActiveRecord::Migration[6.0]
       t.string :name
 
       t.belongs_to :project
+
+      t.timestamps
     end
   end
 end
