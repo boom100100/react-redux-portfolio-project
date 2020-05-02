@@ -1,10 +1,13 @@
 class SectionTitle < ApplicationRecord
   belongs_to :project
 
-  has_many :data
-  has_many :graphs
+  has_many :section_title_children
 
   #validations
-  #doesn't have to be unique because there may be undefined titles
+  #has to be unique
+  #there may be undefined titles
+  #but user must be able to differentiate
+  #default = 'unnamed' + id.to_s
+  validates :name, presence: true
 
 end
