@@ -1,24 +1,24 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
 * Ruby version
 
 * System dependencies
+rack-cors
 
 * Configuration
 
-* Database creation
+bundle install
+In config/initializers, create cors.rb file. Configure cors on port 3001 if using local setup. This setup is supplied in this repository, so you'll just need to make necessary changes for a non-local setup.
 
-* Database initialization
+In config/puma.rb, change
 
-* How to run the test suite
+port ENV.fetch(“PORT”) { 3001 }
 
-* Services (job queues, cache servers, search engines, etc.)
+to
 
-* Deployment instructions
+port ENV.fetch(“PORT”) { 3001 }
 
-* ...
+* Database
+
+rails db:migrate
+rails db:seed
