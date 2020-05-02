@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
+  # TODO: can probably remove.
+  #will need to query user for sign in - only likely use case
   def index
     @users = User.all
     if @users
-      render :json => @users, include: [:projects => {:include => [:section_titles, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]
+      render :json => @users, include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]
     else
       render json: {
         status: 500,
