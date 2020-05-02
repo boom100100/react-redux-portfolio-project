@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import MyRouter from './navigation/MyRouter';
 import HomeNav from './navigation/HomeNav';
 //import '../App.css';
@@ -12,14 +13,20 @@ class App extends Component {
       user: {}
      };
   }
-  
+
+
+  //const handleLogin = () => {}
+  //const handleLogout = () => {}
+
+
   render(){
     return (
       <div className="App">
         <header className="App-header">
           <HomeNav />{//links
-          }{//routing infrastructure
-          }<MyRouter />
+          }<MyRouter />{//routing infrastructure
+          }
+
 
 
         </header>
