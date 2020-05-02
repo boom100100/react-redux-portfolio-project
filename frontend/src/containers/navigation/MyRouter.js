@@ -1,5 +1,7 @@
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import LoginContainer from '../LoginContainer';
+import SignupContainer from '../SignupContainer';
 import React from 'react';
 
 const MyRouter = () => {
@@ -7,8 +9,8 @@ const MyRouter = () => {
 
     <Router>
       <Route exact path="/" render={() => <div>Home</div>} />
-      <Route exact path='/login' render={() => <div>Login</div>}/>
-      <Route exact path='/signup' render={() => <div>Sign Up</div>}/>
+      <Route exact path='/login' render={() => <LoginContainer />}/>
+      <Route exact path='/signup' render={() => <SignupContainer />}/>
       <Route path="/projects" render={() => <div>Projects</div>} />
       <Route path="/projects/new" render={() => <div>New Project</div>} />
       <Route path="/projects/:project_id" render={() => <div>Fake ID</div>} />

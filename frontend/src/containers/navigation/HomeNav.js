@@ -1,9 +1,9 @@
 import {Navbar, NavDropdown, Nav} from 'react-bootstrap';
 import React from 'react';
+
 const HomeNav = () => {
+
   return (
-
-
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">Research Helper</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -21,7 +21,6 @@ const HomeNav = () => {
 
       </Navbar.Collapse>
     </Navbar>
-
   )
 }
 
