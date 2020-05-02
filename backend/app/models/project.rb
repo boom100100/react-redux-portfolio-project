@@ -3,6 +3,6 @@ class Project < ApplicationRecord
 
   has_many :section_titles
 
-  has_many :data
-  has_many :graphs
+  has_many :data, through: :section_title
+  has_many :graphs, through: :section_title
 end
