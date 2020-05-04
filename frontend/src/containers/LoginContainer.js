@@ -1,69 +1,60 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login } from  '../actions/login';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+import * as sessionActions from '../actions/SessionActions';
 
-import LoginComponent from '../components/LoginComponent'
-
+import LoginComponent from '../components/LoginComponent';
+var token;
 class LoginContainer extends Component {
-  constructor(props){
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
-    // TODO: move to redux thunk - signin info needed on each page
     this.state = {
-      email: "",
-      password: ""
-    }
+      email: '',
+      password: ''
+    };
   }
 
-
-
-  handleOnSubmit = (event) => {
-    event.preventDefault();
-    console.log(this.state);
-    this.props.login(this.state);
-    this.setState({email: "", password: ""});
-    //add dispatch
-  }
-
-  handleOnChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
+  componentDidMount(){
+    const newSession = this.props.actions.newSession;
+    newSession().then(json => {
+      token = json.token;
     });
-    //setState is asynchronous
-    //console.log(this.state)
   }
 
-  render(){
+  onSubmit = (e) => {
+    e.preventDefault();
+    const login = this.props.actions.login;
+    login(this.state, token, document.history);
+  }
+
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  render() {
     return (
       <div>
-        <LoginComponent handleOnChange={this.handleOnChange} handleOnSubmit={this.handleOnSubmit} myState={this.state} />
-        {// TODO: remove button
-
-        }<button onClick={this.handleOnClick}>Click</button>
-
+        <LoginComponent token={this.state.token} handleOnChange={e => this.onChange(e)} handleOnSubmit={e => this.onSubmit(e)} state={this.state} />
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
+const { object } = PropTypes;
+
+LoginContainer.propTypes = {
+  actions: object.isRequired
+};
+
+const mapDispatch = (dispatch) => {
   return {
-    email: state.email,
-    password: state.password
+    actions: bindActionCreators(sessionActions, dispatch)
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    increaseCount: () => dispatch({ type: 'INCREASE_COUNT' }),
-    login: (state) => dispatch(login(state)),
-
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginContainer);
-
-// export default LoginContainer;
+export default connect(null, mapDispatch)(LoginContainer);
