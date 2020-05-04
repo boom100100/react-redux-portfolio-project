@@ -5,6 +5,7 @@ export default function sessionReducer(state = { email: '', password: '' }, acti
     case 'LOG_IN':
       //fetch login flow
       //set session values
+      // TODO: thunk fetch session, modify state
       console.log("Logging in.");
       console.log(action.state);
       return {...state};
