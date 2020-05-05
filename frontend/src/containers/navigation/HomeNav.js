@@ -12,6 +12,7 @@ const HomeNav = () => {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/projects">Projects</Nav.Link>
           <Nav.Link href="/login">Log In</Nav.Link>
+          <Nav.Link href="/logout">Log Out</Nav.Link>
           <NavDropdown title="Explore" id="basic-nav-dropdown">
             <NavDropdown.Item href="/random-data-finder">Random Data Finder</NavDropdown.Item>
             <NavDropdown.Divider />
