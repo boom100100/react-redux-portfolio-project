@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
-//import LoginForm from '../components/LoginForm';
 
 const LoginComponent = (props) => {
 
@@ -12,18 +11,17 @@ const LoginComponent = (props) => {
 
       <input type="hidden" name="csrf-token" content={props.token} value={props.token} />
 
-      <div>
-        <input type="text" name="email" onChange={props.handleOnChange} value={props.email} />
-      </div>
+      <h3>Log In</h3>
 
-      <div>
-        <input type="password" name="password" onChange={props.handleOnChange} value={props.password} />
-      </div>
+      <label>Email Address:<br />
+        <input type="text" name="email" onChange={props.handleOnChange} value={props.email} /><br /><br />
+      </label>
 
-      <div>
-        <input type="submit" value="Log In" />
-      </div>
+      <label>Password:<br />
+        <input type="password" name="password" onChange={props.handleOnChange} value={props.password} /><br /><br />
+      </label>
 
+      <input type="submit" value="Log In" /><br /><br />
     </form>
   )
 }
