@@ -14,8 +14,7 @@ class LoginContainer extends Component {
 
     this.state = {
       email: '',
-      password: ''//,
-       //token: ''
+      password: ''
     };
   }
 
