@@ -11,17 +11,17 @@ export const newSession = () => {
   return fetch(url);
 }
 
-export const login = (state, token) => {
+export const login = (state) => {
   let url = 'http://localhost:3001/sessions';
   let configData = {
     method: "POST",
-    //"Credentials": "include",
+    credentials: "include",
     headers: {
       "Host": 'http://localhost:3000',
       "Content-Type": "application/json",
       "Accept": "application/json"
     },
-    body: JSON.stringify( state.user )
+    body: JSON.stringify( state )
   };
 
   return fetch(url, configData);

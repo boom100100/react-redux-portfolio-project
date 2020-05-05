@@ -6,28 +6,36 @@ import { withRouter } from 'react-router-dom';
 import * as sessionActions from '../actions/SessionActions';
 
 import LoginComponent from '../components/LoginComponent';
-var token;
+
 class LoginContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
       email: '',
-      password: ''
+      password: ''//,
+       //token: ''
     };
   }
 
-  componentDidMount(){
+  /*componentDidMount(){
     const newSession = this.props.actions.newSession;
     newSession().then(json => {
-      token = json.token;
+      //console.log(json);
+      /*this.setState({
+        ...this.state,
+        token: json.token
+      })
     });
-  }
+  }*/
 
   onSubmit = (e) => {
     e.preventDefault();
     const login = this.props.actions.login;
-    login(this.state, token, document.history);
+    //console.log(this.state);
+    //console.log(document.history);
+
+    login(this.state);
   }
 
   onChange = (e) => {

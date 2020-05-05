@@ -1,30 +1,38 @@
 import { sessionService } from 'redux-react-session';
 import * as sessionApi from '../api/SessionApi';
 
-export const newSession = (setStateFunction, state) => {
+export const newSession = () => {
   return () => {
-    return sessionApi.newSession().then(response => response.json());
+    return sessionApi.newSession().then(response => {
+      //console.log(response);
+      //console.log(response.headers);
+      return response.json()});
   }
 
 };
 
 
-export const login = (state, token, history) => {
+export const login = (state) => {
   return () => {
-    return sessionApi.login(state, token).then(response => response.json()).then(json => {
-      // TODO: is this secure way to store token?
+    return sessionApi.login(state).then(response => response.json()).then(json => {
+      
+      // console.log(json);
 
-      //json includes token from server
-      const { cred_token } = json;
+      // const cred_token = json;
 
-      sessionService.saveSession({ cred_token })
+      // console.log(sessionService);
+      // console.log(sessionService.saveSession);
+      // console.log(sessionService.saveUser);
+      sessionService.saveSession({ json })
       .then(() => {
 
         sessionService.saveUser(json.data)
         .then(() => {
-          localStorage.setItem("loggedIn", true);
-          localStorage.setItem("user", JSON.stringify(json.data.user));
-          history.push('/');
+          if (json.data) {
+            localStorage.setItem("loggedIn", true);
+            localStorage.setItem("user", JSON.stringify(json.data.user));
+            //history.push('/');
+          }
         }).catch(err => console.error(err));
       }).catch(err => console.error(err));
     });
