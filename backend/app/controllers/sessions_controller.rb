@@ -1,8 +1,6 @@
 class SessionsController < ApplicationController
   #skip_before_action :set_csrf_cookie, only: [:create]
-  def new
-    render json: {token: cookies["CSRF-TOKEN"]}
-  end
+  
 
   def create
 
