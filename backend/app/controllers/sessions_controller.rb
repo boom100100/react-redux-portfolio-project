@@ -5,11 +5,13 @@ class SessionsController < ApplicationController
   end
 
   def create
+
     user = User.find_by(email: params[:email])
 
-    user.try(:authenticate, params[:password])
+    authenticated = user.try(:authenticate, params[:password])
+    return render json: {message: "Login failed."}, status: 403 unless authenticated
+    #user.try(:authenticate, params[:password])
 
-    return render json: {message: "Login failed."}, status: 400 unless user
 
     session[:user_id] = user.id
     # TODO: how to securely send and store cookie?
