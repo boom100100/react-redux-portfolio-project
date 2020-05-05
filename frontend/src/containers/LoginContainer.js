@@ -8,6 +8,8 @@ import * as sessionActions from '../actions/SessionActions';
 
 import LoginComponent from '../components/LoginComponent';
 
+import { NavLink } from 'react-router-dom'
+
 class LoginContainer extends Component {
   constructor(props, context) {
     super(props, context);
@@ -47,7 +49,13 @@ class LoginContainer extends Component {
   render() {
     return (
       <div>
-        <LoginComponent token={this.state.token} handleOnChange={this.onChange} handleOnSubmit={this.onSubmit} state={this.state} />
+        <div>
+          <LoginComponent token={this.state.token} handleOnChange={this.onChange} handleOnSubmit={this.onSubmit} state={this.state} />
+        </div>
+        <div>
+          <NavLink to="/signup">Sign Up</NavLink>
+
+        </div>
       </div>
     );
   }
