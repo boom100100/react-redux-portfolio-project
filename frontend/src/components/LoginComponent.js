@@ -1,9 +1,14 @@
 import React from 'react';
+import PropTypes from "prop-types";
+import { withRouter } from 'react-router-dom';
+//import LoginForm from '../components/LoginForm';
 
 const LoginComponent = (props) => {
 
+  const { history } = props;
+
   return (
-    <form onSubmit={props.handleOnSubmit} /*action="http://localhost:3001/sessions" method="POST"*/>
+    <form onSubmit={e => props.handleOnSubmit(e, history)} /*action="http://localhost:3001/sessions" method="POST"*/>
 
       <input type="hidden" name="csrf-token" content={props.token} value={props.token} />
 
@@ -23,4 +28,8 @@ const LoginComponent = (props) => {
   )
 }
 
-export default LoginComponent;
+var propTypes = {
+    history: PropTypes.object.isRequired
+  };
+
+export default withRouter(LoginComponent);

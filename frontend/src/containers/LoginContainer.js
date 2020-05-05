@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
+
 import * as sessionActions from '../actions/SessionActions';
 
 import LoginComponent from '../components/LoginComponent';
@@ -29,13 +30,13 @@ class LoginContainer extends Component {
     });
   }*/
 
-  onSubmit = (e) => {
+  onSubmit = (e, history) => {
     e.preventDefault();
     const login = this.props.actions.login;
     //console.log(this.state);
     //console.log(document.history);
 
-    login(this.state);
+    login(this.state, history);
   }
 
   onChange = (e) => {
@@ -47,7 +48,7 @@ class LoginContainer extends Component {
   render() {
     return (
       <div>
-        <LoginComponent token={this.state.token} handleOnChange={e => this.onChange(e)} handleOnSubmit={e => this.onSubmit(e)} state={this.state} />
+        <LoginComponent token={this.state.token} handleOnChange={this.onChange} handleOnSubmit={this.onSubmit} state={this.state} />
       </div>
     );
   }

@@ -12,10 +12,10 @@ export const newSession = () => {
 };
 
 
-export const login = (state) => {
+export const login = (state, history) => {
   return () => {
     return sessionApi.login(state).then(response => response.json()).then(json => {
-      
+
       // console.log(json);
 
       // const cred_token = json;
@@ -31,7 +31,7 @@ export const login = (state) => {
           if (json.data) {
             localStorage.setItem("loggedIn", true);
             localStorage.setItem("user", JSON.stringify(json.data.user));
-            //history.push('/');
+            history.push('/');
           }
         }).catch(err => console.error(err));
       }).catch(err => console.error(err));
