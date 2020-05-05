@@ -1,19 +1,12 @@
 
 export const newSession = () => {
-  let url = 'http://localhost:3001/sessions/new';
-  let configData = {method: "GET", headers: {
-      "Host": 'http://localhost:3000',
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    }
-  };
-
+  const url = 'http://localhost:3001/sessions/new';
   return fetch(url);
 }
 
 export const login = (state) => {
-  let url = 'http://localhost:3001/sessions';
-  let configData = {
+  const url = 'http://localhost:3001/sessions';
+  const configData = {
     method: "POST",
     credentials: "include",
     headers: {
@@ -29,14 +22,14 @@ export const login = (state) => {
 }
 
 export const logout = () => {
-  let url = 'http://localhost:3001/sessions';
-  let configData = {
+  const url = 'http://localhost:3001/sessions';
+  const configData = {
     method: "DELETE",
+    credentials: "include",
     headers: {
       "Host": 'http://localhost:3000',
       "Content-Type": "application/json",
-      "Accept": "application/json",
-      'Credentials': 'true'
+      "Accept": "application/json"
     },
     // TODO: MODIFY 'user'
     body: JSON.stringify( 'user' )
