@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
 import SignupComponent from '../components/SignupComponent'
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as userActions from '../actions/UserActions';
+
 class SignupContainer extends Component {
-  // TODO: move to redux thunk - signin info needed on each page
-  state = {
-    email: "",
-    password: "",
-    password_confirmation: ""
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      email: "",
+      password: "",
+      password_confirmation: ""
+    }
   }
 
-  handleOnSubmit = (event) => {
+  onSubmit = (event, history) => {
     event.preventDefault();
     // TODO: add dispatch
+    const createUser = this.props.actions.createUser;
+    createUser(this.state, history);
     //resets state
     this.setState({
       email: "",
       password: "",
       password_confirmation: ""
-    })
+    });
   }
 
-  handleOnChange = (event) => {
+  onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -31,10 +41,16 @@ class SignupContainer extends Component {
   render(){
     return (
       <div>
-        <SignupComponent handleOnChange={this.handleOnChange} handleOnSubmit={this.handleOnSubmit} myState={this.state} />
+        <SignupComponent handleOnChange={this.onChange} handleOnSubmit={this.onSubmit} myState={this.state} />
       </div>
     )
   }
 }
 
-export default SignupContainer;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(userActions, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SignupContainer);
