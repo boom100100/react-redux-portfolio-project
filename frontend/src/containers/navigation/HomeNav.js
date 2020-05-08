@@ -10,9 +10,11 @@ const HomeNav = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/projects">Projects</Nav.Link>
-          <Nav.Link href="/login">Log In</Nav.Link>
-          <Nav.Link href="/logout">Log Out</Nav.Link>
+
+          {localStorage.loggedIn ? (<><Nav.Link href="/profile">Profile</Nav.Link><Nav.Link href="/projects">Projects</Nav.Link><Nav.Link href="/logout">Log Out</Nav.Link></>) : (<Nav.Link href="/login">Log In</Nav.Link>) }
+
+
+
           <NavDropdown title="Explore" id="basic-nav-dropdown">
             <NavDropdown.Item href="/random-data-finder">Random Data Finder</NavDropdown.Item>
             <NavDropdown.Divider />

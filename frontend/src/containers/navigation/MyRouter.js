@@ -3,6 +3,10 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import LoginContainer from '../LoginContainer';
 import LogoutContainer from '../LogoutContainer';
 import SignupContainer from '../SignupContainer';
+import ProfileContainer from '../ProfileContainer';
+import ProjectsContainer from '../ProjectsContainer';
+import ProjectContainer from '../ProjectContainer';
+import NewProjectContainer from '../NewProjectContainer';
 import React from 'react';
 
 const MyRouter = () => {
@@ -13,9 +17,10 @@ const MyRouter = () => {
       <Route exact path='/login' render={() => <LoginContainer />}/>
       <Route exact path='/logout' render={() => <LogoutContainer />}/>
       <Route exact path='/signup' render={() => <SignupContainer />}/>
-      <Route path="/projects" render={() => <div>Projects</div>} />
-      <Route path="/projects/new" render={() => <div>New Project</div>} />
-      <Route path="/projects/:project_id" render={() => <div>Fake ID</div>} />
+      <Route exact path='/profile' render={() => <ProfileContainer />}/>
+      <Route path="/projects" render={() => <ProjectsContainer />} />
+      <Route path="/projects/new" render={() => <NewProjectContainer />} />
+      <Route path="/projects/:project_id" render={() => <ProjectContainer />} />
       <Route path="/projects/:project_id/research-data" render={() => <div>Fake ID and research data</div>} />
       <Route path="/projects/:project_id/research-data/:data_id" render={() => <div>Fake ID and research data</div>} />
       <Route path="/projects/:project_id/preliminary-data" render={() => <div>Fake ID and preliminary data</div>} />
