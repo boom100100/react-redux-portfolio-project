@@ -1,6 +1,20 @@
 import * as userApi from '../api/UserApi';
-import * as sessionApi from '../api/SessionApi';
 import { sessionService } from 'redux-react-session';
+
+export const addUser = (user) => {
+  //console.log(user);
+  // debugger;
+  const action = {type: 'ADD_USER', user: {email: user.email, projects: user.projects} };
+  console.log("Action is");
+  console.log((action));
+  return action;
+}
+
+export const resetUser = () => {
+  const action = {type: 'RESET_USER', user: {email: '', projects: []} };
+  console.log((action));
+  return action;
+}
 
 export const createUser = (state, history) => {
 
@@ -10,17 +24,19 @@ export const createUser = (state, history) => {
       .then(json => {
 
         sessionService.saveSession({ json })
-        .then(() => {
-
-          sessionService.saveUser(json.data)
           .then(() => {
-            if (json.data) {
-              localStorage.setItem("loggedIn", true);
-              localStorage.setItem("user", JSON.stringify(json.data.user));
-              history.push('/');
-            }
+
+            sessionService.saveUser(json)
+            .then(() => {
+              if (json) {
+                // TODO: userReducer(json, {type: 'LOGIN_USER', user: json});
+                localStorage.setItem("loggedIn", true);
+                localStorage.setItem("user", JSON.stringify(json.user));
+                history.push('/');
+                history.go(0);
+              }
+            }).catch(err => console.error(err));
           }).catch(err => console.error(err));
-        }).catch(err => console.error(err));
 
 
       }).catch(error => console.log(error));
