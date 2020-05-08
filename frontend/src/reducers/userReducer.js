@@ -1,10 +1,3 @@
-// import { connect } from 'react-redux';
-
-// let state;
-// function dispatch(action){
-//   userReducer(state, action);
-// }
-
 function userReducer(state = { email: '', projects: [] }, action) {
   //debugger;
   switch (action.type) {
@@ -15,7 +8,7 @@ function userReducer(state = { email: '', projects: [] }, action) {
       console.log(newState);
       // newState = state.set('projects', action.user.projects);
       return newState;
-      
+
 
     case 'RESET_USER':
     console.log("Doing RESET_USER.");
@@ -38,24 +31,4 @@ function userReducer(state = { email: '', projects: [] }, action) {
   }
 }
 
-// function createStore(reducer){
-//   let state;
-//   function dispatch(){
-//     state = reducer(state, {type: '@@INIT'});
-//   }
-//   function getState(){
-//     return state;
-//   }
-//
-//   return { dispatch, getState }
-// }
-
-// store = createStore(userReducer);
-
-// const mapStateToProps = function(state) {
-//   return {
-//     state: state.user
-//   }
-// }
-// export default connect(mapStateToProps)(userReducer);
 export default userReducer;
