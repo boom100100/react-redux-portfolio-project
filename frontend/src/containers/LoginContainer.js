@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as sessionActions from '../actions/SessionActions';
+import { login } from '../actions/SessionActions';
+import { addUser } from '../actions/UserActions';
+
 
 import LoginComponent from '../components/LoginComponent';
 
@@ -20,24 +21,9 @@ class LoginContainer extends Component {
     };
   }
 
-  /*componentDidMount(){
-    const newSession = this.props.actions.newSession;
-    newSession().then(json => {
-      //console.log(json);
-      /*this.setState({
-        ...this.state,
-        token: json.token
-      })
-    });
-  }*/
-
-  onSubmit = (e, history) => {
-    e.preventDefault();
-    const login = this.props.actions.login;
-    //console.log(this.state);
-    //console.log(document.history);
-
-    login(this.state, history);
+  onClick = (e, history) => {
+    console.log(e);
+    this.props.login(this.state, history, this.props.addUser);
   }
 
   onChange = (e) => {
@@ -50,27 +36,14 @@ class LoginContainer extends Component {
     return (
       <div>
         <div>
-          <LoginComponent token={this.state.token} handleOnChange={this.onChange} handleOnSubmit={this.onSubmit} state={this.state} />
+          <LoginComponent token={this.state.token} handleOnChange={this.onChange} handleOnSubmit={this.onClick} state={this.state} />
         </div>
         <div>
           <NavLink to="/signup">Sign Up</NavLink>
-
         </div>
       </div>
     );
   }
 }
 
-const { object } = PropTypes;
-
-LoginContainer.propTypes = {
-  actions: object.isRequired
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch)
-  };
-};
-
-export default connect(null, mapDispatch)(LoginContainer);
+export default connect(null, { login, addUser })(LoginContainer);
