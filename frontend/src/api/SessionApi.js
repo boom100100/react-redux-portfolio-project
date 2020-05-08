@@ -22,7 +22,7 @@ export const login = (state) => {
 }
 
 export const logout = () => {
-  const url = 'http://localhost:3001/sessions';
+  const url = `http://localhost:3001/sessions/delete`;
   const configData = {
     method: "DELETE",
     credentials: "include",
