@@ -1,20 +1,14 @@
 class SessionsController < ApplicationController
-  #skip_before_action :set_csrf_cookie, only: [:create]
-  
 
   def create
-
     user = User.find_by(email: params[:email])
 
     authenticated = user.try(:authenticate, params[:password])
     return render json: {message: "Login failed."}, status: 403 unless authenticated
-    #user.try(:authenticate, params[:password])
-
 
     session[:user_id] = user.id
-    # TODO: how to securely send and store cookie?
-    render json: {data:{user: user.email}}
-
+    render json: user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
+    #render :json => user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
   end
 
   def destroy
