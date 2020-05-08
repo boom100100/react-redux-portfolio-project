@@ -30,7 +30,6 @@ export const login = (state, history, addUser) => {
             addUser(json);
             //dispatch(addUser(json));
             localStorage.setItem("loggedIn", true);
-            localStorage.setItem("user", JSON.stringify(json.email));
             history.push('/');
             //history.go(0);
           }
@@ -45,8 +44,9 @@ export const logout = (history) => {
     return sessionApi.logout().then(() => {
       sessionService.deleteSession();
       sessionService.deleteUser();
-      localStorage.clear("loggedIn");
-      localStorage.clear("user");
+      localStorage.setItem("loggedIn", false);
+      //localStorage.clear("user");
+
       history.push('/login');
       history.go(0);
     }).catch(err => {
