@@ -52,19 +52,14 @@ class UsersController < ApplicationController
         if params[:email] != '' params[:password] == '' && params[:password_confirmation] == ''
           #only update email address
           updateables_hash = {email: params[:email], password: params[:current_password]}
-          update_user(@user, updateables_hash)
-
         elsif params[:email] == '' && params[:password] == params[:password_confirmation]
           #only update password
           updateables_hash = {email: params[:current_email], password: params[:password]}
-          update_user(@user, updateables_hash)
-
-
         elsif params[:password] == params[:password_confirmation]
           #update email and password
           updateables_hash = {email: params[:email], password: params[:password]}
         end
-        #other conditions will leave updateables_hash as nil, causing error detailed in update_user
+        #other conditions will leave updateables_hash as nil, causing rendered error detailed in update_user
 
         update_user(@user, updateables_hash)
 
