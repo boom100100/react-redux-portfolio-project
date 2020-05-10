@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     if @users
-      render :json => @users, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+      render :json => @users, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
       #render :json => @users, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]
     else
       render json: {
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    render :json => @user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+    render :json => @user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
   end
 =begin
   def new
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       session[:user_id] = user.id
-      render :json => user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
     else
       render json: {
         message: 'Creating user failed.'
@@ -38,15 +38,48 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find_by(id: params[:id])
-    if @user.update(user_params)
-      render render :json => user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+    #default behavior of rake route is to add :id key.
+    #implementation ignores that key
+    @user = User.find_by(email: params[:current_email])
+    #current_password is current password's key name
+    #current_email is current email's key name
+
+    if @user
+      if @user.authenticate(params[:current_password])
+
+        updateables_hash = nil
+
+        if params[:email] != '' params[:password] == '' && params[:password_confirmation] == ''
+          #only update email address
+          updateables_hash = {email: params[:email], password: params[:current_password]}
+          update_user(@user, updateables_hash)
+
+        elsif params[:email] == '' && params[:password] == params[:password_confirmation]
+          #only update password
+          updateables_hash = {email: params[:current_email], password: params[:password]}
+          update_user(@user, updateables_hash)
+
+
+        elsif params[:password] == params[:password_confirmation]
+          #update email and password
+          updateables_hash = {email: params[:email], password: params[:password]}
+        end
+        #other conditions will leave updateables_hash as nil, causing error detailed in update_user
+
+        update_user(@user, updateables_hash)
+
+      else
+        render json: {
+          message: 'Username/password combination failed.'
+        }, status: 403
+      end
     else
       render json: {
-        message: 'Editing user failed.'
-      }, status: 500
+        message: 'User not found.'
+      }, status: 404
     end
   end
+
   def destroy
     @user = User.find_by(id: params[:id])
     if @user.destroy
@@ -64,5 +97,19 @@ class UsersController < ApplicationController
   private
   def user_params
     params.permit(:email, :password, :password_confirmation)
+  end
+
+  def editing_failed
+    render json: {
+      message: 'Editing user failed.'
+    }, status: 500
+  end
+
+  def update_user(user, updateables_hash)
+    if user.update(updateables_hash)
+      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
+    else
+      editing_failed
+    end
   end
 end
