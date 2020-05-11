@@ -20,8 +20,8 @@ class SignupContainer extends Component {
   onSubmit = (event, history) => {
     event.preventDefault();
     // TODO: add dispatch
-    const createUser = this.props.actions.createUser;
-    createUser(this.state, history);
+    const {createUser, addUser } = this.props.actions;
+    createUser(this.state, history, addUser);
     //resets state
     this.setState({
       email: "",
