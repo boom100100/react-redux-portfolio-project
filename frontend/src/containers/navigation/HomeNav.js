@@ -11,7 +11,7 @@ const HomeNav = () => {
         <Nav className="mr-auto">
           <Nav.Link href="/">Home</Nav.Link>
 
-          {localStorage.loggedIn ? (<><Nav.Link href="/profile">Profile</Nav.Link><Nav.Link href="/projects">Projects</Nav.Link><Nav.Link href="/logout">Log Out</Nav.Link></>) : (<Nav.Link href="/login">Log In</Nav.Link>) }
+          {localStorage.loggedIn === 'true' ? (<><Nav.Link href="/profile">Profile</Nav.Link><Nav.Link href="/projects">Projects</Nav.Link><Nav.Link href="/logout">Log Out</Nav.Link></>) : (<Nav.Link href="/login">Log In</Nav.Link>) }
 
 
 
