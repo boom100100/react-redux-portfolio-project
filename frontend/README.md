@@ -1,3 +1,11 @@
+Dependencies:
+
+react
+react-redux
+redux-thunk
+redux-persist
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
