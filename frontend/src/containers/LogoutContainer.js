@@ -1,22 +1,31 @@
 import React, {Component} from 'react';
 import LogoutComponent from '../components/LogoutComponent'
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 
-import logout from '../actions/SessionActions';
-import resetUser from '../actions/UserActions';
-import resetProjects from '../actions/ProjectActions';
-
-
+import * as sessionActions from '../actions/SessionActions';
+import * as rootActions from '../actions/RootActions';
 
 class LogoutContainer extends Component {
 
   doLogout = (history) => {
-    const {logout, resetUser, resetProjects } = this.props;
-    logout(history, resetUser, resetProjects);
+    const logoutInitiator = this.props.SessionActions.logout;
+    const { logout } = this.props.RootActions;
+    // const { resetProjects } = this.props.actions3;
+    logoutInitiator(history, logout);
   }
 
   render(){return (<LogoutComponent doLogout={this.doLogout} />)}
 }
 
-export default connect(null, { logout, resetUser, resetProjects })(LogoutContainer);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // bind is necessary to allow async action w/o error
+    //otherwise, refactor
+    SessionActions: bindActionCreators(sessionActions, dispatch),
+    RootActions: bindActionCreators(rootActions, dispatch),
+
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LogoutContainer);
