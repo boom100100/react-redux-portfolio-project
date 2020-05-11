@@ -4,22 +4,21 @@ import { persistor } from '../reducers/configureStore';
 import { logout, doSessionSave } from '../actions/SessionActions';
 
 export const addUser = (user) => {
-  //console.log(user);
-  // debugger;
+  //for signing in
+  //where user already exists
   const action = {type: 'ADD_USER', user };
-  console.log("Action is");
-  console.log((action));
+  // console.log("Action is");
+  // console.log((action));
   return action;
 }
 
 export const resetUser = () => {
   const action = {type: 'RESET_USER' };
-  console.log(action);
+  // console.log(action);
   return action;
 }
 
 export const createUser = (state, history, addUser) => {
-
   return () => {
     return userApi.createUser(state)
       .then(response => response.json())
@@ -29,17 +28,13 @@ export const createUser = (state, history, addUser) => {
   }
 }
 
-
-
-
 export const updateUser = (state, history, updateUserState) => {
-
   return () => {
     return userApi.updateUser(state)
       .then(response => response.json())
       .then(json => {
         if (json.email) {
-          console.log(json);
+          // console.log(json);
           updateUserState(json);
           history.push('/profile');
           history.go(0);
@@ -48,11 +43,11 @@ export const updateUser = (state, history, updateUserState) => {
       .catch(err => console.error(err));
   }
 }
+
 export const updateUserState = (user) => {
   const action = {type: 'EDIT_USER', user };
   return action;
 }
-
 
 export const deleteUser = (state, history, logout, resetUser) => {
   return () => {
@@ -60,7 +55,7 @@ export const deleteUser = (state, history, logout, resetUser) => {
       .then(response => {
 
         if (response.ok) {
-          console.log(response);
+          // console.log(response);
           logout(history, resetUser);
           // TODO: fix history
           history.push('/profile');
