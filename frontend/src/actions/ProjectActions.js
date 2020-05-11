@@ -1,22 +1,39 @@
-export const createProject = (state) => {
+export const addProjects = (projects) => {
+  console.log('projects action', projects);
+  return {
+    type: 'ADD_PROJECTS',
+    projects: projects
+  };
+}
+
+// export const resetProjects = () => {
+//   // console.log('projects action', projects);
+//   return {
+//     type: 'RESET_PROJECTS'
+//   }
+// }
+
+export const createProject = (project) => {
   return {
     type: 'CREATE_PROJECT',
-    state: state
+    project: project
   };
 };
 
 
-export const editProject = (state) => {
+export const editProject = (project) => {
   return {
     type: 'EDIT_PROJECT',
-    state: state
+    project: project
   };
 };
 
 
-export const deleteProject = (state) => {
+export const deleteProject = (project) => {
   return {
     type: 'DELETE_PROJECT',
-    state: state
+    project: project
   };
 };
+
+function junk(){} export default junk;
