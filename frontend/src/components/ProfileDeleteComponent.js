@@ -2,17 +2,12 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 
 class ProfileDeleteComponent extends Component {
+
   componentDidMount(){
-    //sends history to container
-    const { history } = this.props;
-    this.props.getHistory(history);
+    this.props.getHistory(this.props.history);
   }
 
-  render(){
-    return (
-      <div>Deleting user.</div>
-    )
-}
+  render(){ return (<div>A</div>) }
 }
 
 export default withRouter(ProfileDeleteComponent);

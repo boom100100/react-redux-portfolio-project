@@ -9,14 +9,10 @@ class ProfileDeleteContainer extends Component {
     history: null
   }
   changeState = (history) => {
-    this.setState({history: history});
-  }
-
-  componentDidMount(){
-    const {deleteUser, resetUser, logout } = this.props;
-    console.log(this.state.history);
-    console.log(this.props.user);
-    deleteUser(this.props.user, this.state.history, logout, resetUser);
+    this.setState({history: history},() => {
+      const {deleteUser, resetUser, logout } = this.props;
+      deleteUser(this.props.user, this.state.history, logout, resetUser);
+    });
   }
 
   render(){return (<ProfileDeleteComponent getHistory={this.changeState}/>)}
