@@ -1,7 +1,5 @@
 import * as userApi from '../api/UserApi';
-import { sessionService } from 'redux-react-session';
-import { persistor } from '../reducers/configureStore';
-import { logout, doSessionSave } from '../actions/SessionActions';
+import { doSessionSave } from '../actions/SessionActions';
 
 export const addUser = (user) => {
   //for signing in
@@ -65,3 +63,5 @@ export const deleteUser = (state, history, logout, resetUser) => {
       .catch(err => console.error(err));
   }
 }
+
+function junk(){} export default junk;
