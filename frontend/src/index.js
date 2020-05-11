@@ -2,35 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import { combineReducers } from 'redux';
-import { sessionReducer } from 'redux-react-session';
-//import sessionReducer from './reducers/sessionReducer.js';
+import { store, persistor } from './reducers/configureStore';
+import { PersistGate } from 'redux-persist/integration/react'
 
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { sessionService } from 'redux-react-session';
+// import rootReducer from './reducers/rootReducer.js';
+//
+// import { createStore, applyMiddleware } from 'redux';
+// import thunk from 'redux-thunk';
+
 
 import { Provider } from 'react-redux';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 
-const reducers = {
-  // ... your other reducers here ...
-  session: sessionReducer
-};
-const reducer = combineReducers(reducers);
-
-const store = createStore(reducer, applyMiddleware(thunk),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-//store.dispatch({ type: '@@INIT' });
-sessionService.initSessionService(store);
+// console.log(store);
+// console.log(persistor);
+// sessionService.initSessionService(store);
 
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
+    <PersistGate loading={null} persistor={persistor}>
       <App />
-    </React.StrictMode>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
