@@ -9,11 +9,6 @@ class ProfileContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log(state);
-  // console.log(state.session);
-  // console.log(state.user);
-  // console.log(state.user.email);
-  // console.log(state.user.projects);
   return { user: state.user };
 }
 
