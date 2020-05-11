@@ -4,6 +4,8 @@ import LoginContainer from '../LoginContainer';
 import LogoutContainer from '../LogoutContainer';
 import SignupContainer from '../SignupContainer';
 import ProfileContainer from '../ProfileContainer';
+import ProfileEditContainer from '../ProfileEditContainer';
+import ProfileDeleteContainer from '../ProfileDeleteContainer';
 import ProjectsContainer from '../ProjectsContainer';
 import ProjectContainer from '../ProjectContainer';
 import NewProjectContainer from '../NewProjectContainer';
@@ -18,6 +20,8 @@ const MyRouter = () => {
       <Route exact path='/logout' render={() => <LogoutContainer />}/>
       <Route exact path='/signup' render={() => <SignupContainer />}/>
       <Route exact path='/profile' render={() => <ProfileContainer />}/>
+      <Route exact path='/profile/edit' render={() => <ProfileEditContainer />}/>
+      <Route exact path='/profile/delete' render={() => <ProfileDeleteContainer />}/>
       <Route path="/projects" render={() => <ProjectsContainer />} />
       <Route path="/projects/new" render={() => <NewProjectContainer />} />
       <Route path="/projects/:project_id" render={() => <ProjectContainer />} />
