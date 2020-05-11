@@ -18,13 +18,7 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
     render :json => @user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
   end
-=begin
-  def new
-    @user = User.new
-  end
-  def edit
-  end
-=end
+
   def create
     if (user = User.create(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation]))
       session[:user_id] = user.id
