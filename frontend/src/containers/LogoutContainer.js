@@ -1,31 +1,22 @@
 import React, {Component} from 'react';
 import LogoutComponent from '../components/LogoutComponent'
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 
-import * as sessionActions from '../actions/SessionActions';
-import * as userActions from '../actions/UserActions';
+import logout from '../actions/SessionActions';
+import resetUser from '../actions/UserActions';
+import resetProjects from '../actions/ProjectActions';
 
 
 
 class LogoutContainer extends Component {
 
-
-
-  logout = this.props.actions.logout;
-  resetUser = this.props.actions2.resetUser;
   doLogout = (history) => {
-    this.logout(history, this.resetUser);
+    const {logout, resetUser, resetProjects } = this.props;
+    logout(history, resetUser, resetProjects);
   }
 
   render(){return (<LogoutComponent doLogout={this.doLogout} />)}
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(sessionActions, dispatch),
-    actions2: bindActionCreators(userActions, dispatch)
-  };
-};
-
-export default connect(null, mapDispatchToProps)(LogoutContainer);
+export default connect(null, { logout, resetUser, resetProjects })(LogoutContainer);
