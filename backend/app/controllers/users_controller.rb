@@ -26,8 +26,10 @@ class UsersController < ApplicationController
   end
 =end
   def create
-    user = User.new(user_params)
-    if user.save
+    puts user_params
+    puts params
+
+    if (user = User.create(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation]))
       session[:user_id] = user.id
       render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
     else
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
 
         updateables_hash = nil
 
-        if params[:email] != '' params[:password] == '' && params[:password_confirmation] == ''
+        if params[:email] != '' && params[:password] == '' && params[:password_confirmation] == ''
           #only update email address
           updateables_hash = {email: params[:email], password: params[:current_password]}
         elsif params[:email] == '' && params[:password] == params[:password_confirmation]
@@ -76,20 +78,20 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by(email: params[:email])
     if @user.destroy
       render json: {
-        status: 200,
         message: 'Deleting user succeeded.'
-      }
+      }, status: 200
     else
       render json: {
-        status: 500,
         message: 'Deleting user failed.'
-      }
+      }, status: 500
     end
   end
+
   private
+
   def user_params
     params.permit(:email, :password, :password_confirmation)
   end
