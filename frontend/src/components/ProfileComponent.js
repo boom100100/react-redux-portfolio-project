@@ -5,7 +5,8 @@ const ProfileComponent = (props) => {
     <div>
       <h3>Profile</h3>
       <p>{props.user.email}</p>
-
+      <a href="/profile/edit">Edit</a>
+      <a href="/profile/delete">Delete</a>
     </div>
   )
 }
