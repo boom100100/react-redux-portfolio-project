@@ -15,8 +15,7 @@ class LogoutContainer extends Component {
   logout = this.props.actions.logout;
   resetUser = this.props.actions2.resetUser;
   doLogout = (history) => {
-    this.logout(history);
-    this.resetUser();
+    this.logout(history, this.resetUser);
   }
 
   render(){return (<LogoutComponent doLogout={this.doLogout} />)}
