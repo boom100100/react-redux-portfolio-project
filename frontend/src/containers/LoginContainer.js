@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { login } from '../actions/SessionActions';
 import { addUser } from '../actions/UserActions';
-
+import { addProjects } from '../actions/ProjectActions';
 
 import LoginComponent from '../components/LoginComponent';
 
@@ -23,7 +23,7 @@ class LoginContainer extends Component {
 
   onClick = (e, history) => {
     console.log(e);
-    this.props.login(this.state, history, this.props.addUser);
+    this.props.login(this.state, history, this.props.addUser, this.props.addProjects);
   }
 
   onChange = (e) => {
@@ -46,4 +46,4 @@ class LoginContainer extends Component {
   }
 }
 
-export default connect(null, { login, addUser })(LoginContainer);
+export default connect(null, { login, addUser, addProjects })(LoginContainer);
