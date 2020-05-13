@@ -1,13 +1,3 @@
-// export const onProjectObjectChange = (e, setState, state) => {
-//   this.setState({
-//     functions: {...state.functions},
-//     project: {
-//       ...state.project,
-//       [e.target.name]: e.target.value
-//     }
-//   });
-// }
-
 export const modifyElements = (project) => {
   document.getElementById('edit-project-parent').firstElementChild.style.display = 'none';
   let edit = document.getElementById('edit-project-data');
