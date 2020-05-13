@@ -43,16 +43,21 @@ export const onDelete = () => {
 
 
 export const addSectionTitle = () => {
+  document.getElementById('add-new-section-title').style.display = 'block';
+
+  document.getElementById('add-new-research').style.display = 'none';
+  document.getElementById('add-new-graph').style.display = 'none';
+
   console.log('clicked addSectionTitle');
 }
 
 export const hideNewCreators = () => {
-  document.getElementById('section-title-creator').style.display = 'none';
-  document.getElementById('research-data-creator').style.display = 'none';
-  document.getElementById('graph-creator').style.display = 'none';
+  document.getElementById('add-new-section-title').style.display = 'none';
+  document.getElementById('add-new-research').style.display = 'none';
+  document.getElementById('add-new-graph').style.display = 'none';
 }
 export const showAddDataOptions = () => {
-  document.getElementById('links').style.display = 'none';
+  document.getElementById('primary-links').style.display = 'none';
   hideNewCreators();
 
   document.getElementById('secondary-links').style.display = 'block';
@@ -61,26 +66,50 @@ export const showAddDataOptions = () => {
 }
 
 export const showPrimaryOptions = () => {
-  document.getElementById('links').style.display = 'block';
-  hideNewCreators();
+  document.getElementById('primary-links').style.display = 'block';
 
   document.getElementById('secondary-links').style.display = 'none';
-}
-export const addResearchData = () => {
   hideNewCreators();
-  document.getElementById('research-data-creator').style.display = 'block';
+}
+
+export const showResearchContainer = () => {
+  hideNewCreators();
+  document.getElementById('add-new-research').style.display = 'block';
+}
+
+export const addResearchData = () => {
+  showResearchContainer();
+  document.getElementById('add-new-research-data').style.display = 'block';
+
+  document.getElementById('add-new-ramdom-data').style.display = 'none';
+  document.getElementById('add-new-preliminary-data').style.display = 'none';
+
+
+  // document.getElementById('research-data-creator').style.display = 'block';
   console.log('clicked addResearchData');
 }
 export const addPreliminaryData = () => {
-  hideNewCreators();
-  document.getElementById('graph-creator').style.display = 'block';
+  showResearchContainer();
+  document.getElementById('add-new-preliminary-data').style.display = 'block';
+
+  document.getElementById('add-new-ramdom-data').style.display = 'none';
+  document.getElementById('add-new-research-data').style.display = 'none';
+  // document.getElementById('graph-creator').style.display = 'block';
   console.log('clicked addPreliminaryData');
 }
 export const addRandomData = () => {
-  document.getElementById('graph-creator').style.display = 'block';
+  showResearchContainer();
+  document.getElementById('add-new-ramdom-data').style.display = 'block';
+
+  document.getElementById('add-new-preliminary-data').style.display = 'none';
+  document.getElementById('add-new-research-data').style.display = 'none';
+
   console.log('clicked addRandomData');
 }
 export const addGraph = () => {
-  document.getElementById('graph-creator').style.display = 'block';
+  document.getElementById('add-new-section-title').style.display = 'none';
+  document.getElementById('add-new-research').style.display = 'none';
+  document.getElementById('add-new-graph').style.display = 'block';
+
   console.log('clicked addGraph');
 }
