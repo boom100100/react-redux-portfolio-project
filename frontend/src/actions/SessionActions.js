@@ -1,6 +1,6 @@
 import { sessionService } from 'redux-react-session';
 import * as sessionApi from '../api/SessionApi';
-import { persistor } from '../reducers/configureStore'
+// import { persistor } from '../reducers/configureStore'
 /*
 all calls go to api
 saves to session state
