@@ -1,14 +1,48 @@
 import React from 'react';
+import ProjectComponent from '../components/ProjectComponent'
+import { connect } from 'react-redux';
 
 class ProjectContainer extends React.Component {
-  project = this.props.project;
+
+  state = {
+    project: undefined,
+    pathname: window.location.pathname
+  }
+
+  componentDidMount() {
+    const { match: { params } } = this.props;
+    const { projects } = this.props;
+
+    this.setState({
+      project: projects.find(project => project.id == params.project_id)
+    }, () => {
+      const { project } = this.state;
+
+      let parent = document.getElementById('project-container-parent');
+      parent.removeChild(parent.firstElementChild);
+
+      let name = document.getElementById('project-container-name');
+      name.innerText = project.name;
+
+      let abstract = document.getElementById('project-container-abstract');
+      abstract.innerText = project.abstract;
+
+      // const { project } = this.state;
+      console.log('project', project);
+    });
+  }
+
   render(){
-    return(
-      <>
-      <h3><a href="/projects">{this.project.name}</a></h3>
-      </>
+    return (
+      <ProjectComponent pathname={this.state.pathname} />
     )
   }
 }
 
-export default ProjectContainer;
+const mapStateToProps = (state) => {
+  return {
+    projects: state.projects,
+  }
+}
+
+export default connect(mapStateToProps)(ProjectContainer);
