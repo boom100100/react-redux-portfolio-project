@@ -1,5 +1,5 @@
 
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginContainer from '../LoginContainer';
 import LogoutContainer from '../LogoutContainer';
 import SignupContainer from '../SignupContainer';
@@ -9,9 +9,11 @@ import ProfileDeleteContainer from '../ProfileDeleteContainer';
 import ProjectsContainer from '../ProjectsContainer';
 import ProjectContainer from '../ProjectContainer';
 import NewProjectContainer from '../NewProjectContainer';
+import EditProjectContainer from '../EditProjectContainer';
 import React from 'react';
 
-const MyRouter = () => {
+const MyRouter = (props) => {
+
   return (
 
     <Router>
@@ -22,9 +24,12 @@ const MyRouter = () => {
       <Route exact path='/profile' render={() => <ProfileContainer />}/>
       <Route exact path='/profile/edit' render={() => <ProfileEditContainer />}/>
       <Route exact path='/profile/delete' render={() => <ProfileDeleteContainer />}/>
-      <Route path="/projects" render={() => <ProjectsContainer />} />
-      <Route path="/projects/new" render={() => <NewProjectContainer />} />
-      <Route path="/projects/:project_id" render={() => <ProjectContainer />} />
+      <Route exact path="/projects" render={() => <ProjectsContainer />} />
+      <Route exact path="/projects/new" render={() => <NewProjectContainer />} />
+      <Route exact path="/projects/:project_id" component={ProjectContainer} />
+      <Route path="/projects/:project_id/read" component={ProjectContainer} />
+      <Route path="/projects/:project_id/edit" component={EditProjectContainer} />
+      <Route path="/projects/:project_id/delete" component={ProjectContainer} />
       <Route path="/projects/:project_id/research-data" render={() => <div>Fake ID and research data</div>} />
       <Route path="/projects/:project_id/research-data/:data_id" render={() => <div>Fake ID and research data</div>} />
       <Route path="/projects/:project_id/preliminary-data" render={() => <div>Fake ID and preliminary data</div>} />
@@ -46,8 +51,6 @@ const MyRouter = () => {
         #Header Writer*/
       }
     </Router>
-
-
   )
 }
 
