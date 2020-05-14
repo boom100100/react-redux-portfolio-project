@@ -10,15 +10,19 @@ class NewPreliminaryDataContainer extends React.Component {
     return json.query.search;
   }
 
+  getLink = (result) => {
+    return 'https://en.wikipedia.org/?curid=' + result.pageid.toString();
+  }
+
   divIdFetch = () => 'preliminary-data-fetch-json';
   divIdInput = () => 'preliminary-data-input-fields';
 
-  updateDivsArgs = {resultId: 'pageid', text: 'snippet', link: 'https://en.wikipedia.org/?curid='}
+  updateDivsArgs = {resultId: 'pageid', text: 'snippet'}
 
   render(){
     return (
       <div id='add-new-preliminary-data'>
-        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} updateDivsArgs={this.updateDivsArgs}/>
+        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs}/>
       </div>
     )
   }

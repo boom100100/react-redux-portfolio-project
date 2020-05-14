@@ -9,13 +9,9 @@ import { connect } from 'react-redux';
 class SearchDataContainer extends React.Component {
 
   getNewData = () => {
-
     const searchTerm = this.state.inputFields.searchTerm.replace(/ /gi,'+');
     this.props.get(this.updatefetchData, searchTerm);
-    // console.log('getting new data.');
   }
-
-
 
   updatefetchData = (json) => {
 
@@ -32,21 +28,23 @@ class SearchDataContainer extends React.Component {
         content: "",
       }
     }, () => {
-      const {resultId, text, link} = this.props.updateDivsArgs;
-      this.updateDivs(resultId, text, link);
+      const {resultId, text} = this.props.updateDivsArgs;
+      this.updateDivs(resultId, text);
     });
   }
 
-  updateDivs = (resultId, text, link) => {
-    // TODO: differences
+  updateDivs = (resultId, text) => {
+    //index function allows multiple dot operators
+    //to go necessary levels deep into hash
+    function index(obj,i) {return obj[i]}
 
     const parentId = this.state.inputFields.names.divIdFetch;
     document.getElementById(parentId).innerText = '';
 
     for (let result of this.state.fetchData) {
-      const url = link + result[resultId].toString();
+      const url = this.props.getLink(result);
 
-      this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], result[text], 'div');
+      this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], text.split('.').reduce(index, result), 'div');
       this.doElementUpdate(parentId, parentId + '-url-' + result[resultId], url, 'a', url);
       this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.saveToProject);
     }

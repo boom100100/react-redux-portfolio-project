@@ -7,18 +7,22 @@ import { connect } from 'react-redux';
 class NewResearchDataContainer extends React.Component {
 
   getResults = (json) => {
-    return json.query.search;
+    return json.docs;
+  }
+
+  getLink = (result) => {
+    return result.isShownAt;
   }
 
   divIdFetch = () => 'research-data-fetch-json';
   divIdInput = () => 'research-data-input-fields';
 
-  updateDivsArgs = {resultId: 'pageid', text: 'snippet', link: 'https://en.wikipedia.org/?curid='}
+  updateDivsArgs = {resultId: 'id', text: 'sourceResource.description'}
 
   render(){
     return (
       <div id='add-new-research-data'>
-        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} updateDivsArgs={this.updateDivsArgs}/>
+        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
       </div>
     )
   }
