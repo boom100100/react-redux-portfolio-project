@@ -1,5 +1,5 @@
 export const getRandomData = () => {
-  return getData('https://uselessfacts.jsph.pl/random.json?language=en', "GET");
+  return getData('https://uselessfacts.jsph.pl/random.json?language=en');
   /*format:
   {
   "id":"bcaf7639-2f17-4308-beec-d51897243816",
@@ -14,22 +14,13 @@ export const getRandomData = () => {
 }
 export const getGraphData = () => {}
 export const getPreliminaryData = (urlSearchTerm) => {
-  return getData('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + urlSearchTerm + '&format=json', "GET");
+  //wikipedia fetch requires &origin=* in url
+  return getData('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + urlSearchTerm + '&format=json&origin=*');
 }
 export const getResearchData = () => {}
 export const getSectionTitleData = () => {}
 
 
-const getData = (url, method) => {
-  const configData = {
-    method: method,
-    credentials: 'include',
-    headers: {
-       
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    }
-  };
-
+const getData = (url) => {
   return fetch(url);
 }
