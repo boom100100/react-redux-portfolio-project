@@ -5,6 +5,8 @@ react-redux
 redux-thunk
 redux-persist
 
+DIGITAL_PUBLIC_LIBRARY_OF_AMERICA_API_KEY
+Post https://api.dp.la/v2/api_key/YOUR_EMAIL@example.com, check supplied email
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
