@@ -70,7 +70,15 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find_by(email: params[:email])
+    projects = @user.projects
     if @user.destroy
+      projects.each {|project|
+        project.data.destroy_all if project.data
+        project.graphs.destroy_all if project.graphs
+        project.section_titles.destroy_all if project.section_titles
+        project.destroy
+      }
+
       render json: {
         message: 'Deleting user succeeded.'
       }, status: 200
