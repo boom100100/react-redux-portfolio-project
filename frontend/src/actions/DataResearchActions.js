@@ -14,9 +14,9 @@ export const getPreliminaryData = (updatefetchData, urlSearchTerm) => {
 
 export const getData = (doFetch, updatefetchData, urlSearchTerm) => {
   return () => {
-    console.log('data fetch action');
+    // console.log('data fetch action');
     return doFetch(urlSearchTerm)
-      .then(response => {console.log(response); return response.json()})
+      .then(response => response.json())
       .then(json => {
         console.log(json);
         updatefetchData(json);
