@@ -6,7 +6,7 @@ class CreateSectionTitleChildren < ActiveRecord::Migration[6.0]
       t.string :description
       t.string :content, :null => true
 
-      t.integer :obj_order
+      t.integer :child_order
 
       t.string :type
 
