@@ -1,3 +1,7 @@
+//manages displaying elements
+//and adding divs to show store and fetch data
+
+
 export const modifyElements = (project) => {
   document.getElementById('edit-project-parent').firstElementChild.style.display = 'none';
   let edit = document.getElementById('edit-project-data');
@@ -81,7 +85,7 @@ export const addResearchData = () => {
   showResearchContainer();
   document.getElementById('add-new-research-data').style.display = 'block';
 
-  document.getElementById('add-new-ramdom-data').style.display = 'none';
+  document.getElementById('add-new-random-data').style.display = 'none';
   document.getElementById('add-new-preliminary-data').style.display = 'none';
 
 
@@ -92,14 +96,14 @@ export const addPreliminaryData = () => {
   showResearchContainer();
   document.getElementById('add-new-preliminary-data').style.display = 'block';
 
-  document.getElementById('add-new-ramdom-data').style.display = 'none';
+  document.getElementById('add-new-random-data').style.display = 'none';
   document.getElementById('add-new-research-data').style.display = 'none';
   // document.getElementById('graph-creator').style.display = 'block';
   console.log('clicked addPreliminaryData');
 }
 export const addRandomData = () => {
   showResearchContainer();
-  document.getElementById('add-new-ramdom-data').style.display = 'block';
+  document.getElementById('add-new-random-data').style.display = 'block';
 
   document.getElementById('add-new-preliminary-data').style.display = 'none';
   document.getElementById('add-new-research-data').style.display = 'none';
