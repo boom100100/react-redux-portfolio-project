@@ -44,7 +44,9 @@ export const getPreliminaryData = (urlSearchTerm) => {
   */
 }
 
-export const getResearchData = () => {}
+export const getResearchData = (urlSearchTerm) => {
+  return getData('' + urlSearchTerm + '&origin=*');
+}
 
 export const getSectionTitleData = () => {}
 
