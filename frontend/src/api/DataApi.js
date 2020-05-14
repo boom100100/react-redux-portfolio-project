@@ -16,8 +16,8 @@ export const getRandomData = () => {
   "permalink":"https:\/\/uselessfacts.jsph.pl\/bcaf7639-2f17-4308-beec-d51897243816"
   }
   */
-
 }
+
 export const getGraphData = () => {}
 export const getPreliminaryData = (urlSearchTerm) => {
   //wikipedia fetch requires &origin=* in url
@@ -43,6 +43,7 @@ export const getPreliminaryData = (urlSearchTerm) => {
 
   */
 }
+
 export const getResearchData = () => {}
 export const getSectionTitleData = () => {}
 
