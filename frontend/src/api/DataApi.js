@@ -45,8 +45,8 @@ export const getPreliminaryData = (urlSearchTerm) => {
 }
 
 export const getResearchData = () => {}
-export const getSectionTitleData = () => {}
 
+export const getSectionTitleData = () => {}
 
 const getData = (url) => {
   return fetch(url);
