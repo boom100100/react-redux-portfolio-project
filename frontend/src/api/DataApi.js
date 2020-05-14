@@ -1,3 +1,5 @@
+import { DIGITAL_PUBLIC_LIBRARY_OF_AMERICA_API_KEY as key } from './key'
+
 export const getRandomData = () => {
   return getData('https://uselessfacts.jsph.pl/random.json?language=en');
 
@@ -45,7 +47,8 @@ export const getPreliminaryData = (urlSearchTerm) => {
 }
 
 export const getResearchData = (urlSearchTerm) => {
-  return getData('' + urlSearchTerm + '&origin=*');
+  console.log('key',key());
+  return getData('https://api.dp.la/v2/items?q=' + urlSearchTerm + '&api_key=' + key().toString() );
 }
 
 export const getSectionTitleData = () => {}
