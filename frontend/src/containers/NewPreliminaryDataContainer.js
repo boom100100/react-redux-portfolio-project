@@ -23,6 +23,7 @@ class NewPreliminaryDataContainer extends React.Component {
       fetchData: [...json.query.search],
       inputFields: {
         names: {...this.state.inputFields.names},
+        holdText: "Click Select to choose data. Add a name and description. Press Save Data. You can save one data point at a time.",
         searchTerm: "",
         name: "",
         description:  "",
@@ -30,31 +31,38 @@ class NewPreliminaryDataContainer extends React.Component {
         content: "",
       }
     }, () => {
-      console.log(this.state);
       this.updateDivs();
     });
   }
 
-  createChooseButton = (result) => {}
-
   updateDivs = () => {
-    document.getElementById('random-data-fetch-json').innerText = '';
+    document.getElementById('preliminary-data-fetch-json').innerText = '';
 
     for (let result of this.state.fetchData) {
-      this.doElementUpdate('preliminary-data-fetch-json', 'preliminary-data-fetch-json-text', this.state.fetchData.text, 'div');
-      this.doElementUpdate('preliminary-data-fetch-json', 'preliminary-data-fetch-json-url', this.state.fetchData.source_url, 'div');
-      this.createChooseButton(result);
+      // console.log(result);
+      let url = 'https://en.wikipedia.org/?curid=' + result.pageid;
+      this.doElementUpdate('preliminary-data-fetch-json', 'preliminary-data-fetch-json-text' + result.pageid, result.snippet, 'div');
+      this.doElementUpdate('preliminary-data-fetch-json', 'preliminary-data-fetch-json-url' + result.pageid, url, 'a', url);
+      this.doElementUpdate('preliminary-data-fetch-json', 'preliminary-data-fetch-json-picker' + result.pageid, "Select", 'button', null, this.saveToProject);
     }
-
   }
 
 
-  doElementUpdate = (divId, childId, innerText, type) => {
+  doElementUpdate = (divId, childId, innerText, type, href, onClick) => {
     let parent = document.getElementById(divId);
 
     let child = (document.getElementById(childId) || document.createElement(type));
-    child.id = childId;
-    child.innerText = innerText;
+    child.id = childId + '';
+    child.innerHTML = innerText;
+
+    if (child.tagName === 'A') {
+      child.href = href;
+      child.target = "_blank";
+    } else if (child.tagName === 'BUTTON') {
+      child.addEventListener("click", onClick);
+    } else {
+       child.innerHTML = child.innerHTML + '...';
+    }
 
     parent.appendChild(child);
   }
@@ -97,7 +105,7 @@ class NewPreliminaryDataContainer extends React.Component {
   render(){
     return (
       <div id='add-new-preliminary-data'>
-        <GenericSearchComponent searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
+        <GenericSearchComponent inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
         <NewDataFetchJsonComponent fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
 
         <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
