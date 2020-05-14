@@ -1,51 +1,27 @@
 import React from 'react';
+import SearchDataContainer from './SearchDataContainer'
 import { getResearchData } from '../actions/DataResearchActions';
-import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
-import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 import { connect } from 'react-redux';
 
-//https://uselessfacts.jsph.pl/random.json
+//https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
 class NewResearchDataContainer extends React.Component {
-  componentDidMount(){
-    // this.getNewData();
-  }
-  getNewData = () => {
-    // this.props.getResearchData();
-    // console.log('getting new data.');
+
+  getResults = (json) => {
+    return json.query.search;
   }
 
-  saveToProject = () => {}
+  divIdFetch = () => 'research-data-fetch-json';
+  divIdInput = () => 'research-data-input-fields';
 
-  state = {
-    fetchData: {
-      id:"",
-      text: "",
-      source:"",
-      source_url:"",
-      language:"",
-      permalink: ""
-    },
-    inputFields: {
-      names: {
-        divIdFetch: 'research-data-fetch-json',
-        divIdInput: 'research-data-input-fields'
-      },
-      name: "",
-      url: "",
-      description:  "",
-      content: ""
-    },
+  updateDivsArgs = {resultId: 'pageid', text: 'snippet', link: 'https://en.wikipedia.org/?curid='}
 
-  }
   render(){
     return (
       <div id='add-new-research-data'>
-        Research data holder.
-        <NewDataFetchJsonComponent fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
-        <NewDataInputFieldsComponent inputFields={this.state.inputFields} />
+        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} updateDivsArgs={this.updateDivsArgs}/>
       </div>
     )
   }
 }
 
-export default connect(null, {getResearchData})(NewResearchDataContainer);
+export default connect(null, { getResearchData })(NewResearchDataContainer);
