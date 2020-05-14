@@ -44,8 +44,8 @@ class EditProjectContainer extends React.Component {
 
   render(){
     return (
-      <div>{console.log(this.state.functions)}
-      <EditProjectComponent state={this.state} functions={this.state.functions} />
+      <div>
+        <EditProjectComponent state={this.state} functions={this.state.functions} />
       </div>
     )
   }
