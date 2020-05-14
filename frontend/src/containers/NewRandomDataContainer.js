@@ -33,7 +33,6 @@ class NewRandomDataContainer extends React.Component {
         content: json.text,
       }
     }, () => {
-      console.log(this.state);
       this.updateDivs();
     });
   }

@@ -14,7 +14,6 @@ export const modifyElements = (project) => {
 
     parent.appendChild(p);
     for (let data of section.section_title_children){
-      console.log(data);
       let dataElement = document.createElement('div');
       dataElement.id = parent.id + '-' + data.name;
       dataElement.innerText = data.name;

@@ -18,7 +18,6 @@ export const getData = (doFetch, updatefetchData, urlSearchTerm) => {
     return doFetch(urlSearchTerm)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         updatefetchData(json);
         }).catch(error => console.log(error));
   }
