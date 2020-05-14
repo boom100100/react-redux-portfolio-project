@@ -4,8 +4,8 @@ export const getRandomData = (updatefetchData) => {
   return getData(dataApi.getRandomData, updatefetchData);
 }
 
-export const getResearchData = (updatefetchData) => {
-  // return getData(dataApi.getResearchData);
+export const getResearchData = (updatefetchData, urlSearchTerm) => {
+  return getData(dataApi.getResearchData, updatefetchData, urlSearchTerm);
 }
 
 export const getPreliminaryData = (updatefetchData, urlSearchTerm) => {
