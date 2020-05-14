@@ -5,9 +5,7 @@ class EditProjectNewResearchContainer extends Component {
   render(){
     return (
       <div id='add-new-research'>
-        New research holder.
         <EditProjectNewResearchComponent />
-
       </div>
     )
   }
