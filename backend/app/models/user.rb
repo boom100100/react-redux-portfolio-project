@@ -2,8 +2,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :projects
-  #unnecessary to do has_many :, through: : relationships
-  #but they are obvious relationships to include here
+  has_many :section_titles, through: :projects
 
   validates :email, presence: true
   validates :email, uniqueness: { case_sensitive: false }#, on: :create
