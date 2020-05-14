@@ -8,9 +8,6 @@ class EditProjectNewGraphContainer extends Component {
     fetchParts: {},
     databaseParts: {}
   }
-  componentDidMount(){
-
-  }
   //will build graph in real-time instead getNewData(){}
   onSelect = (e) => {}
 
