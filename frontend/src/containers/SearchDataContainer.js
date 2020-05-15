@@ -1,9 +1,7 @@
 import React from 'react';
-import { getResearchData } from '../actions/DataResearchActions';
 import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
-import { connect } from 'react-redux';
 
 //https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
 class SearchDataContainer extends React.Component {
