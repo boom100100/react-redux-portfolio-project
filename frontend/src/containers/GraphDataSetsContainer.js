@@ -6,10 +6,10 @@ class GraphDataSetsContainer extends Component {
 
   addDataPoint = () => {}
   removeDataPoint = () => {}
-  
+
   render(){
     return (
-      <div></div>
+      <div id='graph-data-sets-controller'>Add datasets and datapoints.</div>
     )
   }
 }
