@@ -3,7 +3,7 @@ import React from 'react';
 const GenericSearchComponent = (props) => {
   return (
     <div>
-      Search term: <input name='searchTerm' value={props.inputFields.searchTerm} onChange={e => props.onChange(e)} />
+      {props.text}<input name='searchTerm' value={props.inputFields.searchTerm} onChange={e => props.onChange(e)} />
       <button onClick={props.click}>Search</button>
       <p>{(props.inputFields.holdText || undefined)}</p>
     </div>
