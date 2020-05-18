@@ -105,7 +105,7 @@ class SearchDataContainer extends React.Component {
   render(){
     return (
       <div id='add-new-preliminary-data'>
-        <GenericSearchComponent inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
+        <GenericSearchComponent text={'Search term: '}inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
         <NewDataFetchJsonComponent fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
 
         <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
