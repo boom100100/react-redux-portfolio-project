@@ -3,6 +3,7 @@ import GraphTypesComponent from '../components/GraphTypesComponent';
 import GraphNameComponent from '../components/GraphNameComponent';
 import GraphXDataContainer from './GraphXDataContainer';
 import GraphDrawComponent from '../components/GraphDrawComponent';
+import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 
 class EditProjectNewGraphContainer extends Component {
   removeXLabel = (index) => {
@@ -245,7 +246,10 @@ class EditProjectNewGraphContainer extends Component {
         }
       },
       name: "",
-      url: "",
+      names: {
+        divIdFetch: 'this.divIdFetch()',
+        divIdInput: 'add-new-graph-input-fields'
+      },
       description:  "",
       content: ""
     }
@@ -257,8 +261,10 @@ class EditProjectNewGraphContainer extends Component {
         <GraphTypesComponent onSelect={this.onSelect} select={this.state.inputFields.graph.type} />
         <GraphNameComponent gName={this.state.inputFields.graph.options.title.text} onChange={this.changeGraphName} />
         <GraphXDataContainer state={this.state} graphData={this.state.inputFields.graph.graphData} addToState={this.addToX} removeXLabel={this.removeXLabel} removeXData={this.removeXData} onChange={this.onChangeXLabel} onChangeXData={this.onChangeXData} />
-        
+
         <GraphDrawComponent graph={this.state.inputFields.graph} />
+
+        <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
       </div>
     )
   }
