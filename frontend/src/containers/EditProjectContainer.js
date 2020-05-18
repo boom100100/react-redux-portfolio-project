@@ -35,7 +35,10 @@ class EditProjectContainer extends React.Component {
   }
 
   state = {
-    project: {},
+    project: {
+      abstract: '',
+      name: ''
+    },
     functions: {
       ...editHelpers,
       onProjectObjectChange: this.onProjectObjectChange,
