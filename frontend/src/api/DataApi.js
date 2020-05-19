@@ -1,4 +1,5 @@
-import { DIGITAL_PUBLIC_LIBRARY_OF_AMERICA_API_KEY as key } from './key'
+import { DIGITAL_PUBLIC_LIBRARY_OF_AMERICA_API_KEY as dploaKey } from './key';
+import { TEXT_RAZOR_API_KEY as textRazorKey } from './key';
 
 export const getRandomData = () => {
   return getData('https://uselessfacts.jsph.pl/random.json?language=en');
@@ -47,8 +48,8 @@ export const getPreliminaryData = (urlSearchTerm) => {
 }
 
 export const getResearchData = (urlSearchTerm) => {
-  console.log('key',key());
-  return getData('https://api.dp.la/v2/items?q=' + urlSearchTerm + '&api_key=' + key().toString() );
+  console.log('dploaKey',dploaKey());
+  return getData('https://api.dp.la/v2/items?q=' + urlSearchTerm + '&api_key=' + dploaKey().toString() );
 }
 
 export const getSectionTitleData = () => {}
