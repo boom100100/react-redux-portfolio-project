@@ -21,7 +21,6 @@ export const getRandomData = () => {
   */
 }
 
-export const getGraphData = () => {}
 export const getPreliminaryData = (urlSearchTerm) => {
   //wikipedia fetch requires &origin=* in url
   return getData('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + urlSearchTerm + '&format=json&origin=*');
@@ -49,7 +48,7 @@ export const getPreliminaryData = (urlSearchTerm) => {
 
 export const getResearchData = (urlSearchTerm) => {
   console.log('dploaKey',dploaKey());
-  return getData('https://api.dp.la/v2/items?q=' + urlSearchTerm + '&api_key=' + dploaKey().toString() );
+  return getData('https://api.dp.la/v2/items?q=' + urlSearchTerm + '&api_key=' + dploaKey());
 }
 
 export const getSectionTitleData = () => {}
