@@ -18,6 +18,12 @@ function projectsReducer(state = [], action){
     case 'DELETE_PROJECT':
       return [...state];
 
+    case 'ADD_SECTION':
+      let newState = [...state];
+      const projectId = action.sectionTitle.project_id - 1;
+      newState[projectId].section_titles.push(action.sectionTitle);
+      return newState;
+
     default:
       return state;
   }
