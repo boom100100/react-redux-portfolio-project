@@ -16,7 +16,7 @@ const EditProjectComponent = (props) => {
       <EditProjectLinksComponent functions={props.functions} />
       <EditProjectNewContainer />
 
-      <button onClick={props.functions.onDelete}>Delete</button>
+      
     </div>
   )
 }
