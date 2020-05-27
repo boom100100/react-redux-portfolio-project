@@ -4,6 +4,8 @@ import GraphNameComponent from '../components/GraphNameComponent';
 import GraphXDataContainer from './GraphXDataContainer';
 import GraphDrawComponent from '../components/GraphDrawComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
+import { connect } from 'react-redux';
+
 
 class EditProjectNewGraphContainer extends Component {
   removeXLabel = (index) => {
@@ -32,7 +34,7 @@ class EditProjectNewGraphContainer extends Component {
   }
 
   removeXData = (xIndex, setIndex) => {
-    //destructure to remove unnecessary label from state
+    //destructure to remove unnecessary data points from state
     const {
       inputFields: {
         graph: {
@@ -144,7 +146,7 @@ class EditProjectNewGraphContainer extends Component {
           }
         }
       }
-    }, () => console.log(this.state));
+    });
   }
 
   onChangeXData = (e) => {
@@ -171,7 +173,7 @@ class EditProjectNewGraphContainer extends Component {
                   ...this.state.inputFields.graph.graphData.datasets[datasetIndex].data,
                   [xIndex]: e.target.value,
     }}}}}}}
-    this.setState(newState, () => console.log(this.state));
+    this.setState(newState);
   }
 
   componentDidMount(){
@@ -220,6 +222,25 @@ class EditProjectNewGraphContainer extends Component {
     }
 
   }
+  onChange = (e) => {
+    this.setState({
+      ...this.state,
+      inputFields: {
+        ...this.state.inputFields,
+        [e.target.name]: e.target.value,
+      }
+    }, () => {console.log('new state',this.state);});
+  }
+
+  onChangeNumber = (e) => {
+    this.setState({
+      ...this.state,
+      inputFields: {
+        ...this.state.inputFields,
+        [e.target.name]: Number(e.target.value),
+      }
+    }, () => {console.log('new state',this.state);});
+  }
 
   state = {
     inputFields: {
@@ -251,7 +272,9 @@ class EditProjectNewGraphContainer extends Component {
         divIdInput: 'add-new-graph-input-fields'
       },
       description:  "",
-      content: ""
+      content: "",
+      section_title: "",
+      child_order: -1,
     }
   }
 
@@ -264,10 +287,18 @@ class EditProjectNewGraphContainer extends Component {
 
         <GraphDrawComponent graph={this.state.inputFields.graph} />
 
-        <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
+        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
       </div>
     )
   }
 }
 
-export default EditProjectNewGraphContainer;
+const mapStateToProps = (state) => {
+  let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  return {
+    project: state.projects[id-1],
+    projects: state.projects
+  }
+}
+
+export default connect(mapStateToProps)(EditProjectNewGraphContainer);
