@@ -3,4 +3,9 @@ Rails.application.routes.draw do
   delete '/sessions/delete', to: 'sessions#destroy'
   resources :sessions, only: [:create]
   resources :users, except: [:new, :edit]
+
+  #call to text_razor text analysis api
+  #returns data
+  #no need to save
+  get '/text_razors', to: 'apis#text_razors'
 end
