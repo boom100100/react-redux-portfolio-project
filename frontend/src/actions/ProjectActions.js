@@ -6,20 +6,12 @@ export const addProjects = (projects) => {
   };
 }
 
-// export const resetProjects = () => {
-//   // console.log('projects action', projects);
-//   return {
-//     type: 'RESET_PROJECTS'
-//   }
-// }
-
 export const createProject = (project) => {
   return {
     type: 'CREATE_PROJECT',
     project: project
   };
 };
-
 
 export const editProject = (project) => {
   return {
@@ -28,12 +20,26 @@ export const editProject = (project) => {
   };
 };
 
-
 export const deleteProject = (project) => {
   return {
     type: 'DELETE_PROJECT',
     project: project
   };
 };
+
+export const addSectionToProject = (sectionTitle) => {
+  console.log('doing addSectionToProject');
+  return {
+    type: 'ADD_SECTION',
+    sectionTitle: sectionTitle
+  }
+}
+
+export const addDataToProject = (data) => {
+  return {
+    type: 'ADD_DATA',
+    data: data
+  };
+}
 
 function junk(){} export default junk;
