@@ -26,9 +26,7 @@ class NewRandomDataContainer extends React.Component {
         ...json,
       },
       inputFields: {
-        names: {...this.state.inputFields.names},
-        name: "",
-        description:  "",
+        ...this.state.inputFields,
         url: json.source_url,
         content: json.text,
       }
@@ -89,8 +87,8 @@ class NewRandomDataContainer extends React.Component {
     return (
       <div id='add-new-random-data'>
 
-        <NewDataFetchJsonComponent fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
-        <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
+        <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
+        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
 
         <NewDataButtonComponent click={this.getNewData} />
       </div>
@@ -98,4 +96,12 @@ class NewRandomDataContainer extends React.Component {
   }
 }
 
-export default connect(null, { getRandomData })(NewRandomDataContainer);
+const mapStateToProps = (state) => {
+  let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  return {
+    project: state.projects[id-1],
+    projects: state.projects
+  }
+}
+
+export default connect(mapStateToProps, { getRandomData })(NewRandomDataContainer);
