@@ -51,7 +51,6 @@ export const addSectionTitle = () => {
   document.getElementById('add-new-research').style.display = 'none';
   document.getElementById('add-new-graph').style.display = 'none';
 
-  console.log('clicked addSectionTitle');
 }
 
 export const hideNewCreators = () => {
@@ -65,7 +64,6 @@ export const showAddDataOptions = () => {
 
   document.getElementById('secondary-links').style.display = 'block';
 
-  console.log('clicked showAddDataOptions');
 }
 
 export const showPrimaryOptions = () => {
@@ -87,9 +85,6 @@ export const addResearchData = () => {
   document.getElementById('add-new-random-data').style.display = 'none';
   document.getElementById('add-new-preliminary-data').style.display = 'none';
 
-
-  // document.getElementById('research-data-creator').style.display = 'block';
-  console.log('clicked addResearchData');
 }
 export const addPreliminaryData = () => {
   showResearchContainer();
@@ -97,8 +92,7 @@ export const addPreliminaryData = () => {
 
   document.getElementById('add-new-random-data').style.display = 'none';
   document.getElementById('add-new-research-data').style.display = 'none';
-  // document.getElementById('graph-creator').style.display = 'block';
-  console.log('clicked addPreliminaryData');
+
 }
 export const addRandomData = () => {
   showResearchContainer();
@@ -107,12 +101,10 @@ export const addRandomData = () => {
   document.getElementById('add-new-preliminary-data').style.display = 'none';
   document.getElementById('add-new-research-data').style.display = 'none';
 
-  console.log('clicked addRandomData');
 }
 export const addGraph = () => {
   document.getElementById('add-new-section-title').style.display = 'none';
   document.getElementById('add-new-research').style.display = 'none';
   document.getElementById('add-new-graph').style.display = 'block';
 
-  console.log('clicked addGraph');
 }
