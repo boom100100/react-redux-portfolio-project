@@ -19,8 +19,6 @@ class EditProjectContainer extends React.Component {
     this.setState({
       functions: {...this.state.functions, setState: this.setState},
       project: projects.find(project => project.id == params.project_id)
-    }, () => {
-      this.state.functions.modifyElements(this.state.project);
     });
   }
 
@@ -31,7 +29,7 @@ class EditProjectContainer extends React.Component {
         ...this.state.project,
         [e.target.name]: e.target.value
       }
-    });
+    }, () => this.state.functions.modifyElements(this.state.project));
   }
 
   state = {
