@@ -2,6 +2,7 @@ import React from 'react';
 import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
+import { connect } from 'react-redux';
 
 //https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
 class SearchDataContainer extends React.Component {
@@ -81,6 +82,17 @@ class SearchDataContainer extends React.Component {
     });
   }
 
+  onChangeNumber = (e) => {
+    this.setState({
+      fetchData: {...this.state.fetchData},
+      inputFields: {
+        names: {...this.state.inputFields.names},
+        ...this.state.inputFields,
+        [e.target.name]: Number(e.target.value)
+      }
+    }, () => console.log('after state', this.state));
+  }
+
   state = {
     fetchData: [],
     inputFields: {
@@ -93,7 +105,9 @@ class SearchDataContainer extends React.Component {
       name: "",
       url: "",
       description:  "",
-      content: ""
+      content: "",
+      section_title: "",
+      child_order: -1,
     }
   }
 
@@ -105,14 +119,21 @@ class SearchDataContainer extends React.Component {
   render(){
     return (
       <div id='add-new-preliminary-data'>
-        <GenericSearchComponent text={'Search term: '}inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
-        <NewDataFetchJsonComponent fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
+        <GenericSearchComponent type='input' text={'Search term: '}inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
+        <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
 
-        <NewDataInputFieldsComponent inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
+        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
       </div>
     )
   }
 }
 
+const mapStateToProps = (state) => {
+  let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  return {
+    project: state.projects[id-1],
+    projects: state.projects
+  }
+}
 
-export default SearchDataContainer;
+export default connect(mapStateToProps)(SearchDataContainer);
