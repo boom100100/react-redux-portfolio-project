@@ -107,7 +107,7 @@ class SearchDataContainer extends React.Component {
       description:  "",
       content: "",
       section_title: "",
-      child_order: -1,
+      child_order: 0,
     }
   }
 
