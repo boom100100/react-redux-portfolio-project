@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     return render json: {message: "Login failed."}, status: 403 unless authenticated
 
     session[:user_id] = user.id
-    render json: user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
+    render json: user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content]}]}]}]
     #render :json => user, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
   end
 
