@@ -97,7 +97,7 @@ class EditProjectNewSectionTitleContainer extends Component {
       url: "",
       description:  "",
       content: "",
-      section_order: this.props.project.section_titles.length,
+      section_order: 0,
     }
   }
 
