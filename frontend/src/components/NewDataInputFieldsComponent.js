@@ -8,10 +8,10 @@ const NewDataInputFieldsComponent = (props) => {
     if (props.isSectionTitle){
       return (
         <span>
-          Place after section:
+          Place before section:
           <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.section_order} name='section_order'>
-            <option value='0'>(place first)</option>
-            {props.section_titles.map(x => <option key={'id=' + x.id + '-project_id=' + x.project_id + '-name=' + x.name} value={x.id}>{x.name}</option>)}
+            {props.section_titles.map(x => <option key={'section_order=' + x.section_order + '-name=' + x.name} value={x.section_order}>{x.name}</option>)}
+            <option value={props.section_titles.length}>(place last)</option>
           </select>
         </span>
       );
@@ -20,12 +20,14 @@ const NewDataInputFieldsComponent = (props) => {
         <span>
           Place in section:
           <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.section_title} name='section_title'>
-            {props.section_titles.map(x => <option key={'id=' + x.id + '-project_id=' + x.project_id + '-name=' + x.name} value={x.id}>{x.name}</option>)}
+            {props.section_titles.map(x => {
+              return (<option key={'section_order=' + x.section_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.section_order}>{x.name}</option>)
+            })}
           </select>
           Place after data:
           <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.child_order} name='child_order'>
-            <option value='0'>(place first)</option>
             {props.section_titles.map(x => <option key={'id=' + x.id + '-project_id=' + x.project_id + '-name=' + x.name} value={x.id}>{x.name}</option>)}
+            <option value={props.section_titles.length}>(place last)</option>
           </select>
         </span>
       );
@@ -36,12 +38,12 @@ const NewDataInputFieldsComponent = (props) => {
 
     <div id={props.inputFields.names.divIdInput}>
       <label>
-      <div>Name</div>
-      <input name='name' value={props.inputFields.name} onChange={e => props.onChange(e)} />
+        <div>Name</div>
+        <input name='name' value={props.inputFields.name} onChange={e => props.onChange(e)} />
       </label>
       <label>
-      <div>Description</div>
-      <textarea name='description' value={props.inputFields.description} onChange={e => props.onChange(e)}></textarea>
+        <div>Description</div>
+        <textarea name='description' value={props.inputFields.description} onChange={e => props.onChange(e)}></textarea>
       </label><br />
       {letSetOrder()}
       <SaveDataButtonComponent click={props.click} />
