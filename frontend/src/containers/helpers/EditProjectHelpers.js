@@ -5,10 +5,13 @@
 export const modifyElements = (project) => {
   document.getElementById('edit-project-parent').firstElementChild.style.display = 'none';
   let edit = document.getElementById('edit-project-data');
+  edit.innerHTML = '';
   for (let section of project.section_titles){
     //make new div
+
+
     let parent = document.createElement('div');
-    parent.id = 'edit-project-data-section-' + section.id;
+    parent.id = 'edit-project-data-section-' + (section.section_order);
     let p = document.createElement('p');
     p.innerText = section.name;
 
@@ -20,12 +23,11 @@ export const modifyElements = (project) => {
       parent.appendChild(dataElement);
     }
 
-    document.getElementById('edit-project-data').appendChild(parent);
+    edit.appendChild(parent);
     //div will contain section name and child divs of data
     //add to end of edit-project-data, aka edit
     //include edit button that shows hidden edit fields
   }
-  showPrimaryOptions();
 }
 
  const onSave = () => {
@@ -40,6 +42,7 @@ export const modifyElements = (project) => {
 
 export const onDelete = () => {
     console.log('clicked delete');
+    // TODO: where will delete occur?
     //dispatch to delete project data
     //in store and on server
 }
