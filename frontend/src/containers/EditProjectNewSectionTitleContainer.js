@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import GenericSearchComponent from  '../components/GenericSearchComponent';
-import NewDataFetchJsonComponent from  '../components/NewDataFetchJsonComponent';
-import NewDataInputFieldsComponent from  '../components/NewDataInputFieldsComponent';
+import GenericSearchComponent from '../components/GenericSearchComponent';
+import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
+import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 import { getSectionTitleData } from '../actions/SectionTitleActions';
 import { addSectionToProject, editProject } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
