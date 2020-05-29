@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     if @users
-      render :json => @users, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+      render :json => @users, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content, :section_title_id]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
       #render :json => @users, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]
     else
       render json: {
@@ -16,13 +16,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    render :json => @user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+    render :json => @user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content, :section_title_id]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
   end
 
   def create
     if (user = User.create(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation]))
       session[:user_id] = user.id
-      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content, :section_title_id]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
     else
       render json: {
         message: 'Creating user failed.'
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
 
   def update_user(user, updateables_hash)
     if user.update(updateables_hash)
-      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]
+      render :json => user, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content, :section_title_id]}]}]}]
     else
       editing_failed
     end
