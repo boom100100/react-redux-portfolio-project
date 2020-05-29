@@ -66,6 +66,7 @@ class EditProjectNewSectionTitleContainer extends Component {
   saveToProject = () => {
     let fields = this.state.inputFields;
 
+    // collect data to save in object
     const sectionTitle = {
       name: fields.name,
       project_id: this.props.project.id,
