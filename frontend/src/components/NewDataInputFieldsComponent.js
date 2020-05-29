@@ -49,18 +49,18 @@ const NewDataInputFieldsComponent = (props) => {
   const doChange = (e) => {
     removeOptions();
     props.onChangeNumber(e);
-    makeDataOrderOptions(props.inputFields.section_title);
+    makeDataOrderOptions(props.inputFields.section_order);
   }
 
   const dataOrderer = () => {
     return (
       <span>
         Place in section:
-        <select onChange={e => doChange(e)} onFocus={e => doChange(e)} value={props.inputFields.section_title} name='section_title'>
+        <select onChange={e => doChange(e)} onFocus={e => doChange(e)} value={props.inputFields.section_order} name='section_order'>
           {props.section_titles.map(x => <option key={'section_order=' + x.section_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.section_order}>{x.name}</option>)}
         </select>
         Place before data:
-        {makeDataOrderOptions(props.inputFields.section_title)}
+        {makeDataOrderOptions(props.inputFields.section_order)}
       </span>
     );
   }
