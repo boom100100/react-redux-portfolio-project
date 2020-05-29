@@ -4,10 +4,34 @@ import GraphNameComponent from '../components/GraphNameComponent';
 import GraphXDataContainer from './GraphXDataContainer';
 import GraphDrawComponent from '../components/GraphDrawComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
+import { addDataToProject } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 
 class EditProjectNewGraphContainer extends Component {
+  saveToProject = () => {
+    let fields = this.state.inputFields;
+
+    // collect data to save in object
+    const graphData = {
+      name: fields.name,
+      project_id: this.props.project.id,
+      section_order: fields.section_order,
+      child_order: fields.child_order,
+      description:  fields.description,
+      content: fields.graph,
+      type: 'Graph',
+      url: ''
+    }
+    console.log('graphData', graphData);
+
+    //dispatch action to add section title to project
+    this.props.addDataToProject(graphData);
+
+    //fetch post to db
+    //this.props.editProject
+  }
+
   removeXLabel = (index) => {
     //destructure to remove unnecessary label from state
     const {
@@ -273,7 +297,7 @@ class EditProjectNewGraphContainer extends Component {
       },
       description:  "",
       content: "",
-      section_title: "",
+      section_order: 0,
       child_order: 0,
     }
   }
@@ -301,4 +325,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(EditProjectNewGraphContainer);
+export default connect(mapStateToProps, { addDataToProject })(EditProjectNewGraphContainer);
