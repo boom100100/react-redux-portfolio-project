@@ -12,7 +12,6 @@ function projectsReducer(state = [], action){
       return state.concat(action.projects);
 
     case 'RESET_PROJECTS':
-      // console.log('resetting projects in reducer.');
       return [];
 
     case 'REPLACE_PROJECTS':
@@ -42,28 +41,21 @@ function projectsReducer(state = [], action){
         newState = [...state];
         projectId = action.data.project_id - 1;
         section_order = action.data.section_order;
-        allChildren = newState[projectId].section_titles[section_order].section_title_children;
-
-
         child_order = action.data.child_order;
-
-        console.log('ADD_DATA action', action);
-        console.log('newState', newState);
-        //get project
-        console.log('newState[projectId].section_titles[section_order]', newState[projectId].section_titles[section_order]);
-        console.log('newState[projectId].section_titles[section_order].section_title_children', newState[projectId].section_titles[section_order].section_title_children);
-        console.log('action.data', action.data);
 
         newState[projectId].section_titles[section_order].section_title_children.push(action.data);
 
         // //add 1 to section_order equal and following sections
         newState[projectId].section_titles[section_order].section_title_children = levelUp(newState[projectId].section_titles[section_order].section_title_children, action.data, 'child_order');
-        console.log('allChildren before sort', allChildren);
+        // console.log('allChildren before sort', allChildren);
 
         //sort sections
         newState[projectId].section_titles[section_order].section_title_children = newState[projectId].section_titles[section_order].section_title_children.sort((a, b) => sortSection(a, b, 'child_order'));
-        console.log('allChildren after sort', allChildren);
+        // console.log('allChildren after sort', allChildren);
         return newState;
+
+      case 'SAVE_PROJECT':
+        return state;
 
     default:
       return state;
@@ -72,7 +64,7 @@ function projectsReducer(state = [], action){
 
 //array, elementArg, key
 const levelUp = (array, elementArg, key) => {
-  console.log(elementArg[key]);
+  // console.log(elementArg[key]);
   return array.map((e) => {
     if (e[key] >= elementArg[key] && elementArg !== e)
       e[key] = e[key] + 1
