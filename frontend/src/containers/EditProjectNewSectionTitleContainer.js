@@ -3,7 +3,7 @@ import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 import { getSectionTitleData } from '../actions/SectionTitleActions';
-import { addSectionToProject, editProject } from '../actions/ProjectActions';
+import { addSectionToProject, addToBackend } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 class EditProjectNewSectionTitleContainer extends Component {
@@ -79,7 +79,7 @@ class EditProjectNewSectionTitleContainer extends Component {
     this.props.addSectionToProject(sectionTitle);
 
     //fetch post to db
-    //this.props.editProject
+    this.props.addToBackend(sectionTitle, '/section_titles', 'POST');
   }
 
   divIdFetch = () => 'section-title-fetch-json';
@@ -123,4 +123,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { getSectionTitleData, addSectionToProject, editProject })(EditProjectNewSectionTitleContainer);
+export default connect(mapStateToProps, { getSectionTitleData, addSectionToProject, addToBackend })(EditProjectNewSectionTitleContainer);
