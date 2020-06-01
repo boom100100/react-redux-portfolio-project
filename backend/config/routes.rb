@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   delete '/sessions/delete', to: 'sessions#destroy'
   resources :sessions, only: [:create]
   resources :users, except: [:new, :edit]
-
+  resources :projects, only: [:create, :update, :destroy]
+  resources :section_titles, only: [:create, :update, :destroy]
+  resources :section_title_children, only: [:create, :update, :destroy]
   #call to text_razor text analysis api
   #returns data
   #no need to save
