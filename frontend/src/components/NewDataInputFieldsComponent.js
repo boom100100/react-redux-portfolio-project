@@ -9,9 +9,8 @@ const NewDataInputFieldsComponent = (props) => {
 
   //flow
   // when user chooses section
-  //select for data repopulates
-  // to represent that section
-
+  //select options repopulate
+  // to represent data in that section
   const makeDataOrderOptions = (index) => {
     let indexCleaner = (index || 0);
 
