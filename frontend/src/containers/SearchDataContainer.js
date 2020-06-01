@@ -45,7 +45,7 @@ class SearchDataContainer extends React.Component {
 
       this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], text.split('.').reduce(index, result), 'div');
       this.doElementUpdate(parentId, parentId + '-url-' + result[resultId], url, 'a', url);
-      this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.saveToProject);
+      this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.chooseResult);
     }
   }
 
@@ -111,7 +111,40 @@ class SearchDataContainer extends React.Component {
     }
   }
 
-  chooseResult = () => {}
+  chooseResult = (e) => {
+    let curidSplit = e.target.id.split('-');
+    let curid = curidSplit[curidSplit.length - 1];
+
+    //extract values for state
+    let content = document.getElementById('preliminary-data-fetch-json-text-' + curid).innerText;
+    let url = document.getElementById('preliminary-data-fetch-json-url-' + curid).href;
+
+    //add extracted values to state
+    this.setState({
+      fetchData: {...this.state.fetchData},
+      inputFields: {
+        //names: {...this.state.inputFields.names},
+        ...this.state.inputFields,
+        content: content,
+        url: url
+      }
+    }, () => {
+      //deselect all buttons
+      document.getElementById('preliminary-data-fetch-json').querySelectorAll('button').
+        forEach(button => {
+      	  button.innerText = "Select";
+      	});
+
+      //show button as selected
+      e.target.innerText = 'Selected';
+      // console.log('state after select choose', this.state);
+    });
+
+
+
+
+
+  }
   saveToProject = () => {
     console.log('clicked save prelim');
   }
