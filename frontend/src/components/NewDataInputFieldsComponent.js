@@ -18,10 +18,10 @@ const NewDataInputFieldsComponent = (props) => {
     let titles = props.section_titles[indexCleaner];
     let children = props.section_titles[indexCleaner].section_title_children;
 
-    console.log('titles', titles);
-    console.log('children', children);
+    // console.log('titles', titles);
+    // console.log('children', children);
     return (
-      <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.child_order} name='child_order' id='child-order'>
+      <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.child_order} name='child_order' id={'graph-section-child-order'}>
         {children.map(x => {
           keyCounter++;
           return (<option key={'keyCounter=' + keyCounter + '-child_order=' + x.child_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.child_order}>{x.name}</option>);
@@ -33,30 +33,24 @@ const NewDataInputFieldsComponent = (props) => {
 
   const removeOptions = () => {
     console.log('doing removeOptions');
-    // document.getElementById('child-order').innerHTML = "";
-    // let child = document.getElementById('child-order');
-    // child.parentElement.removeChild(child);
 
-    let options = document.getElementById('child-order').options;
-    document.querySelector('#child-order').innerHTML = '';
-
-    // options.map(o => o.remove());
-    // while (options.length > 0) {
-    //   options.remove(options.length - 1);
-    // }
+    let options = document.getElementById(props.childOrderId).options;
+    document.querySelector(`#${props.childOrderId}`).innerHTML = '';
   }
 
   const doChange = (e) => {
-    removeOptions();
-    props.onChangeNumber(e);
-    makeDataOrderOptions(props.inputFields.section_order);
+    // removeOptions();
+    props.onChangeNumber(e);//, document.getElementById(props.childOrderId).focus, makeDataOrderOptions, props.inputFields.section_order);
+    //props.onChangeNumber(e, );
+    // makeDataOrderOptions(props.inputFields.section_order);
+
   }
 
   const dataOrderer = () => {
     return (
       <span>
         Place in section:
-        <select onChange={e => doChange(e)} onFocus={e => doChange(e)} value={props.inputFields.section_order} name='section_order'>
+        <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.section_order} name='section_order'>
           {props.section_titles.map(x => <option key={'section_order=' + x.section_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.section_order}>{x.name}</option>)}
         </select>
         Place before data:
@@ -64,6 +58,8 @@ const NewDataInputFieldsComponent = (props) => {
       </span>
     );
   }
+
+
 
   const sectionTitleOrderer = () => {
     return (
