@@ -22,7 +22,7 @@ class NewPreliminaryDataContainer extends React.Component {
   render(){
     return (
       <div id='add-new-preliminary-data'>
-        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs}/>
+        <SearchDataContainer type='PreliminaryDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs}/>
       </div>
     )
   }
