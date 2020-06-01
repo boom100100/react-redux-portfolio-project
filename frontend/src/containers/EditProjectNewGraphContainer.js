@@ -29,7 +29,6 @@ class EditProjectNewGraphContainer extends Component {
     this.props.addDataToProject(graphData);
 
     //fetch post to db
-    console.log('this.props.project', this.props.project);
     this.props.addToBackend(graphData, '/section_title_children', 'POST');
   }
 
