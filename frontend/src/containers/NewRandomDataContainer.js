@@ -1,5 +1,6 @@
 import React from 'react';
 import { getRandomData } from '../actions/DataResearchActions';
+import { addDataToProject, addToBackend } from '../actions/ProjectActions';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 import NewDataButtonComponent from '../components/NewDataButtonComponent';
@@ -17,6 +18,28 @@ class NewRandomDataContainer extends React.Component {
 
   saveToProject = () => {
     console.log('clicked saveToProject');
+    console.log('state', this.state);
+
+    let fields = this.state.inputFields;
+    console.log('fields', fields);
+    // collect data to save in object
+    const randomData = {
+      name: fields.name,
+      project_id: this.props.project.id,
+      section_order: fields.section_order,
+      child_order: fields.child_order,
+      description:  fields.description,
+      content: fields.content,
+      type: 'RandomDatum',
+      url: fields.url
+    }
+    console.log('randomData', randomData);
+
+    //dispatch action to add data to project
+    this.props.addDataToProject(randomData);
+
+    //fetch post to db
+    this.props.addToBackend(randomData, '/section_title_children', 'POST');
   }
 
 
@@ -55,10 +78,30 @@ class NewRandomDataContainer extends React.Component {
     this.setState({
       fetchData: {...this.state.fetchData},
       inputFields: {
-        names: {...this.state.inputFields.names},
+        //names: {...this.state.inputFields.names},
         ...this.state.inputFields,
         [e.target.name]: e.target.value
       }
+    });
+  }
+
+  onChangeNumber = (e, newFocus, newOptions, sectionOrder) => {
+    this.setState({
+      ...this.state,
+      inputFields: {
+        ...this.state.inputFields,
+        [e.target.name]: Number(e.target.value),
+      }
+    }, () => {
+      console.log('new state',this.state);
+      console.log('newFocus', newFocus);
+
+      if (newOptions)
+        newOptions(sectionOrder);
+
+      if (window.newFocus)
+        window.newFocus();
+
     });
   }
 
@@ -79,7 +122,9 @@ class NewRandomDataContainer extends React.Component {
       name: "",
       url: "",
       description:  "",
-      content: ""
+      content: "",
+      section_order: 0,
+      child_order: 0,
     }
   }
 
@@ -88,7 +133,7 @@ class NewRandomDataContainer extends React.Component {
       <div id='add-new-random-data'>
 
         <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
-        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} />
+        <NewDataInputFieldsComponent childOrderId='random-data-section-child-order' isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
 
         <NewDataButtonComponent click={this.getNewData} />
       </div>
@@ -104,4 +149,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { getRandomData })(NewRandomDataContainer);
+export default connect(mapStateToProps, { getRandomData, addDataToProject, addToBackend })(NewRandomDataContainer);
