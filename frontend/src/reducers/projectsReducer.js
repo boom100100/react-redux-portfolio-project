@@ -43,6 +43,11 @@ function projectsReducer(state = [], action){
         section_order = action.data.section_order;
         child_order = action.data.child_order;
 
+        console.log('newState', newState);
+        console.log('newState[projectId]', newState[projectId]);
+        console.log('newState[projectId].section_titles', newState[projectId].section_titles);
+        console.log('newState[projectId].section_titles[section_order]', newState[projectId].section_titles[section_order]);
+        console.log('section_order', section_order);
         newState[projectId].section_titles[section_order].section_title_children.push(action.data);
 
         // //add 1 to section_order equal and following sections
