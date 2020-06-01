@@ -4,7 +4,7 @@ import GraphNameComponent from '../components/GraphNameComponent';
 import GraphXDataContainer from './GraphXDataContainer';
 import GraphDrawComponent from '../components/GraphDrawComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
-import { addDataToProject } from '../actions/ProjectActions';
+import { addDataToProject, addToBackend } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 
@@ -25,11 +25,12 @@ class EditProjectNewGraphContainer extends Component {
     }
     console.log('graphData', graphData);
 
-    //dispatch action to add section title to project
+    //dispatch action to add data to project
     this.props.addDataToProject(graphData);
 
     //fetch post to db
-    //this.props.editProject
+    console.log('this.props.project', this.props.project);
+    this.props.addToBackend(graphData, '/section_title_children', 'POST');
   }
 
   removeXLabel = (index) => {
@@ -256,14 +257,24 @@ class EditProjectNewGraphContainer extends Component {
     }, () => {console.log('new state',this.state);});
   }
 
-  onChangeNumber = (e) => {
+  onChangeNumber = (e, newFocus, newOptions, sectionOrder) => {
     this.setState({
       ...this.state,
       inputFields: {
         ...this.state.inputFields,
         [e.target.name]: Number(e.target.value),
       }
-    }, () => {console.log('new state',this.state);});
+    }, () => {
+      console.log('new state',this.state);
+      console.log('newFocus', newFocus);
+
+      if (newOptions)
+        newOptions(sectionOrder);
+
+      if (window.newFocus)
+        window.newFocus();
+
+    });
   }
 
   state = {
@@ -311,7 +322,7 @@ class EditProjectNewGraphContainer extends Component {
 
         <GraphDrawComponent graph={this.state.inputFields.graph} />
 
-        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
+        <NewDataInputFieldsComponent childOrderId='graph-section-child-order' isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
       </div>
     )
   }
@@ -325,4 +336,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addDataToProject })(EditProjectNewGraphContainer);
+export default connect(mapStateToProps, { addDataToProject, addToBackend })(EditProjectNewGraphContainer);
