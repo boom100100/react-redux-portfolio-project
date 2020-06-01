@@ -22,7 +22,7 @@ class NewResearchDataContainer extends React.Component {
   render(){
     return (
       <div id='add-new-research-data'>
-        <SearchDataContainer divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
+        <SearchDataContainer type='ResearchDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
       </div>
     )
   }
