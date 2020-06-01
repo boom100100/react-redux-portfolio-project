@@ -2,6 +2,7 @@ import React from 'react';
 import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
+import { addDataToProject, addToBackend } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 //https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
@@ -18,13 +19,8 @@ class SearchDataContainer extends React.Component {
     this.setState({
       fetchData: [...results],
       inputFields: {
-        names: {...this.state.inputFields.names},
+        ...this.state.inputFields,
         holdText: "Click Select to choose data. Add a name and description. Press Save Data. You can save one data point at a time.",
-        searchTerm: "",
-        name: "",
-        description:  "",
-        url: "",
-        content: "",
       }
     }, () => {
       const {resultId, text} = this.props.updateDivsArgs;
@@ -86,7 +82,7 @@ class SearchDataContainer extends React.Component {
     this.setState({
       fetchData: {...this.state.fetchData},
       inputFields: {
-        names: {...this.state.inputFields.names},
+        // names: {...this.state.inputFields.names},
         ...this.state.inputFields,
         [e.target.name]: Number(e.target.value)
       }
@@ -106,18 +102,19 @@ class SearchDataContainer extends React.Component {
       url: "",
       description:  "",
       content: "",
-      section_title: "",
+      section_order: 0,
       child_order: 0,
     }
   }
 
   chooseResult = (e) => {
+
     let curidSplit = e.target.id.split('-');
     let curid = curidSplit[curidSplit.length - 1];
 
     //extract values for state
-    let content = document.getElementById('preliminary-data-fetch-json-text-' + curid).innerText;
-    let url = document.getElementById('preliminary-data-fetch-json-url-' + curid).href;
+    let content = document.getElementById(this.state.inputFields.names.divIdFetch + '-text-' + curid).innerText;
+    let url = document.getElementById(this.state.inputFields.names.divIdFetch + '-url-' + curid).href;
 
     //add extracted values to state
     this.setState({
@@ -130,14 +127,15 @@ class SearchDataContainer extends React.Component {
       }
     }, () => {
       //deselect all buttons
-      document.getElementById('preliminary-data-fetch-json').querySelectorAll('button').
+      console.log('props.inputFields.names.divIdFetch', this.state.inputFields.names.divIdFetch, 'should be preliminary-data-fetch-json');
+      document.getElementById(this.state.inputFields.names.divIdFetch).querySelectorAll('button').
         forEach(button => {
       	  button.innerText = "Select";
       	});
 
       //show button as selected
       e.target.innerText = 'Selected';
-      // console.log('state after select choose', this.state);
+      console.log('state after select choose', this.state);
     });
 
 
@@ -146,17 +144,40 @@ class SearchDataContainer extends React.Component {
 
   }
   saveToProject = () => {
-    console.log('clicked save prelim');
+    console.log('clicked save prelim/research');
+    console.log('clicked saveToProject');
+    console.log('state', this.state);
+
+    let fields = this.state.inputFields;
+    console.log('fields', fields);
+    // collect data to save in object
+    const data = {
+      name: fields.name,
+      project_id: this.props.project.id,
+      section_order: fields.section_order,
+      child_order: fields.child_order,
+      description:  fields.description,
+      content: fields.content,
+      type: this.props.type,
+      url: fields.url
+    }
+    console.log('data', data);
+
+    //dispatch action to add data to project
+    this.props.addDataToProject(data);
+
+    //fetch post to db
+    this.props.addToBackend(data, '/section_title_children', 'POST');
   }
 
   render(){
     return (
-      <div id='add-new-preliminary-data'>
+      <>
         <GenericSearchComponent type='input' text={'Search term: '}inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
         <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
 
         <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
-      </div>
+      </>
     )
   }
 }
@@ -169,4 +190,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(SearchDataContainer);
+export default connect(mapStateToProps, { addDataToProject, addToBackend })(SearchDataContainer);
