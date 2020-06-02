@@ -1,6 +1,6 @@
-export const addToProject = (object, url, method) => {
+export const addToProject = (object, relativeUrl, method) => {
   console.log('project2', object);
-  // const url = 'http://localhost:3001/projects/' + (project.id);
+  // const relativeUrl = 'http://localhost:3001/projects/' + (project.id);
   const configData = {
     method: method,
     credentials: "include",
@@ -12,5 +12,5 @@ export const addToProject = (object, url, method) => {
     body: JSON.stringify( object )
   };
 
-  return fetch('http://localhost:3001' + url, configData);
+  return fetch('http://localhost:3001' + relativeUrl, configData);
 }
