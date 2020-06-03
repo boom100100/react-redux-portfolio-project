@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_05_02_153539) do
     t.string "description"
     t.string "content"
     t.integer "child_order"
+    t.integer "section_order"
     t.string "type"
     t.integer "section_title_id"
     t.datetime "created_at", precision: 6, null: false
