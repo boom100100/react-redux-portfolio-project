@@ -29,28 +29,29 @@ export const deleteProject = (project) => {
   };
 };
 
-export const addSectionToProject = (sectionTitle) => {
+export const addSectionToProject = (json) => {
   console.log('doing addSectionToProject');
   return {
     type: 'ADD_SECTION',
-    sectionTitle: sectionTitle
+    sectionTitle: json.section_title
   }
 }
 
-export const addDataToProject = (data) => {
-  console.log('figure out render crash','data', data);
+export const addDataToProject = (json) => {
+  // console.log('figure out render crash','json', json);
   return {
     type: 'ADD_DATA',
-    data: data
+    data: json
   }
 }
 
-export const addToBackend = (object, url, method) => {
+export const addToBackend = (object, url, method, callback) => {
   //write thunk action.
   return () => {
     return projectApi.addToProject(object, url, method)
       .then(response => response.json())
       .then(json => {
+        callback(json);
         console.log(json);
         }).catch(error => console.log(error));
   }
