@@ -1,19 +1,28 @@
 function projectsReducer(state = [], action){
-  let newState;
-  let projectId;
-  let section_titles;
-  let section_order;
-  let section_id;
-  let child_order;
-  let allChildren;
+  let newState, projectId, section_titles, section_order, section_id, child_order, allChildren;
   switch(action.type){
     case 'ADD_PROJECTS':
-      // console.log('projects from reducer', action.projects);
-      // console.log('new state check', state.concat(action.projects));
+      console.log('projects from reducer', action.projects);
+
       action.projects.forEach(e => {
         e.section_titles.sort((a, b) => sorterSectionOrder(a, b)).forEach(title => title.section_title_children.sort((c, d) => sorterChildrenTitle(c, d)));
-      })
-      return state.concat(action.projects);
+
+        // must convert graph content string to object
+        e.section_titles.forEach(title => title.section_title_children.forEach(child => {
+          if (child.type === 'Graph' && child.content){
+            console.log('child.content', child.content);
+            child.content = {graph: JSON.parse(child.content.replace(/=>/ig, ': '))};
+          }
+        }));
+
+      });
+
+      console.log('projects after', action.projects);
+      // console.log('projects after sort', action.projects);
+      newState = state.concat(action.projects);
+      // console.log('newState', newState);
+      // console.log('action', action);
+      return newState;
 
     case 'RESET_PROJECTS':
       return [];
