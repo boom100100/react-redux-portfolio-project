@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 
 //https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
 class SearchDataContainer extends React.Component {
+  componentDidMount(){
+    if (this.props.data)
+      this.updateDivs();
+  }
 
   getNewData = () => {
     const searchTerm = this.state.inputFields.searchTerm.replace(/ /gi,'+');
@@ -35,13 +39,20 @@ class SearchDataContainer extends React.Component {
 
     const parentId = this.state.inputFields.names.divIdFetch;
     document.getElementById(parentId).innerText = '';
-
-    for (let result of this.state.fetchData) {
-      const url = this.props.getLink(result);
-
-      this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], text.split('.').reduce(index, result), 'div');
-      this.doElementUpdate(parentId, parentId + '-url-' + result[resultId], url, 'a', url);
-      this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.chooseResult);
+    if (this.props.data){
+      this.doElementUpdate(parentId, parentId + '-text', this.state.inputFields.content, 'div');
+      this.doElementUpdate(parentId, parentId + '-url', this.state.inputFields.url, 'a', this.state.inputFields.url);
+    } else {
+      for (let result of this.state.fetchData) {
+        const url = this.props.getLink(result);
+        console.log('props', this.props);
+        console.log('text', text);
+        console.log('result', result);
+        console.log('text.split(\'.\').reduce(index, result)', text.split('.').reduce(index, result));
+        this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], text.split('.').reduce(index, result), 'div');
+        this.doElementUpdate(parentId, parentId + '-url-' + result[resultId], url, 'a', url);
+        this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.chooseResult);
+      }
     }
   }
 
@@ -89,6 +100,14 @@ class SearchDataContainer extends React.Component {
     }, () => console.log('after state', this.state));
   }
 
+  getSavedData = (variableName, emptyValue) => {
+    // console.log('this.props.data', this.props.data);
+    // console.log('this.props', this.props);
+    if (this.props.data)
+      return this.props.data[variableName];
+    return emptyValue;
+  }
+
   state = {
     fetchData: [],
     inputFields: {
@@ -98,12 +117,12 @@ class SearchDataContainer extends React.Component {
       },
       searchTerm: "",
       holdText: "Enter a search term and click Search.",
-      name: "",
-      url: "",
-      description:  "",
-      content: "",
-      section_order: 0,
-      child_order: 0,
+      name: this.getSavedData('name', ''),
+      url: this.getSavedData('url', ''),
+      description:  this.getSavedData('description', ''),
+      content: this.getSavedData('content', ''),
+      section_order: this.getSavedData('section_order', 0),
+      child_order: this.getSavedData('child_order', 0),
     }
   }
 
@@ -128,8 +147,7 @@ class SearchDataContainer extends React.Component {
     }, () => {
       //deselect all buttons
       console.log('props.inputFields.names.divIdFetch', this.state.inputFields.names.divIdFetch, 'should be preliminary-data-fetch-json');
-      document.getElementById(this.state.inputFields.names.divIdFetch).querySelectorAll('button').
-        forEach(button => {
+      document.getElementById(this.state.inputFields.names.divIdFetch).querySelectorAll('button').forEach(button => {
       	  button.innerText = "Select";
       	});
 
@@ -164,10 +182,10 @@ class SearchDataContainer extends React.Component {
     console.log('data', data);
 
     //dispatch action to add data to project
-    this.props.addDataToProject(data);
+    // this.props.addDataToProject(data);
 
     //fetch post to db
-    this.props.addToBackend(data, '/section_title_children', 'POST');
+    this.props.addToBackend(data, '/section_title_children', 'POST', this.props.addDataToProject);
   }
 
   render(){
