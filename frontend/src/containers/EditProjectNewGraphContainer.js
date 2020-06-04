@@ -26,10 +26,10 @@ class EditProjectNewGraphContainer extends Component {
     console.log('graphData', graphData);
 
     //dispatch action to add data to project
-    this.props.addDataToProject(graphData);
+    // this.props.addDataToProject(graphData);
 
     //fetch post to db
-    this.props.addToBackend(graphData, '/section_title_children', 'POST');
+    this.props.addToBackend(graphData, '/section_title_children', 'POST', this.props.addDataToProject);
   }
 
   removeXLabel = (index) => {
@@ -201,8 +201,9 @@ class EditProjectNewGraphContainer extends Component {
   }
 
   componentDidMount(){
-    document.getElementById('add-new-graph-doughnut').style.display = 'none';
-    document.getElementById('add-new-graph-pie').style.display = 'none';
+    // console.log('this.state.inputFields.graph.graphData', this.state.inputFields.graph.graphData);
+    // document.getElementById('add-new-graph-doughnut').style.display = 'none';
+    // document.getElementById('add-new-graph-pie').style.display = 'none';
   }
 
   onSelect = (e) => {
@@ -275,46 +276,70 @@ class EditProjectNewGraphContainer extends Component {
 
     });
   }
+  graphSet = () => ({
+    type: 'bar',
+    graphData: {
+      labels: {
+        0: ''
+      },//state.inputFields.graph.labels
+      datasets: {
+        0: { label: '', backgroundColor: {0: '#000000'}, hoverBackgroundColor: {0: '#000000'}, data: {0: ''} }
+      }
+    },
+    options: {
+      title:{
+        display:true,
+        text:'Name Your Chart',
+        fontSize:20
+      },
+      legend:{
+        display:true,
+        position:'right'
+      }
+    }
+  });
+
+  graphSetter = (emptyValue) => {
+    // console.log('variableName', variableName);
+    // console.log('props', this.props);
+    // console.log('this.props.data', this.props.data);
+    if (this.props.data)//if (this.props.data.type)
+      if (this.props.data.type === "Graph")
+        if (this.props.data.content)
+          if (this.props.data.content.graph){console.log('this.props.data.content.graph', this.props.data.content.graph);
+            return this.props.data.content.graph;}
+    return emptyValue;
+  }
+
+  setter = (variableName, emptyValue) => {
+    // console.log('this.props.data', this.props.data);
+    if (this.props.data){
+      // console.log('this.props.data.id', this.props.data.id);
+      if ((variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id'))
+        return this.props.data[variableName];
+    }
+    return emptyValue;
+  }
 
   state = {
     inputFields: {
-      graph: {
-        type: 'bar',
-        graphData: {
-          labels: {
-            0: ''
-          },//state.inputFields.graph.labels
-          datasets: {
-            0: { label: '', backgroundColor: {0: '#000000'}, hoverBackgroundColor: {0: '#000000'}, data: {0: ''} }
-          }
-        },
-        options: {
-          title:{
-            display:true,
-            text:'Name Your Chart',
-            fontSize:20
-          },
-          legend:{
-            display:true,
-            position:'right'
-          }
-        }
-      },
-      name: "",
+      graph: this.graphSetter(this.graphSet()),
+      name: this.setter('name', ''),
       names: {
         divIdFetch: 'this.divIdFetch()',
         divIdInput: 'add-new-graph-input-fields'
       },
-      description:  "",
-      content: "",
-      section_order: 0,
-      child_order: 0,
+      description:  this.setter('description', ''),
+      content: this.setter('content', ''),
+      section_order: this.setter('section_order', 0),
+      child_order: this.setter('child_order', 0),
+      section_title_id: this.setter('section_title_id', 0),
     }
   }
 
   render(){
     return (
-      <div id='add-new-graph'>
+      <div id={this.props.id}>
         <GraphTypesComponent onSelect={this.onSelect} select={this.state.inputFields.graph.type} />
         <GraphNameComponent gName={this.state.inputFields.graph.options.title.text} onChange={this.changeGraphName} />
         <GraphXDataContainer state={this.state} graphData={this.state.inputFields.graph.graphData} addToState={this.addToX} removeXLabel={this.removeXLabel} removeXData={this.removeXData} onChange={this.onChangeXLabel} onChangeXData={this.onChangeXData} />
