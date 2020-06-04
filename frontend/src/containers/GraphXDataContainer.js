@@ -8,7 +8,6 @@ class GraphXDataContainer extends Component {
   getInitialXIndex = () => {
     const myKeys = Object.keys(this.props.graphData.labels);
     const lastKey = myKeys[myKeys.length - 1];
-    // console.log('lastKey', lastKey);
     if (typeof lastKey === "undefined")
       return -1;
 
@@ -29,11 +28,10 @@ class GraphXDataContainer extends Component {
     const myDatasetsComponents = {};
 
       for (let dataset in propsDatasets){
-        // console.log('dataset', dataset);
         myDatasetsComponents[dataset] = {};
         for (let data in propsDatasets[dataset].data){
-          // console.log('data', data);
-           myDatasetsComponents[dataset][data] = this.myXDataComponent(data);
+          const value = propsDatasets[dataset].data[data];
+          myDatasetsComponents[dataset][data] = this.myXDataComponent(data, value);
         }
       }
       // console.log('Object.keys(myDatasetsComponents).length', Object.keys(myDatasetsComponents).length);
@@ -43,25 +41,26 @@ class GraphXDataContainer extends Component {
 
   getInitialLabels = () => {
     const propsLabels = this.props.graphData.labels;
-    const keyBase = this.props.state.inputFields.divIdFetch;
     const myDatasetsComponents = {};
-    for (let label in propsLabels){
-      const key = keyBase + '-' + label
-      
-      myDatasetsComponents[label] = this.myXLabelComponent(label, propsLabels[label], key);
-    }
-    return myDatasetsComponents;
+      for (let label in propsLabels){
+        const value = propsLabels[label];
+        console.log('propsLabels', propsLabels);
+        console.log('propsLabels[label]', propsLabels[label]);
+        myDatasetsComponents[label] = this.myXLabelComponent(label, value);
+      }
+      // console.log('Object.keys(myDatasetsComponents).length', Object.keys(myDatasetsComponents).length);
+      return myDatasetsComponents;
   }
 
 
   //"data" is xIndex
-  myXDataComponent = (data) => {return <XDataComponent key={data} xIndex={data} setIndex={this.setIndex} value={this.props.graphData.datasets[this.setIndex][data]} onChange={this.props.onChangeXData} removeData={this.removeData} />}
-  myXLabelComponent = (data, value, key) => {console.log('data', data);console.log('props', this.props);return <XLabelComponent key={key} name={data} value={value} onChange={this.props.onChange} onClick={this.removeLabel} />}
+  myXDataComponent = (data, value) => {return <XDataComponent key={data} xIndex={data} setIndex={this.setIndex} value={value} onChange={this.props.onChangeXData} removeData={this.removeData} />}
+  myXLabelComponent = (data, value) => {return <XLabelComponent key={data} name={data} value={value} onChange={this.props.onChange} onClick={this.removeLabel} />}
 
   xIndex = this.getInitialXIndex();
   setIndex = this.getInitialSetIndex();
 
-  labels = () => this.getInitialLabels();
+  labels = this.getInitialLabels();
   datasets = this.getInitialDatasets();
 
 
@@ -74,12 +73,13 @@ class GraphXDataContainer extends Component {
     }
     return innerData;
   }
-  showLabels = () => Object.values(this.labels());
+  showLabels = () => {return Object.values(this.labels);}
 
 
   addData = () => {
     this.xIndex++;
 
+    // this.datasets = this.addDataPoint();
     console.log(this.datasets);
     this.props.addToState(this.xIndex, this.setIndex, this.addLabelAndData);
   }
@@ -134,7 +134,7 @@ class GraphXDataContainer extends Component {
   }
 
   addLabelAndData = (xIndex, labelValue, dataValue) => {
-    console.log('dataValue', dataValue);
+
     this.labels[xIndex] = <XLabelComponent name={xIndex} value={undefined}
       key={this.xIndex} onChange={this.props.onChange}
       onClick={this.removeLabel} />;
