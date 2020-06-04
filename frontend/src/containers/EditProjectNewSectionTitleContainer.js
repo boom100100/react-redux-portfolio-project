@@ -60,7 +60,7 @@ class EditProjectNewSectionTitleContainer extends Component {
         ...this.state.inputFields,
         [e.target.name]: Number(e.target.value),
       }
-    }, () => {console.log('new state',this.state);});
+    }, () => {/*console.log('new state',this.state);*/});
   }
 
   saveToProject = () => {
@@ -76,14 +76,21 @@ class EditProjectNewSectionTitleContainer extends Component {
     console.log('sectionTitle', sectionTitle);
 
     //dispatch action to add section title to project
-    this.props.addSectionToProject(sectionTitle);
+    // this.props.addSectionToProject(sectionTitle);
 
     //fetch post to db
-    this.props.addToBackend(sectionTitle, '/section_titles', 'POST');
+    this.props.addToBackend(sectionTitle, '/section_titles', 'POST', this.props.addSectionToProject);
   }
 
   divIdFetch = () => 'section-title-fetch-json';
   divIdInput = () => 'section-title-input-fields';
+  setter = (variableName, emptyValue) => {
+    if (this.props.data){//console.log('this.props.data.id', this.props.data.id);
+      if ((variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id'))
+        return this.props.data[variableName];
+    }
+    return emptyValue;
+  }
 
   state = {
     fetchData: [],
@@ -94,17 +101,18 @@ class EditProjectNewSectionTitleContainer extends Component {
       },
       searchTerm: "",
       holdText: "Enter some text related to this section and click Search.",
-      name: "",
-      url: "",
-      description:  "",
-      content: "",
-      section_order: 0,
+      name: this.setter('name', ''),
+      url: this.setter('url', ''),
+      description:  this.setter('description', ''),
+      content: this.setter('content', ''),
+      section_order: this.setter('section_order', 0),
+      id: this.setter('id', 0),
     }
   }
 
   render(){
     return (
-      <div id='add-new-section-title'>
+      <div id={this.props.id}>
         <GenericSearchComponent type='textarea' text={'Topic: '} inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
         <div id='section-title-fetch-container'>
           <NewDataFetchJsonComponent type='textarea' fetchData={this.state.fetchData} inputFields={this.state.inputFields} onChange={this.onChange} />
