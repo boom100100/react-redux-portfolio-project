@@ -10,6 +10,9 @@ function projectsReducer(state = [], action){
     case 'ADD_PROJECTS':
       // console.log('projects from reducer', action.projects);
       // console.log('new state check', state.concat(action.projects));
+      action.projects.forEach(e => {
+        e.section_titles.sort((a, b) => sorterSectionOrder(a, b)).forEach(title => title.section_title_children.sort((c, d) => sorterChildrenTitle(c, d)));
+      })
       return state.concat(action.projects);
 
     case 'RESET_PROJECTS':
@@ -52,10 +55,13 @@ function projectsReducer(state = [], action){
       newState = [...state];
       //extract child object
       console.log('action', action);
-      let fields = action.data.section_title_child;
-      console.log('fields,fields.graph,fields.type', fields,fields.graph,fields.type);
+      let fields = (action.data.section_title_child || action.data);
+      // console.log('fields,fields.graph,fields.type', fields,fields.graph,fields.type);
       const searchRegExp = /=>/g;
       const replaceWith = ':';
+      console.log('fields.content', fields.content);
+      if (action.data.type === 'Graph')
+        fields.content = ({graph: JSON.parse(fields.content.replace(searchRegExp, replaceWith))});
       const newData = {
         id: fields.id,
         project_id: action.data.project_id,
@@ -63,10 +69,11 @@ function projectsReducer(state = [], action){
         name: fields.name,
         child_order: fields.child_order,
         description:  fields.description,
-        content: {graph: JSON.parse(fields.content.replace(searchRegExp, replaceWith))},
-        type: fields.type,
+        content: fields.content,
+        type: action.data.type,
         url: fields.url,
       }
+      console.log('newData', newData, fields);
 
       //get section title
       projectId = action.data.project_id - 1;
@@ -119,6 +126,37 @@ const levelUp = (array, elementArg, key) => {
     }
     return e;
   });
+}
+
+const sorterChildrenTitle = (a, b) => {
+  //sorts children, puts section titles first
+  if (a.section_order === b.section_order && a.child_order && b.child_order){
+    if (a.child_order < b.child_order){
+        return -1;
+    } else if (b.child_order < a.child_order) {
+        return 1;
+    }
+  } else if (a.section_order === b.section_order && !a.child_order && b.child_order) {
+    return -1
+  } else if (a.section_order === b.section_order && a.child_order && !b.child_order) {
+    return 1
+  }
+  return 0;
+}
+
+const sorterSectionOrder = (a, b) => {
+  //sorts all incompletely
+
+  //SectionTitle: id, section_order
+  //SectionTitleChild: section_title_id, child_order
+
+  //lowest section_order first
+  if (a.section_order < b.section_order) {
+      return -1;
+  } else if (b.section_order < a.section_order) {
+      return 1;
+  }
+  return 0
 }
 
 const sortSection = (a, b, key) => {
