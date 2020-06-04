@@ -7,7 +7,6 @@ const NewDataInputFieldsComponent = (props) => {
   //but key values come back undefined
   let keyCounter = 0;
 
-  //flow
   // when user chooses section
   //select options repopulate
   // to represent data in that section
@@ -38,12 +37,10 @@ const NewDataInputFieldsComponent = (props) => {
   }
 
   const doChange = (e) => {
-    // removeOptions();
     props.onChangeNumber(e);//, document.getElementById(props.childOrderId).focus, makeDataOrderOptions, props.inputFields.section_order);
-    //props.onChangeNumber(e, );
-    // makeDataOrderOptions(props.inputFields.section_order);
-
   }
+
+  // const sorter = (a, b) => {}
 
   const dataOrderer = () => {
     return (
