@@ -53,7 +53,7 @@ class EditProjectNewSectionTitleContainer extends Component {
   }
 
   onChangeNumber = (e) => {
-    console.log('before state',this.state);
+    // console.log('before state',this.state);
     this.setState({
       ...this.state,
       inputFields: {
@@ -73,7 +73,7 @@ class EditProjectNewSectionTitleContainer extends Component {
       section_order: fields.section_order,
       section_title_children: []
     }
-    console.log('sectionTitle', sectionTitle);
+    // console.log('sectionTitle', sectionTitle);
 
     //dispatch action to add section title to project
     // this.props.addSectionToProject(sectionTitle);
