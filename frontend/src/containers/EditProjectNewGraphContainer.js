@@ -276,38 +276,47 @@ class EditProjectNewGraphContainer extends Component {
 
     });
   }
-  graphSet = () => ({
-    type: 'bar',
-    graphData: {
-      labels: {
-        0: ''
-      },//state.inputFields.graph.labels
-      datasets: {
-        0: { label: '', backgroundColor: {0: '#000000'}, hoverBackgroundColor: {0: '#000000'}, data: {0: ''} }
+  graphSet = () => {
+    return (
+      {
+        type: 'bar',
+        graphData: {
+          labels: {
+            0: ''
+          },//state.inputFields.graph.labels
+          datasets: {
+            0: { label: '', backgroundColor: {0: '#000000'}, hoverBackgroundColor: {0: '#000000'}, data: {0: ''} }
+          }
+        },
+        options: {
+          title:{
+            display:true,
+            text:'Name Your Chart',
+            fontSize:20
+          },
+          legend:{
+            display:true,
+            position:'right'
+          }
+        }
       }
-    },
-    options: {
-      title:{
-        display:true,
-        text:'Name Your Chart',
-        fontSize:20
-      },
-      legend:{
-        display:true,
-        position:'right'
-      }
-    }
-  });
+    )
+  };
 
   graphSetter = (emptyValue) => {
-    // console.log('variableName', variableName);
-    // console.log('props', this.props);
-    // console.log('this.props.data', this.props.data);
-    if (this.props.data)//if (this.props.data.type)
+
+    if (this.props.data)
+      console.log('this.props.data', this.props.data);
+
+    // console.log('emptyValue', emptyValue);
+    if (this.props.data)//replace this.props.data - nothing will be handed down
       if (this.props.data.type === "Graph")
         if (this.props.data.content)
-          if (this.props.data.content.graph){console.log('this.props.data.content.graph', this.props.data.content.graph);
-            return this.props.data.content.graph;}
+          if (this.props.data.content.graph){
+            return this.props.data.content.graph;}//this.props.project.section_titles.find(e => e.id === this.props.data.section_title_id).section_title_children.find(e => e.child_order === this.props.data.child_order).content.graph;//return this.props.data.content.graph;
+          else {
+            return this.props.data.content;
+          }
     return emptyValue;
   }
 
@@ -315,22 +324,23 @@ class EditProjectNewGraphContainer extends Component {
     // console.log('this.props.data', this.props.data);
     if (this.props.data){
       // console.log('this.props.data.id', this.props.data.id);
-      if ((variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id'))
-        return this.props.data[variableName];
+      if ((this.props.data[variableName]) && (variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id')){
+        return this.props.data[variableName];} else {return emptyValue}
     }
     return emptyValue;
   }
 
+  divIdFetch = () => {}
   state = {
     inputFields: {
       graph: this.graphSetter(this.graphSet()),
       name: this.setter('name', ''),
       names: {
-        divIdFetch: 'this.divIdFetch()',
-        divIdInput: 'add-new-graph-input-fields'
+        divIdFetch: this.setter(null, ''),//this.divIdFetch(),
+        divIdInput: this.setter('', 'add-new-graph-input-fields')
       },
       description:  this.setter('description', ''),
-      content: this.setter('content', ''),
+      content: this.graphSetter(this.graphSet()),
       section_order: this.setter('section_order', 0),
       child_order: this.setter('child_order', 0),
       section_title_id: this.setter('section_title_id', 0),
