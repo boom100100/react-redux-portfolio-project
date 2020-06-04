@@ -1,6 +1,6 @@
 import React from 'react';
 import EditProjectComponent from '../components/EditProjectComponent';
-import * as editHelpers from './helpers/EditProjectHelpers'
+import * as editHelpers from './helpers/EditProjectHelpers';
 import { connect } from 'react-redux';
 
 //structure:
@@ -20,7 +20,7 @@ class EditProjectContainer extends React.Component {
       functions: {...this.state.functions, setState: this.setState},
       project: projects.find(project => project.id == params.project_id)
     }, () => {
-      this.state.functions.modifyElements(this.state.project);
+      // this.state.functions.modifyElements(this.state.project);
       this.state.functions.showPrimaryOptions();
     });
   }
@@ -52,7 +52,6 @@ class EditProjectContainer extends React.Component {
 
       <div>
         <EditProjectComponent state={this.state} functions={this.state.functions} />
-        {document.getElementById('edit-project-parent') != null ? this.state.functions.modifyElements(this.state.project) : undefined}
       </div>
     )
   }
