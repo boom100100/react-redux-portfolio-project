@@ -7,7 +7,7 @@ const GraphDrawComponent = (props) => {
   const datasets = () => {
     //formats data so react-chartjs-2 can read it
     //see https://www.educative.io/edpresso/how-to-use-chartjs-to-create-charts-in-react
-    // for required format
+    //for required format
     for (let dset of Object.values(graphData.datasets)){
       let obj = {};
 
@@ -29,18 +29,18 @@ const GraphDrawComponent = (props) => {
     datasets: datasets()
   }
 
-  // const options = {} //for restructuring passed-in data so react-chartjs-2 can read it 
+  // const options = {} //for restructuring passed-in data so react-chartjs-2 can read it
   return (
     <>
     <div id='add-new-graph-bar'>
       <Bar data={data} options={props.graph.options} />
     </div>
-    <div id='add-new-graph-pie'>
+    {/*<div id='add-new-graph-pie'>
       <Pie data={data} options={props.graph.options} />
     </div>
     <div id='add-new-graph-doughnut'>
       <Doughnut data={data} options={props.graph.options} />
-    </div>
+    </div>*/}
     </>
   )
 }
