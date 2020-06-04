@@ -9,8 +9,13 @@ import { connect } from 'react-redux';
 class NewRandomDataContainer extends React.Component {
 
   componentDidMount(){
-    this.getNewData();
-  }
+    // console.log('this.props.data', this.props.data);
+    if (!this.props.data){//this.props.data{
+      this.getNewData();
+    } else {
+      this.updatefetchData();
+    }
+}
 
   getNewData = () => {
     this.props.getRandomData(this.updatefetchData);
@@ -36,32 +41,35 @@ class NewRandomDataContainer extends React.Component {
     console.log('randomData', randomData);
 
     //dispatch action to add data to project
-    this.props.addDataToProject(randomData);
+    // (randomData);
 
     //fetch post to db
-    this.props.addToBackend(randomData, '/section_title_children', 'POST');
+    this.props.addToBackend(randomData, '/section_title_children', 'POST', this.props.addDataToProject);
   }
 
 
   updatefetchData = (json) => {
-    this.setState({
-      fetchData: {
-        ...json,
-      },
-      inputFields: {
-        ...this.state.inputFields,
-        url: json.source_url,
-        content: json.text,
-      }
-    }, () => {
-      this.updateDivs();
-    });
+    if (json){
+      this.setState({
+        fetchData: {
+          ...json,
+        },
+        inputFields: {
+          ...this.state.inputFields,
+          url: json.source_url,
+          content: json.text,
+        }
+      }, () => {
+        this.updateDivs();
+      });
+    } else {this.updateDivs();}
   }
 
   updateDivs = () => {
-    document.getElementById('random-data-fetch-json').innerText = '';
-    this.doDivUpdate('random-data-fetch-json', 'random-data-fetch-json-text', this.state.fetchData.text);
-    this.doDivUpdate('random-data-fetch-json', 'random-data-fetch-json-url', this.state.fetchData.source_url);
+    let fetchDivName = this.state.inputFields.names.divIdFetch;
+    document.getElementById(fetchDivName).innerText = '';
+    this.doDivUpdate(fetchDivName, fetchDivName + '-text', this.state.inputFields.content);
+    this.doDivUpdate(fetchDivName, fetchDivName + '-url', this.state.inputFields.url);
   }
 
   doDivUpdate = (divId, childDivId, innerText) => {
@@ -72,6 +80,7 @@ class NewRandomDataContainer extends React.Component {
     child.innerText = innerText;
 
     parent.appendChild(child);
+    // return (<MyFetchData data={} />)
   }
 
   onChange = (e) => {
@@ -105,6 +114,23 @@ class NewRandomDataContainer extends React.Component {
     });
   }
 
+  divId = (base) => {
+    if (this.props.data){
+      let { data } = this.props;
+      return base + '-' + data.section_title_id + '-' + data.child_order;
+    }
+    return base
+  }
+
+  getSavedData = (variableName, emptyValue) => {
+    if (this.props.data)
+      return this.props.data[variableName];
+    return emptyValue;
+  }
+
+
+
+
   state = {
     fetchData: {
       id:"",
@@ -116,26 +142,27 @@ class NewRandomDataContainer extends React.Component {
     },
     inputFields: {
       names: {
-        divIdFetch: 'random-data-fetch-json',
-        divIdInput: 'random-data-input-fields'
+        divIdFetch: this.divId('random-data-fetch-json'),
+        divIdInput: this.divId('random-data-input-fields')
       },
-      name: "",
-      url: "",
-      description:  "",
-      content: "",
-      section_order: 0,
-      child_order: 0,
+      name: this.getSavedData('name', ''),
+      url: this.getSavedData('url', ''),
+      description:  this.getSavedData('description', ''),
+      content: this.getSavedData('content', ''),
+      section_order: this.getSavedData('section_order', 0),
+      child_order: this.getSavedData('child_order', 0),
     }
   }
 
   render(){
     return (
-      <div id='add-new-random-data'>
+      <div id={this.props.id}>
 
         <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
         <NewDataInputFieldsComponent childOrderId='random-data-section-child-order' isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
-
-        <NewDataButtonComponent click={this.getNewData} />
+        {undefined//<NewDataButtonComponent click={this.getNewData} />
+        }{this.props.data ? undefined : <NewDataButtonComponent click={this.getNewData} />
+        }
       </div>
     )
   }

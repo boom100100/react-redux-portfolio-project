@@ -14,15 +14,24 @@ class NewResearchDataContainer extends React.Component {
     return result.isShownAt;
   }
 
-  divIdFetch = () => 'research-data-fetch-json';
-  divIdInput = () => 'research-data-input-fields';
+  divId = (base) => {
+    if (this.props.data){
+      // console.log('this.props.data', this.props.data);
+      let { data } = this.props;
+      return base + '-' + data.section_title_id + '-' + data.child_order;
+    }
+    return base
+  }
+
+  divIdFetch = () => this.divId('research-data-fetch-json');
+  divIdInput = () => this.divId('research-data-input-fields');
 
   updateDivsArgs = {resultId: 'id', text: 'sourceResource.description'}
 
   render(){
     return (
-      <div id='add-new-research-data'>
-        <SearchDataContainer type='ResearchDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
+      <div id={this.props.id} >
+        <SearchDataContainer data={this.props.data} type='ResearchDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
       </div>
     )
   }
