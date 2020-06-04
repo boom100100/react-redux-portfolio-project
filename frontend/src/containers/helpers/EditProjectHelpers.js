@@ -25,10 +25,10 @@ export const modifyElements = (project) => {
       }
   }
 
-  componentArray.sort((a, b) => sorter(a, b));
+  // componentArray.sort((a, b) => sorterSectionOrder(a, b)).sort((a, b) => sorterChildrenTitle(a, b));
 
   return componentArray.map(e => {
-    console.log('e', e);
+    // console.log('e', e);
     if (!isNaN(e.child_order)) {
       if (e.type === 'Graph'){
         // console.log('is graph', e);
@@ -50,61 +50,37 @@ export const modifyElements = (project) => {
   });
 }
 
-const sorter = (a, b) => {
-  //SectionTitle: id, section_order
-  //SectionTitleChild: section_title_id, child_order
 
-  // if comparing ST and ST
-  // put lower section_order first
-  if (a.id && b.id){
-    if (a.section_order < b.section_order) {
-        return -1;
-    } else if (b.section_order < a.section_order) {
-        return 1;
-    }
-    return 0;
-  }
-
-
-
-
-  // if comparing Child and Child
-  // if section_order === section_order
-  // put lower child_order first
-  else if (a.child_order && b.child_order){
-    if (a.section_order === b.section_order)
-      if (a.child_order < b.child_order) {
-          return -1;
-      } else if (b.child_order < a.child_order) {
-          return 1;
-      }
-    return 0;
-  }
-
-
-  //if comparing ST and Child
-  //put ST first if ST section_order >= Child section_order
-  else if ((a.id && b.child_order) || (a.child_order && b.id)){
-    if (a.section_order < b.section_order) {
-        return -1;
-    } else if (b.section_order <= a.section_order) {
-        return 1;
-    }
-    return 0;
-  } else if (a.child_order && b.id) {
-    if (b.section_order < a.section_order) {
-        return -1;
-    }
-    if (a.section_order <= b.section_order) {
-        return 1;
-    }
-    return 0;
-  }
-
-  // a.key.split('-')[1]
-  // a.key.split('-')[2]
-
-}
+// const sorterChildrenTitle = (a, b) => {
+//   //sorts children, puts section titles first
+//   if (a.section_order === b.section_order && a.child_order && b.child_order){
+//     if (a.child_order < b.child_order){
+//         return -1;
+//     } else if (b.child_order < a.child_order) {
+//         return 1;
+//     }
+//   } else if (a.section_order === b.section_order && !a.child_order && b.child_order) {
+//     return 1
+//   } else if (a.section_order === b.section_order && a.child_order && !b.child_order) {
+//     return -1
+//   }
+//   return 0;
+// }
+//
+// const sorterSectionOrder = (a, b) => {
+//   //sorts all incompletely
+//
+//   //SectionTitle: id, section_order
+//   //SectionTitleChild: section_title_id, child_order
+//
+//   //lowest section_order first
+//   if (a.section_order < b.section_order) {
+//       return -1;
+//   } else if (b.section_order < a.section_order) {
+//       return 1;
+//   }
+//   return 0
+// }
 
 
 export const addSectionTitle = () => {
