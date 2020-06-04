@@ -14,14 +14,16 @@ export const modifyElements = (project) => {
   let edit = document.getElementById('edit-project-data');
   edit.innerHTML = '';
   let componentArray = []
+  console.log('project', project);
 
   for (let section of project.section_titles){
-    componentArray.push(section)
+    console.log('section', section);
+    componentArray.push(section);
     // console.log('section.section_title_children', section.section_title_children);
     if (section.section_title_children)
       for (let data of section.section_title_children){
         componentArray.push(data)
-        // console.log('pushing data', data);
+        console.log('pushing data', data);
       }
   }
 
@@ -31,7 +33,7 @@ export const modifyElements = (project) => {
     // console.log('e', e);
     if (!isNaN(e.child_order)) {
       if (e.type === 'Graph'){
-        // console.log('is graph', e);
+        console.log('is graph', e);
         return (<EditProjectNewGraphContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'graph-' + e.section_order + '-' + e.child_order} />);
       } else if (e.type === 'PreliminaryDatum'){
         // console.log('is prelim', e);
