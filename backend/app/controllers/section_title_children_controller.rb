@@ -7,7 +7,7 @@ class SectionTitleChildrenController < ApplicationController
         child.child_order = child.child_order + 1 if (child != section_title_child) && (child.child_order >= section_title_child.child_order) && (child.section_title == section_title_child.section_title)
         child.save
       }
-      render json: {section_title_child: section_title_child, project_id: section_title_child.section_title.project_id, section_order: section_title_child.section_title.section_order }
+      render json: {section_title_child: section_title_child, type: section_title_child.type, project_id: section_title_child.section_title.project_id, section_order: section_title_child.section_title.section_order }
     end
   end
 
