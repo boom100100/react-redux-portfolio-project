@@ -4,8 +4,8 @@ import EditProjectNewResearchComponent from '../components/EditProjectNewResearc
 class EditProjectNewResearchContainer extends Component {
   render(){
     return (
-      <div id='add-new-research'>
-        <EditProjectNewResearchComponent />
+      <div id={this.props.id}>
+        <EditProjectNewResearchComponent parentId={this.props.parentId} randomId={this.props.randomId} preliminaryId={this.props.preliminaryId} researchId={this.props.researchId} />
       </div>
     )
   }
