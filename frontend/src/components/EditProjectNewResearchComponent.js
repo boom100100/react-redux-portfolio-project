@@ -5,10 +5,10 @@ import NewResearchDataContainer from '../containers/NewResearchDataContainer';
 
 const EditProjectNewResearchComponent = (props) => {
   return (
-    <div id='add-new-research'>
-      <NewRandomDataContainer />
-      <NewPreliminaryDataContainer />
-      <NewResearchDataContainer />
+    <div id={props.parentId}>
+      <NewRandomDataContainer id={props.randomId} />
+      <NewPreliminaryDataContainer id={props.preliminaryId} />
+      <NewResearchDataContainer id={props.researchId} />
     </div>
   )
 }
