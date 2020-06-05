@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 class EditProjectNewGraphContainer extends Component {
   saveToProject = () => {
     let fields = this.state.inputFields;
-
+    console.log('fields', fields);
     // collect data to save in object
     const graphData = {
       name: fields.name,
@@ -147,7 +147,11 @@ class EditProjectNewGraphContainer extends Component {
     }, () => {
       console.log('state after addToX',this.state);
       const labelValue = this.state.inputFields.graph.graphData.labels[xIndex];
-      const dataValue = this.state.inputFields.graph.graphData.datasets[setIndex][xIndex];
+      console.log('this.state.inputFields.graph.graphData.datasets', this.state.inputFields.graph.graphData.datasets);
+      console.log('this.state.inputFields.graph.graphData.datasets[setIndex]', this.state.inputFields.graph.graphData.datasets[setIndex]);
+      console.log('this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]', this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]);
+      const dataValue = this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex];
+      console.log('dataValue', dataValue);
       addLabelAndData(xIndex, labelValue, dataValue);
       //adding label after set state means new data that doesn't get re-rendered
       //doing setState again causes re-render.
@@ -156,6 +160,11 @@ class EditProjectNewGraphContainer extends Component {
   }
 
   onChangeXLabel = (e) => {
+    //change label that corresponds with input field
+    const array = e.target.name.split('-');
+    const oldLabel = array[array.length - 1];
+    const newValue = e.target.value;
+
     this.setState({
       inputFields: {
         ...this.state.inputFields,
@@ -165,7 +174,7 @@ class EditProjectNewGraphContainer extends Component {
             ...this.state.inputFields.graph.graphData,
             labels: {
               ...this.state.inputFields.graph.graphData.labels,
-              [e.target.name.split('-')[e.target.name.split('-').length - 1]]: e.target.value
+              [oldLabel]: newValue
             }
           }
         }
@@ -174,7 +183,11 @@ class EditProjectNewGraphContainer extends Component {
   }
 
   onChangeXData = (e) => {
-    const [,,,xIndex,datasetIndex] = e.target.name.split('-');
+    // console.log('e', e);
+    const array = e.target.name.split('-');
+    const xIndex = array[array.length -2];
+    const datasetIndex = array[array.length -1];
+
     const newState = {
       inputFields: {
         ...this.state.inputFields,
@@ -200,11 +213,11 @@ class EditProjectNewGraphContainer extends Component {
     this.setState(newState);
   }
 
-  componentDidMount(){
-    // console.log('this.state.inputFields.graph.graphData', this.state.inputFields.graph.graphData);
-    // document.getElementById('add-new-graph-doughnut').style.display = 'none';
-    // document.getElementById('add-new-graph-pie').style.display = 'none';
-  }
+  // componentDidMount(){
+  //   // console.log('this.state.inputFields.graph.graphData', this.state.inputFields.graph.graphData);
+  //   // document.getElementById('add-new-graph-doughnut').style.display = 'none';
+  //   // document.getElementById('add-new-graph-pie').style.display = 'none';
+  // }
 
   onSelect = (e) => {
     this.setState({
@@ -254,7 +267,7 @@ class EditProjectNewGraphContainer extends Component {
         ...this.state.inputFields,
         [e.target.name]: e.target.value,
       }
-    }, () => {console.log('new state',this.state);});
+    });
   }
 
   onChangeNumber = (e, newFocus, newOptions, sectionOrder) => {
@@ -265,8 +278,8 @@ class EditProjectNewGraphContainer extends Component {
         [e.target.name]: Number(e.target.value),
       }
     }, () => {
-      console.log('new state',this.state);
-      console.log('newFocus', newFocus);
+      // console.log('new state',this.state);
+      // console.log('newFocus', newFocus);
 
       if (newOptions)
         newOptions(sectionOrder);
@@ -304,29 +317,25 @@ class EditProjectNewGraphContainer extends Component {
   };
 
   graphSetter = (emptyValue) => {
-
-    if (this.props.data)
-      console.log('this.props.data', this.props.data);
-
+    // console.log('this.props', this.props);
     // console.log('emptyValue', emptyValue);
     if (this.props.data)//replace this.props.data - nothing will be handed down
       if (this.props.data.type === "Graph")
         if (this.props.data.content)
-          if (this.props.data.content.graph){
-            return this.props.data.content.graph;}//this.props.project.section_titles.find(e => e.id === this.props.data.section_title_id).section_title_children.find(e => e.child_order === this.props.data.child_order).content.graph;//return this.props.data.content.graph;
-          else {
-            return this.props.data.content;
-          }
+          if (this.props.data.content.graph)
+            return this.props.data.content.graph;
     return emptyValue;
   }
 
   setter = (variableName, emptyValue) => {
-    // console.log('this.props.data', this.props.data);
+    // console.log('setter this.props', this.props);
+
+    // if this component was given data
     if (this.props.data){
       // console.log('this.props.data.id', this.props.data.id);
       if ((this.props.data[variableName]) && (variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id')){
-        return this.props.data[variableName];} else {return emptyValue}
-    }
+        return this.props.data[variableName];} else if (variableName !== 'id') {return this.props[variableName]}
+      }
     return emptyValue;
   }
 
@@ -337,7 +346,7 @@ class EditProjectNewGraphContainer extends Component {
       name: this.setter('name', ''),
       names: {
         divIdFetch: this.setter(null, ''),//this.divIdFetch(),
-        divIdInput: this.setter('', 'add-new-graph-input-fields')
+        divIdInput: this.setter('id', 'add-new-graph-input-fields')
       },
       description:  this.setter('description', ''),
       content: this.graphSetter(this.graphSet()),
@@ -350,6 +359,7 @@ class EditProjectNewGraphContainer extends Component {
   render(){
     return (
       <div id={this.props.id}>
+        {undefined/*console.log('this.props.id', this.props.id)*/}
         <GraphTypesComponent onSelect={this.onSelect} select={this.state.inputFields.graph.type} />
         <GraphNameComponent gName={this.state.inputFields.graph.options.title.text} onChange={this.changeGraphName} />
         <GraphXDataContainer state={this.state} graphData={this.state.inputFields.graph.graphData} addToState={this.addToX} removeXLabel={this.removeXLabel} removeXData={this.removeXData} onChange={this.onChangeXLabel} onChangeXData={this.onChangeXData} />
