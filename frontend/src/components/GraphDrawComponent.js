@@ -32,6 +32,7 @@ const GraphDrawComponent = (props) => {
   // const options = {} //for restructuring passed-in data so react-chartjs-2 can read it
   return (
     <>
+    {/* TODO:  set dynamically */}
     <div id='add-new-graph-bar'>
       <Bar data={data} options={props.graph.options} />
     </div>
