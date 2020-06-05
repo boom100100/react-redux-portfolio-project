@@ -145,13 +145,13 @@ class EditProjectNewGraphContainer extends Component {
         }
       }
     }, () => {
-      console.log('state after addToX',this.state);
+      // console.log('state after addToX',this.state);
       const labelValue = this.state.inputFields.graph.graphData.labels[xIndex];
-      console.log('this.state.inputFields.graph.graphData.datasets', this.state.inputFields.graph.graphData.datasets);
-      console.log('this.state.inputFields.graph.graphData.datasets[setIndex]', this.state.inputFields.graph.graphData.datasets[setIndex]);
-      console.log('this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]', this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]);
+      // console.log('this.state.inputFields.graph.graphData.datasets', this.state.inputFields.graph.graphData.datasets);
+      // console.log('this.state.inputFields.graph.graphData.datasets[setIndex]', this.state.inputFields.graph.graphData.datasets[setIndex]);
+      // console.log('this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]', this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex]);
       const dataValue = this.state.inputFields.graph.graphData.datasets[setIndex].data[xIndex];
-      console.log('dataValue', dataValue);
+      // console.log('dataValue', dataValue);
       addLabelAndData(xIndex, labelValue, dataValue);
       //adding label after set state means new data that doesn't get re-rendered
       //doing setState again causes re-render.
