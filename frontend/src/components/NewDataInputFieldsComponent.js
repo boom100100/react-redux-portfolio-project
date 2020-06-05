@@ -13,7 +13,7 @@ const NewDataInputFieldsComponent = (props) => {
   const makeDataOrderOptions = (index) => {
     let indexCleaner = (index || 0);
 
-    let titles = props.section_titles[indexCleaner];
+    // let titles = props.section_titles[indexCleaner];
     let children = props.section_titles[indexCleaner].section_title_children;
 
     // console.log('titles', titles);
@@ -22,19 +22,19 @@ const NewDataInputFieldsComponent = (props) => {
       <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.child_order} name='child_order' id={'graph-section-child-order'}>
         {children.map(x => {
           keyCounter++;
-          return (<option key={'keyCounter=' + keyCounter + '-child_order=' + x.child_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.child_order}>{x.name}</option>);
+          return (<option key={'keyCounter=' + keyCounter + '-child_order=' + x.child_order + '-section_order=' + x.section_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.child_order}>{x.name}</option>);
         })}
         <option value={children.length}>(place last)</option>
       </select>
     )
   }
 
-  const removeOptions = () => {
-    console.log('doing removeOptions');
-
-    let options = document.getElementById(props.childOrderId).options;
-    document.querySelector(`#${props.childOrderId}`).innerHTML = '';
-  }
+  // const removeOptions = () => {
+  //   console.log('doing removeOptions');
+  //
+  //   let options = document.getElementById(props.childOrderId).options;
+  //   document.querySelector(`#${props.childOrderId}`).innerHTML = '';
+  // }
 
   const doChange = (e) => {
     props.onChangeNumber(e);//, document.getElementById(props.childOrderId).focus, makeDataOrderOptions, props.inputFields.section_order);
