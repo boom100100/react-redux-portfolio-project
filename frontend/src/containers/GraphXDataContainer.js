@@ -25,6 +25,7 @@ class GraphXDataContainer extends Component {
   }
 
   getDatasets = () => {
+
     const propsDatasets = this.props.graphData.datasets;
     const myDatasetsComponents = {};
 
@@ -37,8 +38,7 @@ class GraphXDataContainer extends Component {
       for (let dataset in propsDatasets){
         myDatasetsComponents[dataset] = {};
         for (let data in propsDatasets[dataset].data){
-
-          const key = (keyBase || '') /*+ ++this.keyCount */+ ++this.keyCount + '-' + section_title_id + '-' + dataset;
+          const key = (keyBase || '') /*+ ++this.keyCount */+ data + '-' + section_title_id + '-' + child_order + '-' + dataset;
 
           const value = propsDatasets[dataset].data[data];
           myDatasetsComponents[dataset][data] = this.myXDataComponent(key, data, value);
@@ -61,7 +61,7 @@ class GraphXDataContainer extends Component {
       for (let label in propsLabels){
         //label means key  of object
 
-        const key = (keyBase || '') /*+ ++this.keyCount*/ + '-' + label;
+        const key = (keyBase || '') /*+ ++this.keyCount*/ + label;
         const value = propsLabels[label];
         myDatasetsComponents[label] = this.myXLabelComponent(key, label, value);
       }
