@@ -14,16 +14,16 @@ export const modifyElements = (project) => {
   let edit = document.getElementById('edit-project-data');
   edit.innerHTML = '';
   let componentArray = []
-  console.log('project', project);
+  // console.log('project', project);
 
   for (let section of project.section_titles){
-    console.log('section', section);
+    // console.log('section', section);
     componentArray.push(section);
     // console.log('section.section_title_children', section.section_title_children);
     if (section.section_title_children)
       for (let data of section.section_title_children){
         componentArray.push(data)
-        console.log('pushing data', data);
+        // console.log('pushing data', data);
       }
   }
 
@@ -33,17 +33,19 @@ export const modifyElements = (project) => {
     // console.log('e', e);
     if (!isNaN(e.child_order)) {
       if (e.type === 'Graph'){
-        console.log('is graph', e);
-        return (<EditProjectNewGraphContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'graph-' + e.section_order + '-' + e.child_order} />);
+        // console.log('is graph', e);
+        keyCounter++;
+        e.id = 'graph-' + e.section_title_id + '-' + e.child_order + keyCounter;
+        return (<EditProjectNewGraphContainer key={'graph-' + keyCounter} data={e} id={e.id} />);
       } else if (e.type === 'PreliminaryDatum'){
         // console.log('is prelim', e);
-        return (<NewPreliminaryDataContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'preliminary-data-' + e.section_order + '-' + e.child_order} />);
+        return (<NewPreliminaryDataContainer key={'edit-preliminary-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'preliminary-data-' + e.section_title_id + '-' + e.child_order} />);
       } else if (e.type === 'ResearchDatum'){
         // console.log('is research', e);
-        return (<NewResearchDataContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'research-data-' + e.section_order + '-' + e.child_order} />);
+        return (<NewResearchDataContainer key={'edit-research-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'research-data-' + e.section_title_id + '-' + e.child_order} />);
       } else if (e.type === 'RandomDatum'){
         // console.log('is random', e);
-        return (<NewRandomDataContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'random-data-' + e.section_order + '-' + e.child_order} />);
+        return (<NewRandomDataContainer key={'edit-random-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'random-data-' + e.section_title_id + '-' + e.child_order} />);
       }
     } else {
       // console.log('is section title', e);
