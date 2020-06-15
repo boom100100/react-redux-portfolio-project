@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     if @users
-      render :json => @users, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :child_order, :content, :section_title_id, :section_order]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
+      render :json => @users, only: [:id, :email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:id, :name, :type, :url, :description, :child_order, :content, :section_title_id, :section_order]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]}
       #render :json => @users, only: [:email], include: [:projects => {:include => [:section_titles=> {:include => [:section_title_children => {:only => [:name, :type, :url, :description, :obj_order, :content]}]}]}]#, :graphs, :data => {:only => [:name, :type, :url, :description, :content]}]}]
     else
       render json: {
