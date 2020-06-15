@@ -26,11 +26,15 @@ class NewRandomDataContainer extends React.Component {
     console.log('state', this.state);
 
     let fields = this.state.inputFields;
+    const id = fields.section_title_child_id;
     console.log('fields', fields);
     // collect data to save in object
     const randomData = {
+      section_title_child_id: id,
+      section_title_id: fields.section_title_id,
       name: fields.name,
       project_id: this.props.project.id,
+
       section_order: fields.section_order,
       child_order: fields.child_order,
       description:  fields.description,
@@ -44,7 +48,7 @@ class NewRandomDataContainer extends React.Component {
     // (randomData);
 
     //fetch post to db
-    this.props.addToBackend(randomData, '/section_title_children', 'POST', this.props.addDataToProject);
+    this.props.addToBackend(randomData, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
 
 
@@ -151,6 +155,8 @@ class NewRandomDataContainer extends React.Component {
       content: this.getSavedData('content', ''),
       section_order: this.getSavedData('section_order', 0),
       child_order: this.getSavedData('child_order', 0),
+      section_title_id: this.getSavedData('section_title_id', 0),
+      section_title_child_id: this.getSavedData('id', undefined),
     }
   }
 
