@@ -51,8 +51,9 @@ export const addToBackend = (object, url, method, callback) => {
     return projectApi.addToProject(object, url, method)
       .then(response => response.json())
       .then(json => {
-        callback(json);
         console.log(json);
+        callback(json);
+
         }).catch(error => console.log(error));
   }
 }
