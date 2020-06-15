@@ -29,18 +29,9 @@ const NewDataInputFieldsComponent = (props) => {
     )
   }
 
-  // const removeOptions = () => {
-  //   console.log('doing removeOptions');
-  //
-  //   let options = document.getElementById(props.childOrderId).options;
-  //   document.querySelector(`#${props.childOrderId}`).innerHTML = '';
-  // }
-
   const doChange = (e) => {
     props.onChangeNumber(e);//, document.getElementById(props.childOrderId).focus, makeDataOrderOptions, props.inputFields.section_order);
   }
-
-  // const sorter = (a, b) => {}
 
   const dataOrderer = () => {
     return (
