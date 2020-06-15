@@ -31,7 +31,7 @@ class NewResearchDataContainer extends React.Component {
   render(){
     return (
       <div id={this.props.id} >
-        <SearchDataContainer data={this.props.data} type='ResearchDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} />
+        <SearchDataContainer saveMethod={this.props.saveMethod} data={this.props.data} type='ResearchDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getResearchData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} saveMethod={this.props.saveMethod} />
       </div>
     )
   }
