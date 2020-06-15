@@ -22,6 +22,8 @@ export const modifyElements = (project) => {
     // console.log('section.section_title_children', section.section_title_children);
     if (section.section_title_children)
       for (let data of section.section_title_children){
+        data = {...data, section_order: section.section_order}
+        // console.log('data', data);
         componentArray.push(data)
         // console.log('pushing data', data);
       }
@@ -35,21 +37,25 @@ export const modifyElements = (project) => {
       if (e.type === 'Graph'){
         // console.log('is graph', e);
         keyCounter++;
-        e.id = 'graph-' + e.section_title_id + '-' + e.child_order + keyCounter;
-        return (<EditProjectNewGraphContainer key={'graph-' + keyCounter} data={e} id={e.id} />);
+        // const id = e.id;
+        // e.section_title_child_id = id;
+        e.divId = 'graph-' + e.section_title_id + '-' + e.child_order + '-' + keyCounter;
+        // console.log('is graph', e);
+        // console.log('order?', e.section_order);
+        return (<EditProjectNewGraphContainer saveMethod={"PUT"} key={'graph-' + keyCounter} data={e} id={e.divId} />);
       } else if (e.type === 'PreliminaryDatum'){
         // console.log('is prelim', e);
-        return (<NewPreliminaryDataContainer key={'edit-preliminary-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'preliminary-data-' + e.section_title_id + '-' + e.child_order} />);
+        return (<NewPreliminaryDataContainer saveMethod={"PUT"} key={'edit-preliminary-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'preliminary-data-' + e.section_title_id + '-' + e.child_order} />);
       } else if (e.type === 'ResearchDatum'){
         // console.log('is research', e);
-        return (<NewResearchDataContainer key={'edit-research-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'research-data-' + e.section_title_id + '-' + e.child_order} />);
+        return (<NewResearchDataContainer saveMethod={"PUT"} key={'edit-research-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'research-data-' + e.section_title_id + '-' + e.child_order} />);
       } else if (e.type === 'RandomDatum'){
         // console.log('is random', e);
-        return (<NewRandomDataContainer key={'edit-random-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'random-data-' + e.section_title_id + '-' + e.child_order} />);
+        return (<NewRandomDataContainer saveMethod={"PUT"} key={'edit-random-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'random-data-' + e.section_title_id + '-' + e.child_order} />);
       }
     } else {
       // console.log('is section title', e);
-      return (<EditProjectNewSectionTitleContainer key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'section-title-' + e.section_order} />);
+      return (<EditProjectNewSectionTitleContainer saveMethod={"PUT"} key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'section-title-' + e.section_order} />);
     }
   });
 }
