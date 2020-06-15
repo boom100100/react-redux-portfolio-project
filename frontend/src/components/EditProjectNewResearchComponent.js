@@ -6,9 +6,9 @@ import NewResearchDataContainer from '../containers/NewResearchDataContainer';
 const EditProjectNewResearchComponent = (props) => {
   return (
     <div id={props.parentId}>
-      <NewRandomDataContainer id={props.randomId} />
-      <NewPreliminaryDataContainer id={props.preliminaryId} />
-      <NewResearchDataContainer id={props.researchId} />
+      <NewRandomDataContainer id={props.randomId} saveMethod={"POST"} />
+      <NewPreliminaryDataContainer id={props.preliminaryId} saveMethod={"POST"} />
+      <NewResearchDataContainer id={props.researchId} saveMethod={"POST"} />
     </div>
   )
 }
