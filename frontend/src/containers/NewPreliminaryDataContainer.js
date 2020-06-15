@@ -31,7 +31,7 @@ class NewPreliminaryDataContainer extends React.Component {
   render(){
     return (
       <div id={this.props.id}>
-        <SearchDataContainer data={this.props.data} type='PreliminaryDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs}/>
+        <SearchDataContainer data={this.props.data} type='PreliminaryDatum' divIdFetch={this.divIdFetch} divIdInput={this.divIdInput} get={this.props.getPreliminaryData} getResults={this.getResults} getLink={this.getLink} updateDivsArgs={this.updateDivsArgs} saveMethod={this.props.saveMethod} />
       </div>
     )
   }
