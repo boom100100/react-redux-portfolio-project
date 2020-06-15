@@ -123,6 +123,8 @@ class SearchDataContainer extends React.Component {
       content: this.getSavedData('content', ''),
       section_order: this.getSavedData('section_order', 0),
       child_order: this.getSavedData('child_order', 0),
+      section_title_id: this.getSavedData('section_title_id', 0),
+      section_title_child_id: this.getSavedData('id', undefined),
     }
   }
 
@@ -167,9 +169,13 @@ class SearchDataContainer extends React.Component {
     console.log('state', this.state);
 
     let fields = this.state.inputFields;
+    const id = fields.section_title_child_id;
     console.log('fields', fields);
     // collect data to save in object
     const data = {
+      section_title_child_id: id,
+      section_title_id: fields.section_title_id,
+      prev_section_title_id: fields.prev_section_title_id,
       name: fields.name,
       project_id: this.props.project.id,
       section_order: fields.section_order,
@@ -185,7 +191,7 @@ class SearchDataContainer extends React.Component {
     // this.props.addDataToProject(data);
 
     //fetch post to db
-    this.props.addToBackend(data, '/section_title_children', 'POST', this.props.addDataToProject);
+    this.props.addToBackend(data, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
 
   render(){
