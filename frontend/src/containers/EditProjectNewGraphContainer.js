@@ -9,13 +9,25 @@ import { connect } from 'react-redux';
 
 
 class EditProjectNewGraphContainer extends Component {
-  saveToProject = () => {
+
+  saveToProject = (e) => {
     let fields = this.state.inputFields;
-    console.log('fields', fields);
+    // console.log('e.target.value, e.target.name', e.target.value, e.target.name);
+    // console.log('fields', fields);
+    // let id;
+    // console.log('id', id);
+    // console.log('fields.section_title_child.id', fields.section_title_child.id);
     // collect data to save in object
+    const id = fields.section_title_child_id;
+    // console.log('fields.section_order', fields.section_order);
+    // console.log('fields.section_title_id', fields.section_title_id);
+    // console.log('fields.prev_section_title_id', fields.prev_section_title_id);
     const graphData = {
+      section_title_child_id: id,
       name: fields.name,
       project_id: this.props.project.id,
+      prev_section_title_id: fields.prev_section_title_id,
+      section_title_id: fields.section_title_id,
       section_order: fields.section_order,
       child_order: fields.child_order,
       description:  fields.description,
@@ -23,13 +35,14 @@ class EditProjectNewGraphContainer extends Component {
       type: 'Graph',
       url: ''
     }
-    console.log('graphData', graphData);
+    // console.log('graphData', graphData);
 
     //dispatch action to add data to project
     // this.props.addDataToProject(graphData);
 
     //fetch post to db
-    this.props.addToBackend(graphData, '/section_title_children', 'POST', this.props.addDataToProject);
+    // console.log('method', this.props.saveMethod);
+    this.props.addToBackend(graphData, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
 
   removeXLabel = (index) => {
@@ -214,9 +227,10 @@ class EditProjectNewGraphContainer extends Component {
   }
 
   // componentDidMount(){
-  //   // console.log('this.state.inputFields.graph.graphData', this.state.inputFields.graph.graphData);
-  //   // document.getElementById('add-new-graph-doughnut').style.display = 'none';
-  //   // document.getElementById('add-new-graph-pie').style.display = 'none';
+  //   console.log('this.state.inputFields',this.state.inputFields);
+  // //   // console.log('this.state.inputFields.graph.graphData', this.state.inputFields.graph.graphData);
+  // //   // document.getElementById('add-new-graph-doughnut').style.display = 'none';
+  // //   // document.getElementById('add-new-graph-pie').style.display = 'none';
   // }
 
   onSelect = (e) => {
@@ -331,9 +345,11 @@ class EditProjectNewGraphContainer extends Component {
     // console.log('setter this.props', this.props);
 
     // if this component was given data
+
     if (this.props.data){
+      // console.log('this.props.data', this.props.data);
       // console.log('this.props.data.id', this.props.data.id);
-      if ((this.props.data[variableName]) && (variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id')){
+      if ((this.props.data[variableName]) && (variableName === 'id' && this.props.data[variableName]) || (variableName !== 'id')){//console.log('this.props.data.id', this.props.data.id);
         return this.props.data[variableName];} else if (variableName !== 'id') {return this.props[variableName]}
       }
     return emptyValue;
@@ -350,9 +366,11 @@ class EditProjectNewGraphContainer extends Component {
       },
       description:  this.setter('description', ''),
       content: this.graphSetter(this.graphSet()),
-      section_order: this.setter('section_order', 0),
       child_order: this.setter('child_order', 0),
+      prev_section_title_id: this.setter('section_title_id', 0),
+      section_order: this.setter('section_order', 0),
       section_title_id: this.setter('section_title_id', 0),
+      section_title_child_id: this.setter('id', undefined),
     }
   }
 
