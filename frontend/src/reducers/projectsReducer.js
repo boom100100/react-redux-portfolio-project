@@ -91,19 +91,25 @@ function projectsReducer(state = [], action){
       child_order = action.data.child_order;
 
       let titles = newState[projectId].section_titles
-      let section_title_index = titles.findIndex(e => e.id === fields.section_title_id);
+      let section_title_index = titles.findIndex(e => e.id === newData.section_title_id);
+      console.log('fields', fields);
+      const prev_section_id = fields.prev_section_id;
       let title = titles[section_title_index]
-      console.log('title', title);
+      // console.log('title', title);
       // title.section_title_children.push(newData)
 
-      console.log('newState', newState);
+      // console.log('newState', newState);
 
 
       // //add 1 to section_order equal and following sections
       //push to section title
-      console.log('newState[projectId].section_titles[section_title_index]', newState[projectId].section_titles[section_title_index]);
-      console.log('newState[projectId].section_titles[section_title_index].section_title_children', newState[projectId].section_titles[section_title_index].section_title_children);
-      console.log();
+      // console.log('newState[projectId].section_titles[section_title_index]', newState[projectId].section_titles[section_title_index]);
+      // console.log('newState[projectId].section_titles[section_title_index].section_title_children', newState[projectId].section_titles[section_title_index].section_title_children);
+      // console.log('json look for id of child to delete. will delete from before push.', action.data);
+      for (let section_title of newState[projectId].section_titles){
+        section_title.section_title_children = section_title.section_title_children.filter(element => element.id !== action.data.delete_id);
+      }
+      // newState[projectId].section_titles[prev_section_id].section_title_children = newState[projectId].section_titles[prev_section_id].section_title_children.filter(element => element.id !== action.data.delete_id);
       newState[projectId].section_titles[section_title_index].section_title_children.push(newData)
 
       //reorder following children
