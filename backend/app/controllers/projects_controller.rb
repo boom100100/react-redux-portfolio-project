@@ -1,4 +1,38 @@
 class ProjectsController < ApplicationController
+  def create
+    project = Project.create(name: params['name'], abstract: params['abstract'], user_id: User.find_by(email: params['user_email']).id)
+
+    #this lets frontend assign section title for ordering.
+    first_section_title = SectionTitle.create(name: 'First Title', section_order: 0, project: project)
+
+    # render json: {message: 'reached create', params: params, project: project} if project.id
+    render json: project, only: [:id, :name, :abstract], :include => [:section_titles=> {:include => [:section_title_children => {:only => [:id, :name, :type, :url, :description, :child_order, :content, :section_title_id, :section_order]}]}]
+  end
+
+  def update
+    project = Project.find(id: params['id'])
+    if project
+      project.abstract = params['abstract']
+      project.name = params['name']
+      project.user_id = params['project']['user_id']
+      project.save
+      render json: {message: 'reached update', params: params, project: project} #if project.id
+    end
+  end
+
+  def destroy
+    project = Project.find_by(id: params[:id])
+
+    if project
+      id = project.id
+      project.destroy
+      render json: {message: 'projects#destroyed_all.', params: params}
+    else
+      render json: {message: 'projects#destroyed_all failed', params: params}
+    end
+  end
+
+=begin
   def update
     #updates or creates project
     project = Project.find(id: params['id'])
@@ -35,6 +69,7 @@ class ProjectsController < ApplicationController
     end
 
     render json: {params: params, title: title}#, project: Project.find_by(id: params[:id]), include: [:section_titles] }
-    
+
   end
+=end
 end
