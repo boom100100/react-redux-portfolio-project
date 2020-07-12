@@ -10,10 +10,10 @@ const EditProjectComponent = (props) => {
   return (
     <div id='edit-project-parent'>
       <div>Loading...</div>
-      <button onClick={props.functions.onSave}>Save</button>
+      <button onClick={e => props.functions.onSave(e)}>Save</button>
 
-      <EditProjectObjectComponent state={props.state} />
-      <EditProjectDataComponent state={props.state} project={props.project} />
+      <EditProjectObjectComponent myState={props.myState} saveProject={props.functions.saveProject} callbackType={'EDIT_PROJECT'} />
+      <EditProjectDataComponent  project={props.project} />
       <EditProjectLinksComponent functions={props.functions} />
       <EditProjectNewContainer />
 
@@ -24,8 +24,10 @@ const EditProjectComponent = (props) => {
 
 const mapStateToProps = (state) => {
   let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  const index = state.projects.findIndex(x => x.id == id);
+
   return {
-    project: state.projects[id-1]
+    project: state.projects[index]
   }
 }
 
