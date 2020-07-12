@@ -15,18 +15,43 @@ export const createProject = (project) => {
   };
 };
 
-export const editProject = (project) => {
+export const updateProjectState = (project, type) => {
   return {
-    type: 'EDIT_PROJECT',
+    type: type, //'EDIT_PROJECT', 'CREATE_PROJECT'
     project: project
   };
 };
 
-export const deleteProject = (project) => {
+export const updateProject = (object, url, method, callback, callbackType, redirect) => {
+  return () => projectApi.addToProject(object, url, method)
+    .then(response => response.json())
+    .then(json => {
+      console.log('json', json);
+      callback(json, callbackType);
+      redirect();
+
+      }).catch(error => console.log(error));
+}
+
+export const deleteProjectState = (project) => {
   return {
     type: 'DELETE_PROJECT',
     project: project
   };
+};
+
+export const deleteProject = (object, url, method, callback, history) => {
+  return () => {
+    return projectApi.deleteProject(object, url, method)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        callback(object);
+        history.push('/projects');
+        // history.go();
+
+        }).catch(error => console.log(error));
+  }
 };
 
 export const addSectionToProject = (json) => {
