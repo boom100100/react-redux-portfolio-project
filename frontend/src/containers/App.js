@@ -14,11 +14,6 @@ class App extends Component {
      };
   }
 
-
-  //const handleLogin = () => {}
-  //const handleLogout = () => {}
-
-
   render(){
     return (
       <div className="App">
