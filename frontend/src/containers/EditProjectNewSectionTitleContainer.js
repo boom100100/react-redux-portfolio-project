@@ -42,14 +42,14 @@ class EditProjectNewSectionTitleContainer extends Component {
   }
 
   onChange = (e) => {
-    console.log('before state',this.state);
+    // console.log('before state',this.state);
     this.setState({
       ...this.state,
       inputFields: {
         ...this.state.inputFields,
         [e.target.name]: e.target.value,
       }
-    }, () => {console.log('new state',this.state);});
+    });
   }
 
   onChangeNumber = (e) => {
@@ -117,6 +117,7 @@ class EditProjectNewSectionTitleContainer extends Component {
         <div id='section-title-fetch-container'>
           <NewDataFetchJsonComponent type='textarea' fetchData={this.state.fetchData} inputFields={this.state.inputFields} onChange={this.onChange} />
         </div>
+        
         <NewDataInputFieldsComponent isSectionTitle={true} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
       </div>
     )
@@ -124,9 +125,11 @@ class EditProjectNewSectionTitleContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  const id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  const index = state.projects.findIndex(x => x.id == id);
+
   return {
-    project: state.projects[id-1],
+    project: state.projects[index],
     projects: state.projects
   }
 }
