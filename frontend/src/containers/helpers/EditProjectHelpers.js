@@ -33,7 +33,7 @@ export const modifyElements = (project) => {
 
   return componentArray.map(e => {
     // console.log('e', e);
-    if (!isNaN(e.child_order)) {
+    try {if (!isNaN(e.child_order)) {
       if (e.type === 'Graph'){
         // console.log('is graph', e);
         keyCounter++;
@@ -56,7 +56,7 @@ export const modifyElements = (project) => {
     } else {
       // console.log('is section title', e);
       return (<EditProjectNewSectionTitleContainer saveMethod={"PUT"} key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'section-title-' + e.section_order} />);
-    }
+    }} catch (error) {console.log(error);}
   });
 }
 
