@@ -3,7 +3,10 @@ import NewProjectLink from '../components/NewProjectLink';
 import { connect } from 'react-redux';
 
 class ProjectsContainer extends React.Component {
-  projects = this.props.projects.map(project => {return <div key={project.id}><a href={"/projects/" + project.id}>{project.name}</a></div> });
+
+  projects = this.props.projects.map(project => {
+    if (project)
+      return <div key={project.id}><a href={"/projects/" + project.id}>{project.name}</a></div> });
   render(){return(<div>
     <NewProjectLink />
     {this.projects}
