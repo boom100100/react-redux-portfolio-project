@@ -176,8 +176,9 @@ class NewRandomDataContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   let id = document.location.href.split('/').filter(x => x !== "").find(element => Number(element) >= 0);
+  const index = state.projects.findIndex(x => x.id == id)
   return {
-    project: state.projects[id-1],
+    project: state.projects[index],
     projects: state.projects
   }
 }
