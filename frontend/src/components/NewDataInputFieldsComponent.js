@@ -14,17 +14,19 @@ const NewDataInputFieldsComponent = (props) => {
     let indexCleaner = (index || 0);
 
     // let titles = props.section_titles[indexCleaner];
-    let children = props.section_titles[indexCleaner].section_title_children;
+    let children;
+    if (props.section_titles[indexCleaner])
+      children = props.section_titles[indexCleaner].section_title_children;
 
     // console.log('titles', titles);
     // console.log('children', children);
     return (
       <select onChange={e => props.onChangeNumber(e)} onFocus={e => props.onChangeNumber(e)} value={props.inputFields.child_order} name='child_order' id={'graph-section-child-order'}>
-        {children.map(x => {
+        {children ? children.map(x => {
           keyCounter++;
           return (<option key={'keyCounter=' + keyCounter + '-child_order=' + x.child_order + '-section_order=' + x.section_order + '-project_id=' + x.project_id + '-name=' + x.name} value={x.child_order}>{x.name}</option>);
-        })}
-        <option value={children.length}>(place last)</option>
+        }) : undefined}
+        <option value={children ? children.length : 0}>(place last)</option>
       </select>
     )
   }
