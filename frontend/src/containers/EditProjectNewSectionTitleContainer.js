@@ -80,6 +80,7 @@ class EditProjectNewSectionTitleContainer extends Component {
 
     //fetch post to db
     this.props.addToBackend(sectionTitle, '/section_titles', 'POST', this.props.addSectionToProject);
+    
   }
 
   divIdFetch = () => 'section-title-fetch-json';
@@ -117,7 +118,7 @@ class EditProjectNewSectionTitleContainer extends Component {
         <div id='section-title-fetch-container'>
           <NewDataFetchJsonComponent type='textarea' fetchData={this.state.fetchData} inputFields={this.state.inputFields} onChange={this.onChange} />
         </div>
-        
+
         <NewDataInputFieldsComponent isSectionTitle={true} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
       </div>
     )
