@@ -15,34 +15,29 @@ class EditProjectContainer extends React.Component {
   componentDidMount(){
     const { match: { params } } = this.props;
     const { projects } = this.props;
-
+    const project = projects.find(project => project.id == params.project_id);
     this.setState({
       functions: {...this.state.functions, setState: this.setState},
-      project: projects.find(project => project.id == params.project_id)
+      project: {name: '', abstract: ''}
     }, () => {
       // this.state.functions.modifyElements(this.state.project);
       this.state.functions.showPrimaryOptions();
     });
   }
 
-  onProjectObjectChange = (e) => {
-    this.setState({
-      functions: {...this.state.functions},
-      project: {
-        ...this.state.project,
-        [e.target.name]: e.target.value
-      }
-    });
-  }
+  // onProjectObjectChange = (e) => {
+  //   this.setState({
+  //     functions: {...this.state.functions},
+  //     project: {
+  //       ...this.state.project,
+  //       [e.target.name]: e.target.value
+  //     }
+  //   });
+  // }
 
   state = {
-    project: {
-      abstract: '',
-      name: ''
-    },
     functions: {
       ...editHelpers,
-      onProjectObjectChange: this.onProjectObjectChange,
     }
   }
 
@@ -51,7 +46,7 @@ class EditProjectContainer extends React.Component {
     return (
 
       <div>
-        <EditProjectComponent state={this.state} functions={this.state.functions} />
+        <EditProjectComponent myState={this.state} functions={this.state.functions} />
       </div>
     )
   }
