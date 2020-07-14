@@ -9,11 +9,11 @@ const EditProjectComponent = (props) => {
 
   return (
     <div id='edit-project-parent'>
-      <div>Loading...</div>
+      
       <button onClick={e => props.functions.onSave(e)}>Save</button>
 
       <EditProjectObjectComponent myState={props.myState} saveProject={props.functions.saveProject} callbackType={'EDIT_PROJECT'} />
-      <EditProjectDataComponent  project={props.project} />
+      <EditProjectDataComponent />
       <EditProjectLinksComponent functions={props.functions} />
       <EditProjectNewContainer />
 
