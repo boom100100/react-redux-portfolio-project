@@ -7,8 +7,6 @@ export const deleteProject = (object, relativeUrl, method) => {
 }
 
 const setupFetch = (object, relativeUrl, method) => {
-  console.log('deleteProject project2 object', object);
-  // const relativeUrl = 'http://localhost:3001/projects/' + (project.id);
   const configData = {
     method: method,
     credentials: "include",
