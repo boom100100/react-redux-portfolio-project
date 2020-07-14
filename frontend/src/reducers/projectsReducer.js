@@ -44,10 +44,20 @@ function projectsReducer(state = [], action){
       return newState;
 
     case 'ADD_SECTION':
+      //need to do deep clone of array's objects!
+      //otherwise, state changes and won't rerender
+      // ADD_DATA has same requirement
+      newState = [];
+      for (let e of state){
+        //JSON-serializable content only
+        // (no functions, no Number.POSITIVE_INFINITY
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
 
-      newState = [...state];
       projectId = action.sectionTitle.project_id;
+
       index = newState.findIndex(x => x.id === projectId);
+
       let newSection = {
         id: action.sectionTitle.id,
         name: action.sectionTitle.name,
@@ -55,25 +65,31 @@ function projectsReducer(state = [], action){
         section_order: action.sectionTitle.section_order,
         section_title_children: []
       }
-      newState[index].section_titles.push(newSection);
+      newState[index].section_titles = newState[index].section_titles.concat(newSection);
 
-      //add 1 to section_order following sections
       //and conform children to have same section_order value
       //similar function also occurs in backend
-
       newState[index].section_titles = levelUp(newState[index].section_titles, newSection, 'section_order');
-
-      //sort sections
       newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
 
       return newState;
 
     case 'ADD_DATA':
-      newState = [...state];
+      // newState = [...state];
+
+      //need to do deep clone of array's objects!
+      //otherwise, state changes and won't rerender
+      // ADD_SECTION has same requirement
+      newState = [];
+      for (let e of state){
+        //JSON-serializable content only
+        // (no functions, no Number.POSITIVE_INFINITY
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
       //extract child object
       console.log('action', action);
       let fields = (action.data.section_title_child || action.data);
-      // console.log('fields,fields.graph,fields.type', fields,fields.graph,fields.type);
+
       const searchRegExp = /=>/g;
       const replaceWith = ':';
       console.log('fields.content', fields.content);
