@@ -45,10 +45,7 @@ class SearchDataContainer extends React.Component {
     } else {
       for (let result of this.state.fetchData) {
         const url = this.props.getLink(result);
-        console.log('props', this.props);
-        console.log('text', text);
-        console.log('result', result);
-        console.log('text.split(\'.\').reduce(index, result)', text.split('.').reduce(index, result));
+
         this.doElementUpdate(parentId, parentId + '-text-' + result[resultId], text.split('.').reduce(index, result), 'div');
         this.doElementUpdate(parentId, parentId + '-url-' + result[resultId], url, 'a', url);
         this.doElementUpdate(parentId, parentId + '-picker-' + result[resultId], "Select", 'button', null, this.chooseResult);
@@ -148,14 +145,13 @@ class SearchDataContainer extends React.Component {
       }
     }, () => {
       //deselect all buttons
-      console.log('props.inputFields.names.divIdFetch', this.state.inputFields.names.divIdFetch, 'should be preliminary-data-fetch-json');
       document.getElementById(this.state.inputFields.names.divIdFetch).querySelectorAll('button').forEach(button => {
       	  button.innerText = "Select";
       	});
 
       //show button as selected
       e.target.innerText = 'Selected';
-      console.log('state after select choose', this.state);
+      
     });
 
 
@@ -164,13 +160,10 @@ class SearchDataContainer extends React.Component {
 
   }
   saveToProject = () => {
-    console.log('clicked save prelim/research');
-    console.log('clicked saveToProject');
-    console.log('state', this.state);
 
     let fields = this.state.inputFields;
     const id = fields.section_title_child_id;
-    console.log('fields', fields);
+
     // collect data to save in object
     const data = {
       section_title_child_id: id,

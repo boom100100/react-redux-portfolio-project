@@ -131,8 +131,6 @@ class EditProjectNewGraphContainer extends Component {
     }, () => console.log(this.state));
   }
   addToX = (xIndex, setIndex, addLabelAndData) => {
-    console.log(setIndex);
-    console.log('state before add',this.state);
     this.setState({
       inputFields: {
         ...this.state.inputFields,
@@ -377,7 +375,7 @@ class EditProjectNewGraphContainer extends Component {
   render(){
     return (
       <div id={this.props.id}>
-        {undefined/*console.log('this.props.id', this.props.id)*/}
+        {undefined}
         <GraphTypesComponent onSelect={this.onSelect} select={this.state.inputFields.graph.type} />
         <GraphNameComponent gName={this.state.inputFields.graph.options.title.text} onChange={this.changeGraphName} />
         <GraphXDataContainer state={this.state} graphData={this.state.inputFields.graph.graphData} addToState={this.addToX} removeXLabel={this.removeXLabel} removeXData={this.removeXData} onChange={this.onChangeXLabel} onChangeXData={this.onChangeXData} />

@@ -22,7 +22,6 @@ class LoginContainer extends Component {
   }
 
   onClick = (e, history) => {
-    console.log(e);
     this.props.login(this.state, history, this.props.addUser, this.props.addProjects);
   }
 

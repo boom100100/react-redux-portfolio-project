@@ -31,7 +31,7 @@ class EditProjectNewSectionTitleContainer extends Component {
       }
     }, () => {
       document.getElementsByName('section-title-fetch-json')[0].style.display = 'block';
-      console.log(this.state);
+      
     });
     }
   }
@@ -80,7 +80,7 @@ class EditProjectNewSectionTitleContainer extends Component {
 
     //fetch post to db
     this.props.addToBackend(sectionTitle, '/section_titles', 'POST', this.props.addSectionToProject);
-    
+
   }
 
   divIdFetch = () => 'section-title-fetch-json';

@@ -34,7 +34,7 @@ export const doSessionSave = (json, history, addUser, addProjects) => {
       sessionService.saveUser(json.id)
       .then(() => {
         if (json.email) {
-          console.log('projects from doSessionSave',json.projects);
+          
           addUser(json);
           addProjects(json.projects);
 

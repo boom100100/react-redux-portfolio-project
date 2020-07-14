@@ -17,11 +17,7 @@ const ProjectDeleteComponent = (props) => {
     //in frontend:
     //simply delete the project from the store
     //then, redirect
-    console.log('props.project', props);
-    // console.log('\'\' + props.project.id', '' + props.project.id);
-    // console.log('history split', props.history);
-    // props.history.location.split('/')[1]
-    console.log(props.projects);
+    
     props.deleteProject(props.project, '/projects/' + props.project.id, 'DELETE', props.deleteProjectState, props.history)
 
 

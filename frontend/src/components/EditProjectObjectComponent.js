@@ -8,7 +8,6 @@ class EditProjectObjectComponent extends React.Component {
     if (this.props.project)
       return this.props.project[valueName];
 
-    console.log('this.props', this.props);
     return '';
   }
   state = {

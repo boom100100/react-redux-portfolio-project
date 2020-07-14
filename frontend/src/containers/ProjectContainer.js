@@ -27,8 +27,7 @@ class ProjectContainer extends React.Component {
       let abstract = document.getElementById('project-container-abstract');
       abstract.innerText = project.abstract;
 
-      // const { project } = this.state;
-      console.log('project', project);
+      
     });
   }
 

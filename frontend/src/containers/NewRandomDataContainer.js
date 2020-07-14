@@ -22,12 +22,9 @@ class NewRandomDataContainer extends React.Component {
   }
 
   saveToProject = () => {
-    console.log('clicked saveToProject');
-    console.log('state', this.state);
-
     let fields = this.state.inputFields;
     const id = fields.section_title_child_id;
-    console.log('fields', fields);
+
     // collect data to save in object
     const randomData = {
       section_title_child_id: id,
@@ -106,8 +103,7 @@ class NewRandomDataContainer extends React.Component {
         [e.target.name]: Number(e.target.value),
       }
     }, () => {
-      console.log('new state',this.state);
-      console.log('newFocus', newFocus);
+      
 
       if (newOptions)
         newOptions(sectionOrder);

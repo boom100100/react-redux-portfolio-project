@@ -56,7 +56,6 @@ export const deleteProject = (object, url, method, callback, history) => {
 };
 
 export const addSectionToProject = (json) => {
-  console.log('doing addSectionToProject');
   return {
     type: 'ADD_SECTION',
     sectionTitle: json.section_title
@@ -77,10 +76,8 @@ export const addToBackend = (object, url, method, callback) => {
     return projectApi.addToProject(object, url, method)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         callback(json);
-
-        }).catch(error => console.log(error));
+      }).catch(error => console.log(error));
   }
 }
 
