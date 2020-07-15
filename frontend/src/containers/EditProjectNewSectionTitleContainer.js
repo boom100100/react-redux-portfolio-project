@@ -31,7 +31,7 @@ class EditProjectNewSectionTitleContainer extends Component {
       }
     }, () => {
       document.getElementsByName('section-title-fetch-json')[0].style.display = 'block';
-      
+
     });
     }
   }
@@ -73,13 +73,10 @@ class EditProjectNewSectionTitleContainer extends Component {
       section_order: fields.section_order,
       section_title_children: []
     }
-    // console.log('sectionTitle', sectionTitle);
 
     //dispatch action to add section title to project
-    // this.props.addSectionToProject(sectionTitle);
-
     //fetch post to db
-    this.props.addToBackend(sectionTitle, '/section_titles', 'POST', this.props.addSectionToProject);
+    this.props.myCall(sectionTitle, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback);
 
   }
 
