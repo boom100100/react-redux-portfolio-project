@@ -29,7 +29,8 @@ export const updateProject = (object, url, method, callback, callbackType, redir
     .then(json => {
       console.log('json', json);
       callback(json, callbackType);
-      redirect();
+      if (redirect)
+        redirect();
 
       }).catch(error => console.log(error));
 }
@@ -55,6 +56,13 @@ export const deleteProject = (object, url, method, callback, history) => {
   }
 };
 
+export const updateSectionState = (json) => {
+  return {
+    type: 'EDIT_SECTION',
+    sectionTitle: json.section_title
+  }
+}
+
 export const addSectionToProject = (json) => {
   return {
     type: 'ADD_SECTION',
@@ -70,8 +78,17 @@ export const addDataToProject = (json) => {
   }
 }
 
+export const updateSection = (object, url, method, callback) => {
+  return () => {
+    return projectApi.updateSection(object, url, method)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        callback(json);
+      }).catch(error => console.log(error));
+  }
+}
 export const addToBackend = (object, url, method, callback) => {
-  //write thunk action.
   return () => {
     return projectApi.addToProject(object, url, method)
       .then(response => response.json())
