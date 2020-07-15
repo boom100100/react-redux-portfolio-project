@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as editHelpers from '../containers/helpers/EditProjectHelpers';
+import { updateSectionState, updateSection } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 import EditProjectNewSectionTitleContainer from '../containers/EditProjectNewSectionTitleContainer';
@@ -12,9 +13,6 @@ let keyCounter = 0;
 
 class EditProjectDataComponent extends Component {
   state = {}
-  doRerender = () => {
-    this.setState({});
-  }
 
   doRender = () => {
     // return props.project ? editHelpers.modifyElements(props.project) : undefined;
@@ -44,7 +42,7 @@ class EditProjectDataComponent extends Component {
           return (<NewRandomDataContainer saveMethod={"PUT"} key={'edit-random-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'random-data-' + e.section_title_id + '-' + e.child_order} />);
         }
       } else {
-        return (<EditProjectNewSectionTitleContainer saveMethod={"PUT"} key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'section-title-' + e.section_order} />);
+        return (<EditProjectNewSectionTitleContainer myCall={this.props.updateSection} myCallback={this.props.updateSectionState} relativeUrl={`/section_titles/${e.id}`} saveMethod={"PUT"} key={'graph-' + e.section_order + '-' + e.child_order + '-' + ++keyCounter} data={e} id={'section-title-' + e.section_order} />);
       }} catch (error) {console.log(error);}
     });
   }
@@ -66,4 +64,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(EditProjectDataComponent);
+export default connect(mapStateToProps, { updateSectionState, updateSection })(EditProjectDataComponent);
