@@ -1,9 +1,7 @@
 function projectsReducer(state = [], action){
-  let newState, projectId, section_titles, section_order, section_id, child_order, allChildren, index;
+  let newState, projectId, section_titles, section_order, section_id, child_order, allChildren, index, sectionIndex;
   switch(action.type){
     case 'ADD_PROJECTS':
-
-
       action.projects.forEach(e => {
         e.section_titles.sort((a, b) => sorterSectionOrder(a, b)).forEach(title => title.section_title_children.sort((c, d) => sorterChildrenTitle(c, d)));
 
@@ -29,6 +27,22 @@ function projectsReducer(state = [], action){
 
     case 'REPLACE_PROJECTS':
       return action.projects;
+
+    case 'EDIT_PROJECT':
+      //need to do deep clone of array's objects!
+      newState = [];
+      for (let e of state){
+        //JSON-serializable content only
+        // (no functions, no Number.POSITIVE_INFINITY
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+
+      projectId = action.project.id;
+      index = newState.findIndex(e => e.id === projectId);
+
+      newState[index].name = action.project.name;
+      newState[index].abstract = action.project.abstract;
+      return newState;
 
     case 'CREATE_PROJECT': //'EDIT_PROJECT', 'CREATE_PROJECT'
       newState = [...state]
@@ -68,6 +82,25 @@ function projectsReducer(state = [], action){
       //and conform children to have same section_order value
       //similar function also occurs in backend
       newState[index].section_titles = levelUp(newState[index].section_titles, newSection, 'section_order');
+      newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
+
+      return newState;
+
+    case 'EDIT_SECTION':
+      newState = [];
+      for (let e of state){
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+      projectId = action.sectionTitle.project_id;
+      index = newState.findIndex(x => x.id === projectId);
+      sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
+
+      newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
+      newState[index].section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
+
+      //and conform children to have same section_order value
+      //similar function also occurs in backend
+      newState[index].section_titles = levelUp(newState[index].section_titles, newState[index].section_titles[sectionIndex], 'section_order');
       newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
 
       return newState;
@@ -136,6 +169,25 @@ function projectsReducer(state = [], action){
       newState[index].section_titles[section_title_index].section_title_children = newState[index].section_titles[section_title_index].section_title_children.sort((a, b) => sortSection(a, b, 'child_order'));
       // console.log('allChildren after sort', allChildren);
       return newState;
+
+      case 'EDIT_DATA':
+        newState = [];
+        for (let e of state){
+          newState.push(JSON.parse(JSON.stringify(e)));
+        }
+        projectId = action.sectionTitle.project_id;
+        index = newState.findIndex(x => x.id === projectId);
+        sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
+
+        newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
+        newState[index].section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
+
+        //and conform children to have same section_order value
+        //similar function also occurs in backend
+        newState[index].section_titles = levelUp(newState[index].section_titles, newState[index].section_titles[sectionIndex], 'section_order');
+        newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
+
+        return newState;
 
       case 'SAVE_PROJECT':
         return state;
