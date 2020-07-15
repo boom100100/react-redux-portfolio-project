@@ -23,8 +23,26 @@ class SectionTitlesController < ApplicationController
   end
 
   def update
-    render json: {message: 'landed at SectionTitlesController#update'}
+    section_title = SectionTitle.find_by(id: params[:id].to_i)
+    if section_title
+      section_title.name = params[:name]
+      section_title.section_order = params[:section_order]
+      if section_title.save!
+        SectionTitle.all.each{|title|
+          title.section_order = title.section_order + 1 if (title != section_title) && (title.section_order >= section_title.section_order)
+          title.save
+          #children must match parent
+          title.section_title_children.each{|child|
+            child.section_order = child.section_title.section_order
+            child.save
+          }
+        }
+
+        render json: {message: 'Updated.', section_title: section_title, params: params}
+      end
+    end
   end
+
   def destroy
     render json: {message: 'landed at SectionTitlesController#destroy'}
   end
