@@ -10,13 +10,17 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    project = Project.find(id: params['id'])
+
+    project = Project.find_by(id: params['id'].to_i)
+    # render json: {user_id: params['project']['user_id'], project: project, params: params, id: params[:id].to_i, id2: params['id'].to_i}
     if project
       project.abstract = params['abstract']
       project.name = params['name']
-      project.user_id = params['project']['user_id']
-      project.save
-      render json: {message: 'reached update', params: params, project: project} #if project.id
+      # project.user_id = params['project']['user_id']
+      if project.save!
+        render json: project, only: [:id, :name, :abstract]#, :user_id]#, include: [:section_titles=> {:include => [:section_title_children => {:only => [:id, :name, :type, :url, :description, :child_order, :content, :section_title_id, :section_order]}]}]
+        # render json: {message: 'reached update', params: params, project: project} #if project.id
+      end
     end
   end
 
