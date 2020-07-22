@@ -83,7 +83,7 @@ const NewDataInputFieldsComponent = (props) => {
         <textarea name='description' value={props.inputFields.description} onChange={e => props.onChange(e)}></textarea>
       </label><br />
       {letSetOrder()}
-      <SaveDataButtonComponent click={props.click} />
+      <SaveDataButtonComponent click={props.click} deleteData={props.deleteData ? props.deleteData : undefined} />
     </div>
   )
 }
