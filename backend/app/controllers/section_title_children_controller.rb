@@ -26,7 +26,16 @@ class SectionTitleChildrenController < ApplicationController
   end
 
   def destroy
-    render json: {message: 'landed at SectionTitleChildrenController#destroy'}
+    section_title_child = SectionTitleChild.find_by!(id: params[:id].to_i)
+    if section_title_child
+      my_params = {content: section_title_child.content, description: section_title_child.description, id: section_title_child.id, name: section_title_child.name, section_title_id: section_title_child.section_title_id, section_order: section_title_child.section_order, child_order: section_title_child.child_order, type: section_title_child.type, url: section_title_child.url}
+      section_title_child_copy = SectionTitleChild.new(my_params)
+      project_id = section_title_child.section_title.project_id
+      section_title_child.destroy
+
+      render json: {message: 'Destroyed ' + section_title_child_copy.id.to_s, section_title_child: section_title_child_copy, project_id: project_id}
+    end
+    # render json: {message: 'landed at SectionTitleChildrenController#destroy', params: params, section_title_child: section_title_child}
   end
 
   private
