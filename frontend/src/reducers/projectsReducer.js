@@ -1,5 +1,5 @@
 function projectsReducer(state = [], action){
-  let newState, projectId, section_titles, section_order, section_id, child_order, allChildren, index, sectionIndex;
+  let newState, projectId, section_titles, section_order, section_id, child_order, allChildren, index, sectionIndex, editedData;
   switch(action.type){
     case 'ADD_PROJECTS':
       action.projects.forEach(e => {
@@ -50,8 +50,17 @@ function projectsReducer(state = [], action){
       return newState;
 
     case 'DELETE_PROJECT':
-      newState = state.filter(x => x);
-      newState = newState.filter(x =>  x.id !== action.project.id);
+      newState = [];
+      for (let e of state){
+        //JSON-serializable content only
+        // (no functions, no Number.POSITIVE_INFINITY
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+      console.log('DELETE_PROJECT state', state);
+      console.log('DELETE_PROJECT newState', newState);
+      newState = newState.filter(x => x.id !== action.project.id);
+      console.log('DELETE_PROJECT state', state);
+      console.log('DELETE_PROJECT newState', newState);
       // const filtered = newState.filter(element => element != null);
       return newState;
 
@@ -96,14 +105,57 @@ function projectsReducer(state = [], action){
       sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
 
       newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
-      newState[index].section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
 
-      //and conform children to have same section_order value
-      //similar function also occurs in backend
-      newState[index].section_titles = levelUp(newState[index].section_titles, newState[index].section_titles[sectionIndex], 'section_order');
-      newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
+      if (newState[index].section_titles[sectionIndex].section_order !== action.sectionTitle.section_order){
+        // level down
+        // subtract 1 from all section orders below data being edited
+        section_titles = []
+        for (let e of newState[index].section_titles){
+          section_titles.push(JSON.parse(JSON.stringify(e)));
+        }
+
+        section_titles = levelDown(section_titles, section_titles[sectionIndex], 'section_order');
+
+        // push
+        // reorder the edited data
+        // then, readd the edited data in new order
+        section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
+
+        // level up
+        //children will have same section_order value
+        //similar function also occurs in backend
+        section_titles = levelUp(section_titles, section_titles[sectionIndex], 'section_order');
+        section_titles = section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
+        newState[index].section_titles = section_titles;
+      }
 
       return newState;
+
+      case 'DELETE_SECTION':
+        newState = [];
+        for (let e of state){
+          newState.push(JSON.parse(JSON.stringify(e)));
+        }
+        projectId = action.sectionTitle.project_id;
+        index = newState.findIndex(x => x.id === projectId);
+        sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
+
+        //delete the children from the store
+        newState[index].section_titles[sectionIndex].section_title_children = [];
+
+        // level down
+        // subtract 1 from all section orders below data being edited
+        section_titles = []
+        for (let e of newState[index].section_titles){
+          section_titles.push(JSON.parse(JSON.stringify(e)));
+        }
+        section_titles = levelDown(section_titles, section_titles[sectionIndex], 'section_order');
+
+        // delete the indicated data
+        section_titles.splice(sectionIndex, 1);
+        newState[index].section_titles = section_titles;
+
+        return newState;
 
     case 'ADD_DATA':
       // newState = [...state];
@@ -139,6 +191,7 @@ function projectsReducer(state = [], action){
       //get section title
       projectId = action.data.project_id;
       index = newState.findIndex(x => x.id === projectId);
+      console.log('action.data', action.data);
       section_id = action.data.section_title_child.section_title_id;
       section_order = action.data.section_order;
       child_order = action.data.child_order;
@@ -189,6 +242,31 @@ function projectsReducer(state = [], action){
 
         return newState;
 
+        case 'DELETE_DATA':
+          newState = [];
+          for (let e of state){
+            newState.push(JSON.parse(JSON.stringify(e)));
+          }
+          console.log('action.data', action.data);
+          console.log('action.data.project_id', action.data.project_id);
+          projectId = action.data.project_id;
+          index = newState.findIndex(x => x.id === projectId);
+          sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.data.section_title_child.section_title_id);
+          let section_title_children = newState[index].section_titles[sectionIndex].section_title_children;
+          const childIndex = section_title_children.findIndex(e => e.id === action.data.section_title_child.id);
+
+          // level down
+          // subtract 1 from all section orders below data being edited
+          section_title_children = levelDown(section_title_children, section_title_children[childIndex], 'child_order');
+
+          //delete the child
+          section_title_children = section_title_children.filter(e => e.id !== action.data.section_title_child.id);
+
+          // delete the indicated data
+          newState[index].section_titles[sectionIndex].section_title_children = section_title_children;
+
+          return newState;
+
       case 'SAVE_PROJECT':
         return state;
 
@@ -199,11 +277,22 @@ function projectsReducer(state = [], action){
 
 //array, elementArg, key
 const levelUp = (array, elementArg, key) => {
-  return array.map((e) => {
+  return array.map(e => {
     if (e[key] >= elementArg[key] && elementArg !== e){
       e[key]++
       if (key === 'section_order')
         e.section_title_children.forEach(child => child.section_order++ );
+    }
+    return e;
+  });
+}
+
+const levelDown = (array, elementArg, key) => {
+  return array.map(e => {
+    if (e[key] >= elementArg[key] && elementArg !== e){
+      e[key]--
+      if (key === 'section_order')
+        e.section_title_children.forEach(child => child.section_order-- );
     }
     return e;
   });
