@@ -26,7 +26,7 @@ https://ritekit.com/api-demo/hashtag-suggestions
 [x] The code should be written in ES6 as much as possible
 [x] Use the `create-react-app` generator to start your project.
 [x] Follow the instructions on this repo to setup the generator: [create-react-app](https://github.com/facebookincubator/create-react-app)
-[ ] Your app should have one HTML page to render your react-redux application
+[x] Your app should have one HTML page to render your react-redux application
 [x] There should be 2 container components
 [ ] There should be 5 stateless components
 [x] There should be 3 routes
