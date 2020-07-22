@@ -3,7 +3,7 @@ import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
 import { getSectionTitleData } from '../actions/SectionTitleActions';
-import { addSectionToProject, addToBackend } from '../actions/ProjectActions';
+import { addSectionToProject, addToBackend, deleteSection, deleteSectionState } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 class EditProjectNewSectionTitleContainer extends Component {
@@ -90,6 +90,15 @@ class EditProjectNewSectionTitleContainer extends Component {
     return emptyValue;
   }
 
+  deleteData = () => {
+    console.log('clicked delete');
+
+    // collect data to save in object
+    const sectionTitle = this.props.project.section_titles.find(e => e.id === this.state.inputFields.id)
+
+    this.props.deleteSection(sectionTitle, `/section_titles/${sectionTitle.id}`, 'DELETE', this.props.deleteSectionState);
+  }
+
   state = {
     fetchData: [],
     inputFields: {
@@ -116,7 +125,7 @@ class EditProjectNewSectionTitleContainer extends Component {
           <NewDataFetchJsonComponent type='textarea' fetchData={this.state.fetchData} inputFields={this.state.inputFields} onChange={this.onChange} />
         </div>
 
-        <NewDataInputFieldsComponent isSectionTitle={true} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
+        <NewDataInputFieldsComponent isSectionTitle={true} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} deleteData={this.props.data ? this.deleteData : undefined} />
       </div>
     )
   }
@@ -132,4 +141,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { getSectionTitleData, addSectionToProject, addToBackend })(EditProjectNewSectionTitleContainer);
+export default connect(mapStateToProps, { getSectionTitleData, addSectionToProject, addToBackend, deleteSection, deleteSectionState })(EditProjectNewSectionTitleContainer);
