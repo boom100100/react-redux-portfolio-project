@@ -17,15 +17,19 @@ const ProjectDeleteComponent = (props) => {
     //in frontend:
     //simply delete the project from the store
     //then, redirect
-    
-    props.deleteProject(props.project, '/projects/' + props.project.id, 'DELETE', props.deleteProjectState, props.history)
+
+    props.deleteProject(props.project, '/projects/' + props.project.id, 'DELETE', props.deleteProjectState, props.history, doRedirect);
 
 
-    props.history.push('/projects');
-    props.history.go();
+    // props.history.push('/projects');
+    // props.history.go();
   }
 
-  return (<div>{doDelete()}</div>);
+  const doRedirect = () => {
+    props.history.push('/projects');
+  }
+
+  return (<div>{props.project ? doDelete() : undefined}</div>);
 }
 
 const mapStateToProps = (state) => {
