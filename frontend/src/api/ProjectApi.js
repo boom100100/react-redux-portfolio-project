@@ -10,6 +10,14 @@ export const updateSection = (object, relativeUrl, method) => {
   return setupFetch(object, relativeUrl, method);
 }
 
+export const deleteSection = (object, relativeUrl, method) => {
+  return setupFetch(object, relativeUrl, method);
+}
+
+export const deleteData = (object, relativeUrl, method) => {
+  return setupFetch(object, relativeUrl, method);
+}
+
 const setupFetch = (object, relativeUrl, method) => {
   const configData = {
     method: method,
