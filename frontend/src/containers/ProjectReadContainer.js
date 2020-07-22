@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 
 class ProjectReadContainer extends Component {
   showData = () => {
-    components = []
+    const components = [];
+    return (<div>showData successful.</div>);
+
     //for each section title
       // return formatted section title, add to array
       // return formatted children, add to array
@@ -16,10 +18,23 @@ class ProjectReadContainer extends Component {
     return (
       <div>
         <div>ProjectReadContainer</div>
+
         <h1>{this.props.project.name}</h1>
-        <h2>Abstract</h2>
-        <h2>Content</h2>
-        {this.showData()}
+
+        {this.props.project.abstract != '' ? (
+          <>
+          <h2>Abstract</h2> <p>{this.props.project.abstract}</p>
+          </>
+        ) : undefined}
+
+        {this.props.project.section_titles.length > 0 ? (
+          <>
+          <h2>Content</h2>
+          <p>{this.showData()}</p>
+          </>
+        ) : undefined}
+
+
       </div>
     )
   }
