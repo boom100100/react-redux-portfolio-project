@@ -2,7 +2,7 @@ import React from 'react';
 import GenericSearchComponent from '../components/GenericSearchComponent';
 import NewDataFetchJsonComponent from '../components/NewDataFetchJsonComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
-import { addDataToProject, addToBackend } from '../actions/ProjectActions';
+import { addDataToProject, addToBackend, deleteData, deleteDataState } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 //https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Wikipedia+English&format=jsonclass NewPreliminaryDataContainer extends React.Component {
@@ -151,14 +151,24 @@ class SearchDataContainer extends React.Component {
 
       //show button as selected
       e.target.innerText = 'Selected';
-      
+
     });
-
-
-
-
-
   }
+
+  deleteData = () => {
+    console.log('clicked delete');
+    const fields = this.state.inputFields;
+    // fields.section_title_child_id
+    // fields.section_title_id
+    // console.log('fields', fields);
+    // console.log('this.props.project.section_titles', this.props.project.section_titles);
+    const sectionIndex = this.props.project.section_titles.findIndex(e => e.id === fields.section_title_id)
+    const childIndex = this.props.project.section_titles[sectionIndex].section_title_children.findIndex(e => e.id === fields.section_title_child_id)
+    const child = this.props.project.section_titles[sectionIndex].section_title_children[childIndex];
+    // console.log('child', child);
+    this.props.deleteData(child, `/section_title_children/${child.id}`, 'DELETE', this.props.deleteDataState);
+  }
+
   saveToProject = () => {
 
     let fields = this.state.inputFields;
@@ -178,11 +188,8 @@ class SearchDataContainer extends React.Component {
       type: this.props.type,
       url: fields.url
     }
-    console.log('data', data);
 
     //dispatch action to add data to project
-    // this.props.addDataToProject(data);
-
     //fetch post to db
     this.props.addToBackend(data, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
@@ -193,7 +200,7 @@ class SearchDataContainer extends React.Component {
         <GenericSearchComponent type='input' text={'Search term: '}inputFields={this.state.inputFields} searchTerm={this.state.searchTerm} click={this.getNewData} onChange={this.onChange} />
         <NewDataFetchJsonComponent type='div' fetchData={this.state.fetchData} inputFields={this.state.inputFields} />
 
-        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} />
+        <NewDataInputFieldsComponent isSectionTitle={false} section_titles={this.props.project.section_titles} inputFields={this.state.inputFields} click={this.saveToProject} onChange={this.onChange} onChangeNumber={this.onChangeNumber} deleteData={this.props.data ? this.deleteData : undefined} />
       </>
     )
   }
@@ -208,4 +215,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addDataToProject, addToBackend })(SearchDataContainer);
+export default connect(mapStateToProps, { addDataToProject, addToBackend, deleteData, deleteDataState })(SearchDataContainer);
