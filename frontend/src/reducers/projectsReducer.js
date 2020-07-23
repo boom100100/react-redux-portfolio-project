@@ -22,12 +22,6 @@ function projectsReducer(state = [], action){
       // console.log('action', action);
       return newState;
 
-    case 'RESET_PROJECTS':
-      return [];
-
-    case 'REPLACE_PROJECTS':
-      return action.projects;
-
     case 'EDIT_PROJECT':
       //need to do deep clone of array's objects!
       newState = [];
@@ -56,12 +50,8 @@ function projectsReducer(state = [], action){
         // (no functions, no Number.POSITIVE_INFINITY
         newState.push(JSON.parse(JSON.stringify(e)));
       }
-      console.log('DELETE_PROJECT state', state);
-      console.log('DELETE_PROJECT newState', newState);
       newState = newState.filter(x => x.id !== action.project.id);
-      console.log('DELETE_PROJECT state', state);
-      console.log('DELETE_PROJECT newState', newState);
-      // const filtered = newState.filter(element => element != null);
+
       return newState;
 
     case 'ADD_SECTION':
@@ -80,6 +70,7 @@ function projectsReducer(state = [], action){
       index = newState.findIndex(x => x.id === projectId);
 
       let newSection = {
+        description: action.sectionTitle.description,
         id: action.sectionTitle.id,
         name: action.sectionTitle.name,
         project_id: projectId,
@@ -104,6 +95,7 @@ function projectsReducer(state = [], action){
       index = newState.findIndex(x => x.id === projectId);
       sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
 
+      newState[index].section_titles[sectionIndex].description = action.sectionTitle.description;
       newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
 
       if (newState[index].section_titles[sectionIndex].section_order !== action.sectionTitle.section_order){
@@ -131,31 +123,31 @@ function projectsReducer(state = [], action){
 
       return newState;
 
-      case 'DELETE_SECTION':
-        newState = [];
-        for (let e of state){
-          newState.push(JSON.parse(JSON.stringify(e)));
-        }
-        projectId = action.sectionTitle.project_id;
-        index = newState.findIndex(x => x.id === projectId);
-        sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
+    case 'DELETE_SECTION':
+      newState = [];
+      for (let e of state){
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+      projectId = action.sectionTitle.project_id;
+      index = newState.findIndex(x => x.id === projectId);
+      sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
 
-        //delete the children from the store
-        newState[index].section_titles[sectionIndex].section_title_children = [];
+      //delete the children from the store
+      newState[index].section_titles[sectionIndex].section_title_children = [];
 
-        // level down
-        // subtract 1 from all section orders below data being edited
-        section_titles = []
-        for (let e of newState[index].section_titles){
-          section_titles.push(JSON.parse(JSON.stringify(e)));
-        }
-        section_titles = levelDown(section_titles, section_titles[sectionIndex], 'section_order');
+      // level down
+      // subtract 1 from all section orders below data being edited
+      section_titles = []
+      for (let e of newState[index].section_titles){
+        section_titles.push(JSON.parse(JSON.stringify(e)));
+      }
+      section_titles = levelDown(section_titles, section_titles[sectionIndex], 'section_order');
 
-        // delete the indicated data
-        section_titles.splice(sectionIndex, 1);
-        newState[index].section_titles = section_titles;
+      // delete the indicated data
+      section_titles.splice(sectionIndex, 1);
+      newState[index].section_titles = section_titles;
 
-        return newState;
+      return newState;
 
     case 'ADD_DATA':
       // newState = [...state];
@@ -223,52 +215,50 @@ function projectsReducer(state = [], action){
       // console.log('allChildren after sort', allChildren);
       return newState;
 
-      case 'EDIT_DATA':
-        newState = [];
-        for (let e of state){
-          newState.push(JSON.parse(JSON.stringify(e)));
-        }
-        projectId = action.sectionTitle.project_id;
-        index = newState.findIndex(x => x.id === projectId);
-        sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
+    case 'EDIT_DATA':
+      newState = [];
+      for (let e of state){
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+      projectId = action.sectionTitle.project_id;
+      index = newState.findIndex(x => x.id === projectId);
+      sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.sectionTitle.id);
 
-        newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
-        newState[index].section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
+      newState[index].section_titles[sectionIndex].name = action.sectionTitle.name;
+      newState[index].section_titles[sectionIndex].section_order = action.sectionTitle.section_order;
 
-        //and conform children to have same section_order value
-        //similar function also occurs in backend
-        newState[index].section_titles = levelUp(newState[index].section_titles, newState[index].section_titles[sectionIndex], 'section_order');
-        newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
+      //and conform children to have same section_order value
+      //similar function also occurs in backend
+      newState[index].section_titles = levelUp(newState[index].section_titles, newState[index].section_titles[sectionIndex], 'section_order');
+      newState[index].section_titles = newState[index].section_titles.sort((a, b) => sortSection(a, b, 'section_order'));
 
-        return newState;
+      return newState;
 
-        case 'DELETE_DATA':
-          newState = [];
-          for (let e of state){
-            newState.push(JSON.parse(JSON.stringify(e)));
-          }
-          console.log('action.data', action.data);
-          console.log('action.data.project_id', action.data.project_id);
-          projectId = action.data.project_id;
-          index = newState.findIndex(x => x.id === projectId);
-          sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.data.section_title_child.section_title_id);
-          let section_title_children = newState[index].section_titles[sectionIndex].section_title_children;
-          const childIndex = section_title_children.findIndex(e => e.id === action.data.section_title_child.id);
+    case 'DELETE_DATA':
+      newState = [];
+      for (let e of state){
+        newState.push(JSON.parse(JSON.stringify(e)));
+      }
+      console.log('action.data', action.data);
+      console.log('action.data.project_id', action.data.project_id);
+      projectId = action.data.project_id;
+      index = newState.findIndex(x => x.id === projectId);
+      sectionIndex = newState[index].section_titles.findIndex(x => x.id === action.data.section_title_child.section_title_id);
+      let section_title_children = newState[index].section_titles[sectionIndex].section_title_children;
+      const childIndex = section_title_children.findIndex(e => e.id === action.data.section_title_child.id);
 
-          // level down
-          // subtract 1 from all section orders below data being edited
-          section_title_children = levelDown(section_title_children, section_title_children[childIndex], 'child_order');
+      // level down
+      // subtract 1 from all section orders below data being edited
+      section_title_children = levelDown(section_title_children, section_title_children[childIndex], 'child_order');
 
-          //delete the child
-          section_title_children = section_title_children.filter(e => e.id !== action.data.section_title_child.id);
+      //delete the child
+      section_title_children = section_title_children.filter(e => e.id !== action.data.section_title_child.id);
 
-          // delete the indicated data
-          newState[index].section_titles[sectionIndex].section_title_children = section_title_children;
+      // delete the indicated data
+      newState[index].section_titles[sectionIndex].section_title_children = section_title_children;
 
-          return newState;
+      return newState;
 
-      case 'SAVE_PROJECT':
-        return state;
 
     default:
       return state;
