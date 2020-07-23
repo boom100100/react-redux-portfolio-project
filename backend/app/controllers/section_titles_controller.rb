@@ -2,7 +2,7 @@ class SectionTitlesController < ApplicationController
   def create
     params.delete :section_title
 
-    my_params = {name: params[:name], section_order: params[:section_order], project_id: params[:project_id], section_title_children: params[:section_title_children]}
+    my_params = {description: params[:description], name: params[:name], section_order: params[:section_order], project_id: params[:project_id], section_title_children: params[:section_title_children]}
     section_title = SectionTitle.new(my_params)
     # order = section_title.section_order
 
@@ -16,6 +16,7 @@ class SectionTitlesController < ApplicationController
   def update
     section_title = SectionTitle.find_by(id: params[:id].to_i)
     if section_title
+      section_title.description = params[:description]
       section_title.name = params[:name]
 
       if section_title.save! && section_title.section_order != params[:section_order]
