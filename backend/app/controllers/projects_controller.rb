@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
     project = Project.create(name: params['name'], abstract: params['abstract'], user_id: User.find_by(email: params['user_email']).id)
 
     #this lets frontend assign section title for ordering.
-    first_section_title = SectionTitle.create(name: 'First Title', section_order: 0, project: project)
+    first_section_title = SectionTitle.create(name: 'Introduction', section_order: 0, project: project)
 
     # render json: {message: 'reached create', params: params, project: project} if project.id
     render json: project, only: [:id, :name, :abstract], :include => [:section_titles=> {:include => [:section_title_children => {:only => [:id, :name, :type, :url, :description, :child_order, :content, :section_title_id, :section_order]}]}]
