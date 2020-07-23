@@ -13,7 +13,7 @@ class ProjectReadContainer extends Component {
     // return array
 
     for (let section of this.props.project.section_titles){
-      components.push(<ReadSectionTitle name={section.name} key={section.name + '-' + section.id} />);
+      components.push(<ReadSectionTitle name={section.name} description={section.description} key={section.name + '-' + section.id} />);
       for (let child of section.section_title_children){
         console.log('child', child);
         switch(child.type) {
@@ -29,12 +29,10 @@ class ProjectReadContainer extends Component {
 
     return components;
   }
-  
+
   render(){
     return (
       <div>
-        <div>ProjectReadContainer</div>
-
         <h1>{this.props.project.name}</h1>
 
         {this.props.project.abstract != '' ? (
@@ -72,7 +70,10 @@ export default connect(mapStateToProps)(ProjectReadContainer);
 
 const ReadSectionTitle = (props) => {
   return (
-    <h3>{props.name}</h3>
+    <div>
+    <h4>{props.name}</h4>
+    <p>{props.description}</p>
+    </div>
   );
 }
 const ReadGraph = (props) => {
