@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 const GenericSearchComponent = (props) => {
   const CustomTag = `${props.type}`;
@@ -6,7 +7,7 @@ const GenericSearchComponent = (props) => {
     <div>
       {props.text}<CustomTag name='searchTerm' value={props.inputFields.searchTerm} onChange={e => props.onChange(e)} />
 
-      <button onClick={props.click}>Search</button>
+      <Button variant="primary" onClick={props.click}>Search</Button>
       <p>{(props.inputFields.holdText || undefined)}</p>
     </div>
   )
