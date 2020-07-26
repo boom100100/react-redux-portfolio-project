@@ -21,9 +21,16 @@ class SectionTitlesController < ApplicationController
 
       if section_title.save! && section_title.section_order != params[:section_order]
         #subtract 1 from each following section_order val
-        level(section_title, 'DOWN')
+        #find max section order
+        #adds 1 to it
+        max = level(section_title, 'DOWN')
+
+
+        #// const max = section_titles.reduce(function(a, b){console.log('a.section_order', a.section_order);return Math.max(a.section_order, b.section_order)});
+
 
         #change order
+        # params[:section_order] > max ? section_title.section_order = max : section_title.section_order = params[:section_order]
         section_title.section_order = params[:section_order]
 
         if section_title.save!
@@ -59,6 +66,7 @@ class SectionTitlesController < ApplicationController
   private
 
   def level(section_title, direction)
+    @max = 0
     SectionTitle.all.each{|title|
       if direction == 'UP'
         title.section_order = title.section_order + 1 if (title != section_title) && (title.section_order >= section_title.section_order)
@@ -71,6 +79,8 @@ class SectionTitlesController < ApplicationController
         child.section_order = child.section_title.section_order
         child.save
       }
+      @max = title.section_order if title.section_order > @max
     }
+    @max
   end
 end
