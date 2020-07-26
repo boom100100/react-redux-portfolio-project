@@ -1,9 +1,11 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+
 const SaveDataButtonComponent = (props) => {
   return(
     <>
-      <button onClick={e => props.click(e)}>Save Data</button>
-      {props.deleteData ? <button onClick={e => props.deleteData(e)}>Delete Data</button> : undefined}
+      <Button variant="primary" onClick={e => props.click(e)}>Save Data</Button>
+      {props.deleteData ? <Button variant="danger" onClick={e => props.deleteData(e)}>Delete Data</Button> : undefined}
     </>)
 }
 export default SaveDataButtonComponent;
