@@ -4,7 +4,7 @@ import GraphNameComponent from '../components/GraphNameComponent';
 import GraphXDataContainer from './GraphXDataContainer';
 import GraphDrawComponent from '../components/GraphDrawComponent';
 import NewDataInputFieldsComponent from '../components/NewDataInputFieldsComponent';
-import { addDataToProject, addToBackend, deleteData, deleteDataState } from '../actions/ProjectActions';
+import { deleteData, deleteDataState, addToBackend, addDataToProject } from '../actions/ProjectActions';
 import { connect } from 'react-redux';
 
 
@@ -12,16 +12,8 @@ class EditProjectNewGraphContainer extends Component {
 
   saveToProject = (e) => {
     let fields = this.state.inputFields;
-    // console.log('e.target.value, e.target.name', e.target.value, e.target.name);
-    // console.log('fields', fields);
-    // let id;
-    // console.log('id', id);
-    // console.log('fields.section_title_child.id', fields.section_title_child.id);
-    // collect data to save in object
     const id = fields.section_title_child_id;
-    // console.log('fields.section_order', fields.section_order);
-    // console.log('fields.section_title_id', fields.section_title_id);
-    // console.log('fields.prev_section_title_id', fields.prev_section_title_id);
+
     const graphData = {
       section_title_child_id: id,
       name: fields.name,
@@ -29,20 +21,32 @@ class EditProjectNewGraphContainer extends Component {
       prev_section_title_id: fields.prev_section_title_id,
       section_title_id: fields.section_title_id,
       section_order: fields.section_order,
-      child_order: fields.child_order,
+      // child_order: this.movingDown ? fields.child_order - 1 : fields.child_order,
+      child_order: this.movingDown ? fields.child_order - 1 : fields.child_order,
       description:  fields.description,
       content: fields.graph,
       type: 'Graph',
       url: ''
     }
-    // console.log('graphData', graphData);
 
     //dispatch action to add data to project
-    // this.props.addDataToProject(graphData);
+    if (this.props.saveMethod === 'POST'){
+      this.props.myCall(graphData, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback);
+    } else if (fields.prev_section_order === fields.section_order){
+      this.props.myCall(graphData, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback, this.movingDown);
+    } else {
 
-    //fetch post to db
-    // console.log('method', this.props.saveMethod);
-    this.props.addToBackend(graphData, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
+      const promise = new Promise((resolve, reject) => {
+        this.props.addToBackend(graphData, '/section_title_children', 'POST', this.props.addDataToProject);
+        console.log('Initial');
+
+        resolve();
+      });
+      promise.
+      then(this.deleteData()).
+      catch(error => console.log('error: ', error));
+    }
+
   }
 
   removeXLabel = (index) => {
@@ -282,7 +286,18 @@ class EditProjectNewGraphContainer extends Component {
     });
   }
 
+  originalSection = undefined;
+  changingSection = false;
+  movingDown = false;
+
   onChangeNumber = (e, newFocus, newOptions, sectionOrder) => {
+    this.movingDown = false;
+
+    // if movingDown, then subtract one from e.target.value before saving new position.
+    if (this.props.saveMethod === "PUT")
+      if (e.target.name === "child_order" && e.target.value > this.state.inputFields[e.target.name])
+        this.movingDown = true;
+
     this.setState({
       ...this.state,
       inputFields: {
@@ -380,6 +395,7 @@ class EditProjectNewGraphContainer extends Component {
       content: this.graphSetter(this.graphSet()),
       child_order: this.setter('child_order', 0),
       prev_section_title_id: this.setter('section_title_id', 0),
+      prev_section_order: this.setter('section_order', 0),
       section_order: this.setter('section_order', 0),
       section_title_id: this.setter('section_title_id', 0),
       section_title_child_id: this.setter('id', undefined),
@@ -411,4 +427,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addDataToProject, addToBackend, deleteData, deleteDataState })(EditProjectNewGraphContainer);
+export default connect(mapStateToProps, { deleteData, deleteDataState, addToBackend, addDataToProject })(EditProjectNewGraphContainer);
