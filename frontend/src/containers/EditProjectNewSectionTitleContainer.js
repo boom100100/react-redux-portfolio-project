@@ -52,13 +52,20 @@ class EditProjectNewSectionTitleContainer extends Component {
     });
   }
 
+  movingDown = false;
   onChangeNumber = (e) => {
-    // console.log('before state',this.state);
+    this.movingDown = false;
+
+    // if movingDown, then subtract one from e.target.value before saving new position.
+    if (this.props.saveMethod === "PUT")
+      if (e.target.value > this.state.inputFields[e.target.name])
+        this.movingDown = true;
+
     this.setState({
       ...this.state,
       inputFields: {
         ...this.state.inputFields,
-        [e.target.name]: Number(e.target.value),
+        [e.target.name]: e.target.value,
       }
     }, () => {/*console.log('new state',this.state);*/});
   }
@@ -71,7 +78,7 @@ class EditProjectNewSectionTitleContainer extends Component {
       description: fields.description,
       name: fields.name,
       project_id: this.props.project.id,
-      section_order: fields.section_order,
+      section_order: this.movingDown ? fields.section_order - 1 : fields.section_order,
       section_title_children: []
     }
 
