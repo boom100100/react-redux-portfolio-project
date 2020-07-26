@@ -1,5 +1,6 @@
 import React from 'react';
 import SaveDataButtonComponent from './SaveDataButtonComponent';
+import Form from 'react-bootstrap/Form';
 
 const NewDataInputFieldsComponent = (props) => {
   //workaround:
@@ -51,6 +52,15 @@ const NewDataInputFieldsComponent = (props) => {
 
 
   const sectionTitleOrderer = () => {
+    // return (
+    //   <Form.Group controlId="exampleForm.ControlSelect1">
+    //     <Form.Label>Place before section:</Form.Label>
+    //     <Form.Control as="select">
+    //       {props.section_titles.map(x => <option key={'section_order=' + x.section_order + '-name=' + x.name} value={x.section_order}>{x.name}</option>)}
+    //     </Form.Control>
+    //   </Form.Group>
+    // );
+
     return (
       <span>
         Place before section:
