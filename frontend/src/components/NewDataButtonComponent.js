@@ -1,3 +1,4 @@
 import React from 'react';
-const NewDataButtonComponent = (props) => {return(<button onClick={props.click}>New Data</button>)}
+import Button from 'react-bootstrap/Button';
+const NewDataButtonComponent = (props) => {return(<Button variant="primary" onClick={props.click}>New Data</Button>)}
 export default NewDataButtonComponent;
