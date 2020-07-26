@@ -20,7 +20,7 @@ class SectionTitleChildrenController < ApplicationController
       next_section_order = section_title_child.section_order
       next_child_order = section_title_child.child_order
       levelUp(section_title_child, prev_section_order, prev_child_order, next_section_order, next_child_order)
-      render json: {section_title_child: section_title_child, type: section_title_child.type, project_id: section_title_child.section_title.project_id, section_order: section_title_child.section_title.section_order, delete_id: section_title_child.id, prev_section_id: prev_section_title_id }
+      render json: {section_title_child: section_title_child, section_title: section_title_child.section_title, type: section_title_child.type, project_id: section_title_child.section_title.project_id, section_order: section_title_child.section_title.section_order, delete_id: section_title_child.id, prev_section_id: prev_section_title_id }
       #render json: {message: 'landed at SectionTitleChildrenController#update', params: params}
     end
   end
@@ -31,14 +31,26 @@ class SectionTitleChildrenController < ApplicationController
       my_params = {content: section_title_child.content, description: section_title_child.description, id: section_title_child.id, name: section_title_child.name, section_title_id: section_title_child.section_title_id, section_order: section_title_child.section_order, child_order: section_title_child.child_order, type: section_title_child.type, url: section_title_child.url}
       section_title_child_copy = SectionTitleChild.new(my_params)
       project_id = section_title_child.section_title.project_id
+      levelDown(section_title_child, section_title_child.section_title.section_title_children)
       section_title_child.destroy
-
-      render json: {message: 'Destroyed ' + section_title_child_copy.id.to_s, section_title_child: section_title_child_copy, project_id: project_id}
+      #level down
+      # levelDown(section_title_child_copy, )
+      render json: {message: 'Destroyed ' + section_title_child_copy.id.to_s, section_title_child: section_title_child_copy, section_title: SectionTitle.find(section_title_child_copy.section_title_id), project_id: project_id}
     end
     # render json: {message: 'landed at SectionTitleChildrenController#destroy', params: params, section_title_child: section_title_child}
   end
 
   private
+
+  def levelDown(current_section_title_child, all_children)
+    # first condition: children differ
+    # second: element part of same section
+    # third: element order is higher
+    all_children.map{|e|
+      e.child_order = e.child_order - 1 if (e != current_section_title_child) && (current_section_title_child.section_order == e.section_order) && (current_section_title_child.child_order < e.child_order)
+      e.save
+    }
+  end
 
   def levelUp(section_title_child, prevSectionOrder,prevChildOrder,nextSectionOrder,nextChildOrder)
 
