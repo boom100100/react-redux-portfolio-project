@@ -64,6 +64,14 @@ export const updateSectionState = (json) => {
   }
 }
 
+export const updateDataState = (json, movingDown) => {
+  return {
+    type: 'EDIT_DATA',
+    data: json,
+    movingDown: movingDown ? movingDown : undefined
+  }
+}
+
 export const deleteSectionState = (json) => {
   return {
     type: 'DELETE_SECTION',
@@ -85,7 +93,7 @@ export const addSectionToProject = (json) => {
   }
 }
 
-export const addDataToProject = (json) => {
+export const addDataToProject = (json, movingDown) => {
   // console.log('figure out render crash','json', json);
   return {
     type: 'ADD_DATA',
@@ -94,15 +102,29 @@ export const addDataToProject = (json) => {
 }
 
 export const updateSection = (object, url, method, callback) => {
+  console.log('object', object);
   return () => {
     return projectApi.updateSection(object, url, method)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
+        console.log('json', json);
         callback(json);
       }).catch(error => console.log(error));
   }
 }
+
+export const updateData = (object, url, method, callback, movingDown) => {
+  console.log('object', object);
+  return () => {
+    return projectApi.updateSection(object, url, method)
+      .then(response => response.json())
+      .then(json => {
+        console.log('json', json);
+        callback(json, movingDown);
+      }).catch(error => console.log(error));
+  }
+}
+
 export const deleteSection = (object, url, method, callback) => {
   return () => {
     return projectApi.deleteSection(object, url, method)
@@ -114,13 +136,15 @@ export const deleteSection = (object, url, method, callback) => {
   }
 }
 
-export const deleteData = (object, url, method, callback) => {
+export const deleteData = (object, url, method, callback, secondCallback) => {
   return () => {
     return projectApi.deleteData(object, url, method)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
+        console.log('json', json);
         callback(json);
+        if (secondCallback)
+          secondCallback();
       }).catch(error => console.log(error));
   }
 }
@@ -130,6 +154,7 @@ export const addToBackend = (object, url, method, callback) => {
     return projectApi.addToProject(object, url, method)
       .then(response => response.json())
       .then(json => {
+        console.log('json', json);
         callback(json);
       }).catch(error => console.log(error));
   }
