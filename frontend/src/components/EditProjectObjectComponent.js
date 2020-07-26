@@ -1,6 +1,7 @@
 import React from 'react';
 import { updateProject, updateProjectState } from '../actions/ProjectActions'
 import { connect } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 
 class EditProjectObjectComponent extends React.Component {
 
@@ -58,7 +59,7 @@ class EditProjectObjectComponent extends React.Component {
           <p>Abstract:</p>
           <textarea name='abstract' value={this.state.abstract} onChange={e => this.onChange(e)} ></textarea>
         </div>
-        <button onClick={e => this.saveProject(e)}>Save</button>
+        <Button variant="primary" onClick={e => this.saveProject(e)}>Save</Button>
       </>
     )
   }
