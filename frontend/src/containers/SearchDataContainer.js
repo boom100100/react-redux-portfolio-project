@@ -86,7 +86,18 @@ class SearchDataContainer extends React.Component {
     });
   }
 
+  originalSection = undefined;
+  changingSection = false;
+  movingDown = false;
+
   onChangeNumber = (e) => {
+    this.movingDown = false;
+
+    // if movingDown, then subtract one from e.target.value before saving new position.
+    if (this.props.saveMethod === "PUT")
+      if (e.target.name === "child_order" && e.target.value > this.state.inputFields[e.target.name])
+        this.movingDown = true;
+
     this.setState({
       fetchData: {...this.state.fetchData},
       inputFields: {
@@ -118,6 +129,7 @@ class SearchDataContainer extends React.Component {
       url: this.getSavedData('url', ''),
       description:  this.getSavedData('description', ''),
       content: this.getSavedData('content', ''),
+      prev_section_order: this.getSavedData('section_order', 0),
       section_order: this.getSavedData('section_order', 0),
       child_order: this.getSavedData('child_order', 0),
       section_title_id: this.getSavedData('section_title_id', 0),
@@ -182,7 +194,7 @@ class SearchDataContainer extends React.Component {
       name: fields.name,
       project_id: this.props.project.id,
       section_order: fields.section_order,
-      child_order: fields.child_order,
+      child_order: this.movingDown ? fields.child_order - 1 : fields.child_order,
       description:  fields.description,
       content: fields.content,
       type: this.props.type,
@@ -191,7 +203,23 @@ class SearchDataContainer extends React.Component {
 
     //dispatch action to add data to project
     //fetch post to db
-    this.props.addToBackend(data, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
+    if (this.props.saveMethod === 'POST'){
+      this.props.myCall(data, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback);
+    } else if (fields.prev_section_order === fields.section_order){
+      this.props.myCall(data, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback, this.movingDown);
+    } else {
+
+      const promise = new Promise((resolve, reject) => {
+        this.props.addToBackend(data, '/section_title_children', 'POST', this.props.addDataToProject);
+        console.log('Initial');
+
+        resolve();
+      });
+      promise.
+      then(this.deleteData()).
+      catch(error => console.log('error: ', error));
+    }
+    // this.props.addToBackend(data, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
 
   render(){
