@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { store, persistor } from './reducers/configureStore';
 import { PersistGate } from 'redux-persist/integration/react'
