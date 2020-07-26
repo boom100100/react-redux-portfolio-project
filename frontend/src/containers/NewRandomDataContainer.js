@@ -33,7 +33,7 @@ class NewRandomDataContainer extends React.Component {
       project_id: this.props.project.id,
 
       section_order: fields.section_order,
-      child_order: fields.child_order,
+      child_order: this.movingDown ? fields.child_order - 1 : fields.child_order,
       description:  fields.description,
       content: fields.content,
       type: 'RandomDatum',
@@ -41,10 +41,24 @@ class NewRandomDataContainer extends React.Component {
     }
 
     //dispatch action to add data to project
-    // (randomData);
-
     //fetch post to db
-    this.props.addToBackend(randomData, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
+    if (this.props.saveMethod === 'POST'){
+      this.props.myCall(randomData, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback, this.movingDown);
+    } else if (fields.prev_section_order === fields.section_order){
+      this.props.myCall(randomData, this.props.relativeUrl, this.props.saveMethod, this.props.myCallback, this.movingDown);
+    } else {
+
+      const promise = new Promise((resolve, reject) => {
+        this.props.addToBackend(randomData, '/section_title_children', 'POST', this.props.addDataToProject);
+        console.log('Initial');
+
+        resolve();
+      });
+      promise.
+      then(this.deleteData()).
+      catch(error => console.log('error: ', error));
+    }
+    // this.props.addToBackend(randomData, '/section_title_children/' + (id || ""), this.props.saveMethod, this.props.addDataToProject);
   }
 
 
@@ -94,7 +108,18 @@ class NewRandomDataContainer extends React.Component {
     });
   }
 
+  originalSection = undefined;
+  changingSection = false;
+  movingDown = false;
+
   onChangeNumber = (e, newFocus, newOptions, sectionOrder) => {
+    this.movingDown = false;
+
+    // if movingDown, then subtract one from e.target.value before saving new position.
+    if (this.props.saveMethod === "PUT")
+      if (e.target.name === "child_order" && e.target.value > this.state.inputFields[e.target.name])
+        this.movingDown = true;
+
     this.setState({
       ...this.state,
       inputFields: {
@@ -130,7 +155,7 @@ class NewRandomDataContainer extends React.Component {
 
 
   deleteData = () => {
-    console.log('clicked delete');
+
     const fields = this.state.inputFields;
     // fields.section_title_child_id
     // fields.section_title_id
@@ -161,6 +186,7 @@ class NewRandomDataContainer extends React.Component {
       description:  this.getSavedData('description', ''),
       content: this.getSavedData('content', ''),
       section_order: this.getSavedData('section_order', 0),
+      prev_section_order: this.getSavedData('section_order', 0),
       child_order: this.getSavedData('child_order', 0),
       section_title_id: this.getSavedData('section_title_id', 0),
       section_title_child_id: this.getSavedData('id', undefined),
@@ -189,4 +215,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { getRandomData, addDataToProject, addToBackend, deleteData, deleteDataState })(NewRandomDataContainer);
+export default connect(mapStateToProps, { getRandomData,  deleteData, deleteDataState, addToBackend, addDataToProject })(NewRandomDataContainer);
