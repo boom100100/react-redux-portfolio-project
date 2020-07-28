@@ -34,9 +34,10 @@ export const doSessionSave = (json, history, addUser, addProjects) => {
       sessionService.saveUser(json.id)
       .then(() => {
         if (json.email) {
-          
+
           addUser(json);
-          addProjects(json.projects);
+          if (addProjects)
+            addProjects(json.projects);
 
           localStorage.setItem("loggedIn", true);
           history.push('/');
